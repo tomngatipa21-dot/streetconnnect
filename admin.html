@@ -1,0 +1,163 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Street Connect — Admin</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#1a3020; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; min-height:100vh; padding:20px; }
+.login-wrap { display:flex; align-items:center; justify-content:center; min-height:100vh; }
+.login-card { background:#fffdf8; border-radius:20px; padding:32px 24px; width:100%; max-width:360px; box-shadow:0 20px 60px rgba(0,0,0,0.4); }
+.logo { display:flex; align-items:center; gap:8px; margin-bottom:20px; }
+.logo-name { font-size:20px; font-weight:900; color:#1a3020; }
+.logo-name span { color:#4a7a4a; }
+.admin-badge { background:#e53935; color:#fff; font-size:10px; padding:3px 8px; border-radius:10px; font-weight:700; margin-left:8px; }
+h2 { font-size:20px; font-weight:900; color:#1a3020; margin-bottom:6px; }
+p { font-size:13px; color:#888; margin-bottom:20px; }
+input { width:100%; border:2px solid #1a3020; border-radius:12px; padding:12px 14px; font-size:15px; font-family:inherit; color:#333; outline:none; margin-bottom:12px; }
+.btn { width:100%; background:#1a3020; color:#fff; border:none; border-radius:12px; padding:14px; font-size:15px; cursor:pointer; font-weight:700; font-family:inherit; }
+.dashboard { display:none; }
+.dash-header { background:#1a3020; padding:20px 24px; border-radius:0 0 20px 20px; margin-bottom:24px; display:flex; justify-content:space-between; align-items:center; }
+.dash-title { color:#fff; font-size:18px; font-weight:900; }
+.dash-sub { color:#81c784; font-size:11px; margin-top:3px; }
+.logout-btn { background:rgba(255,255,255,0.15); border:none; color:#fff; border-radius:20px; padding:6px 14px; font-size:12px; cursor:pointer; font-family:inherit; }
+.stats-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:24px; padding:0 4px; }
+.stat-card { background:#fffdf8; border-radius:14px; padding:16px; text-align:center; box-shadow:0 2px 8px rgba(0,0,0,0.1); }
+.stat-num { font-size:32px; font-weight:900; color:#1a3020; }
+.stat-label { font-size:11px; color:#888; margin-top:4px; }
+.stat-card.highlight .stat-num { color:#2e7d32; }
+.users-card { background:#fffdf8; border-radius:14px; padding:16px; box-shadow:0 2px 8px rgba(0,0,0,0.1); margin:0 4px; }
+.users-title { font-size:13px; font-weight:700; color:#1a3020; margin-bottom:12px; display:flex; justify-content:space-between; }
+.refresh-btn { background:#f5f0e8; border:none; border-radius:10px; padding:4px 10px; font-size:11px; cursor:pointer; color:#666; font-family:inherit; }
+.user-row { display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid #f0ece3; }
+.user-row:last-child { border-bottom:none; }
+.user-avatar { width:36px; height:36px; background:#1a3020; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#69f0ae; font-size:14px; font-weight:700; flex-shrink:0; }
+.user-info { flex:1; }
+.user-address { font-size:13px; font-weight:700; color:#1a3020; }
+.user-meta { font-size:10px; color:#aaa; margin-top:2px; }
+.user-lang { background:#f5f0e8; color:#666; font-size:9px; padding:2px 7px; border-radius:10px; }
+.empty-state { text-align:center; padding:32px; color:#aaa; font-size:13px; }
+.error-msg { color:#e53935; font-size:12px; margin-bottom:10px; display:none; }
+.loading { text-align:center; padding:20px; color:#aaa; font-size:13px; }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-card">
+    <div class="logo">
+      <span style="font-size:24px;">&#127960;</span>
+      <div class="logo-name">Street<span>Connect</span><span class="admin-badge">ADMIN</span></div>
+    </div>
+    <h2>Admin Login</h2>
+    <p>Enter your admin password to access the dashboard.</p>
+    <div class="error-msg" id="loginError">Incorrect password. Try again.</div>
+    <input type="password" id="passwordInput" placeholder="Admin password" onkeydown="if(event.key==='Enter')login()"/>
+    <button class="btn" onclick="login()">Login &#8594;</button>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dashboard" id="dashboard">
+  <div class="dash-header">
+    <div>
+      <div class="dash-title">&#127960; Street Connect Admin</div>
+      <div class="dash-sub">Moreton Bay Region · Live dashboard</div>
+    </div>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card highlight">
+      <div class="stat-num" id="totalUsers">-</div>
+      <div class="stat-label">Total Users</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="todayUsers">-</div>
+      <div class="stat-label">Joined Today</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="totalStreets">-</div>
+      <div class="stat-label">Streets</div>
+    </div>
+  </div>
+
+  <div class="users-card">
+    <div class="users-title">
+      <span>Recent Signups</span>
+      <button class="refresh-btn" onclick="loadUsers()">&#8635; Refresh</button>
+    </div>
+    <div id="usersList"><div class="loading">Loading...</div></div>
+  </div>
+</div>
+
+<script>
+var adminPassword = '';
+
+function login() {
+  var pw = document.getElementById('passwordInput').value;
+  if (!pw) return;
+  adminPassword = pw;
+  loadUsers();
+}
+
+function logout() {
+  adminPassword = '';
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('loginWrap').style.display = 'flex';
+  document.getElementById('passwordInput').value = '';
+}
+
+async function loadUsers() {
+  try {
+    var res = await fetch('/api/get-users?password=' + encodeURIComponent(adminPassword));
+    if (res.status === 401) {
+      document.getElementById('loginError').style.display = 'block';
+      return;
+    }
+    var data = await res.json();
+    document.getElementById('loginError').style.display = 'none';
+    document.getElementById('loginWrap').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    renderDashboard(data.users || []);
+  } catch(e) {
+    document.getElementById('loginError').style.display = 'block';
+    document.getElementById('loginError').textContent = 'Connection error. Try again.';
+  }
+}
+
+function renderDashboard(users) {
+  document.getElementById('totalUsers').textContent = users.length;
+  var today = new Date().toDateString();
+  var todayCount = users.filter(function(u){
+    return new Date(u.joined_at).toDateString() === today;
+  }).length;
+  document.getElementById('todayUsers').textContent = todayCount;
+  var streets = [...new Set(users.map(function(u){ return u.street; }).filter(Boolean))];
+  document.getElementById('totalStreets').textContent = streets.length;
+  var list = document.getElementById('usersList');
+  if (users.length === 0) {
+    list.innerHTML = '<div class="empty-state">&#127960; No signups yet. Share the app to get started!</div>';
+    return;
+  }
+  var langs = { en:'&#127462;&#127482;', hi:'&#127470;&#127475;', vi:'&#127483;&#127475;', zh:'&#127464;&#127475;', ar:'&#127462;&#127466;', es:'&#127466;&#127480;' };
+  list.innerHTML = users.slice(0, 50).map(function(u, i) {
+    var initial = u.address ? u.address.charAt(0).toUpperCase() : '?';
+    var date = new Date(u.joined_at).toLocaleDateString('en-AU', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' });
+    var langFlag = langs[u.language] || '&#127760;';
+    return '<div class="user-row">' +
+      '<div class="user-avatar">' + initial + '</div>' +
+      '<div class="user-info">' +
+        '<div class="user-address">' + (u.address || 'Address not set') + '</div>' +
+        '<div class="user-meta">' + date + ' &nbsp;&#183;&nbsp; ' + (u.phone ? u.phone.replace(/(\+61)(\d{3})(\d{3})(\d{3})/, '$1 $2 $3 $4') : '') + '</div>' +
+      '</div>' +
+      '<span class="user-lang">' + langFlag + ' ' + (u.language || 'en').toUpperCase() + '</span>' +
+    '</div>';
+  }).join('');
+}
+</script>
+</body>
+</html>
