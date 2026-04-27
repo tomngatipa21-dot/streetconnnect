@@ -168,7 +168,10 @@ body { background:#1a3020; font-family:-apple-system,BlinkMacSystemFont,'Segoe U
   <div class="header">
     <div class="header-top">
       <div><div class="street-label">STREET CONNECT · SUMMERSTONE ESTATE</div><div class="street-sub">&#10003; Moreton Bay Region · 24 neighbours active</div><a href="/signup.html" style="display:inline-block;margin-top:6px;background:#69f0ae;color:#1a3020;font-size:11px;font-weight:700;padding:5px 14px;border-radius:20px;text-decoration:none;">+ Join Your Street</a></div>
-      <button class="notif-btn" onclick="showPush({icon:'&#128276;',title:'2 unread alerts',body:'QPS patrol update + storm advisory',color:'#1a3020'})">&#128276;<span class="notif-badge">2</span></button>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button onclick="messageAdmin()" style="background:rgba(105,240,174,0.15);border:1px solid rgba(105,240,174,0.3);border-radius:20px;padding:5px 11px;color:#69f0ae;font-size:10px;font-weight:700;cursor:pointer;font-family:inherit;">&#9993; Help</button>
+        <button class="notif-btn" onclick="showPush({icon:'&#128276;',title:'2 unread alerts',body:'QPS patrol update + storm advisory',color:'#1a3020'})">&#128276;<span class="notif-badge">2</span></button>
+      </div>
     </div>
     <div class="alert-banner"><span class="alert-dot"></span><span class="alert-text">&#9888; 6 active incidents · QPS patrols active</span></div>
     <div class="tabs">
@@ -353,7 +356,65 @@ body { background:#1a3020; font-family:-apple-system,BlinkMacSystemFont,'Segoe U
 <script>
 function switchTab(t,b){document.querySelectorAll('.content').forEach(e=>e.style.display='none');document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));document.getElementById('tab-'+t).style.display='flex';b.classList.add('active');}
 function setFilter(t,b){document.querySelectorAll('.filter-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('#chatMessages>[data-type]').forEach(e=>{if(t==='all')e.style.display='';else if(t==='official')e.style.display=e.dataset.type==='official'?'':'none';else e.style.display=(e.dataset.type==='neighbour'||e.dataset.type==='me')?'':'none';});}
-function sendMsg(){var i=document.getElementById('chatInput');if(!i.value.trim())return;var n=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});var d=document.createElement('div');d.className='msg-row me';d.dataset.type='me';d.innerHTML='<div style="max-width:75%"><div class="bubble me"><p>'+i.value.trim()+'</p></div></div><div class="msg-av">&#127968;</div>';document.getElementById('myMessages').appendChild(d);i.value='';document.getElementById('sendBtn').style.background='#ccc';document.getElementById('chatBottom').scrollIntoView({behavior:'smooth'});var a=document.getElementById('aiNote');a.style.display='block';setTimeout(()=>a.style.display='none',3000);}
+var userAddress = localStorage.getItem('sc_address') || 'Moreton Bay Region';
+var userPhone = localStorage.getItem('sc_phone') || '';
+var userSuburb = localStorage.getItem('sc_suburb') || '';
+var lastMsgId = null;
+
+async function sendMsg(){
+  var i=document.getElementById('chatInput');
+  if(!i.value.trim())return;
+  var content = i.value.trim();
+  i.value='';
+  document.getElementById('sendBtn').style.background='#ccc';
+  try {
+    await fetch('/api/messages', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ phone: userPhone, address: userAddress, suburb: userSuburb, content: content })
+    });
+    loadMessages();
+  } catch(e) {
+    var n=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    var d=document.createElement('div');
+    d.className='msg-row me';
+    d.dataset.type='me';
+    d.innerHTML='<div style="max-width:75%"><div class="bubble me"><p>'+content+'</p></div></div><div class="msg-av">&#127968;</div>';
+    document.getElementById('myMessages').appendChild(d);
+    document.getElementById('chatBottom').scrollIntoView({behavior:'smooth'});
+  }
+  var a=document.getElementById('aiNote');
+  a.style.display='block';
+  setTimeout(()=>a.style.display='none',3000);
+}
+
+async function loadMessages() {
+  try {
+    var res = await fetch('/api/messages');
+    var data = await res.json();
+    var msgs = data.messages || [];
+    var container = document.getElementById('myMessages');
+    container.innerHTML = '';
+    msgs.forEach(function(msg) {
+      var isMe = msg.phone === userPhone;
+      var n = new Date(msg.created_at).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+      var d = document.createElement('div');
+      d.className = 'msg-row' + (isMe ? ' me' : '');
+      d.dataset.type = isMe ? 'me' : 'neighbour';
+      if (isMe) {
+        d.innerHTML = '<div style="max-width:75%"><div class="bubble me"><p>' + msg.content + '</p><div style="font-size:9px;color:rgba(255,255,255,0.45);text-align:right;margin-top:3px;">' + n + '</div></div></div><div class="msg-av">&#127968;</div>';
+      } else {
+        d.innerHTML = '<div class="msg-av">&#127968;</div><div style="max-width:75%"><div class="msg-meta">' + (msg.address || 'Neighbour') + ' · ' + n + '</div><div class="bubble them"><p>' + msg.content + '</p></div></div>';
+      }
+      container.appendChild(d);
+    });
+    document.getElementById('chatBottom').scrollIntoView({behavior:'smooth'});
+  } catch(e) { console.log('Load messages error:', e); }
+}
+
+// Load messages on start and every 10 seconds
+loadMessages();
+setInterval(loadMessages, 10000);
 function toggleLike(b,c){if(b.classList.contains('liked')){b.classList.remove('liked');b.textContent=c>1?'&#128077; '+(c-1):'&#128077;';}else{b.classList.add('liked');b.textContent='&#128077; '+(c+1);}}
 var pT;function showPush(n){var b=document.getElementById('pushBanner');document.getElementById('pushIcon').textContent=n.icon;document.getElementById('pushTitle').textContent=n.title;document.getElementById('pushBodyText').textContent=n.body;b.style.background=n.color||'#2d4a2d';b.style.display='flex';clearTimeout(pT);pT=setTimeout(dismissPush,5000);}
 function dismissPush(){document.getElementById('pushBanner').style.display='none';}
@@ -368,7 +429,33 @@ function toggleRadius(){rOn=!rOn;var t=document.getElementById('radiusToggle');t
 function openReport(){document.getElementById('reportModal').style.display='flex';}
 function closeReport(){document.getElementById('reportModal').style.display='none';document.getElementById('reportForm').style.display='block';document.getElementById('reportSuccess').style.display='none';document.getElementById('reportDesc').value='';document.querySelectorAll('.type-btn').forEach((b,i)=>b.className=i===0?'type-btn active':'type-btn');}
 function setType(b){document.querySelectorAll('.type-btn').forEach(x=>x.className='type-btn');b.className='type-btn active';}
-function submitReport(){if(!document.getElementById('reportDesc').value.trim())return;document.getElementById('reportForm').style.display='none';document.getElementById('reportSuccess').style.display='block';setTimeout(()=>{closeReport();showPush({icon:'&#128680;',title:'Incident Reported',body:'Your report submitted. Neighbours being notified.',color:'#e65100'});},2000);}
+async function submitReport(){
+  var desc=document.getElementById('reportDesc').value.trim();
+  if(!desc)return;
+  var activeType=document.querySelector('.type-btn.active');
+  var type=activeType?activeType.textContent.trim():'General';
+  try{
+    await fetch('/api/incidents',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone:userPhone,address:userAddress,type:type,description:desc})});
+  }catch(e){console.log('Incident error:',e);}
+  document.getElementById('reportForm').style.display='none';
+  document.getElementById('reportSuccess').style.display='block';
+  setTimeout(()=>{closeReport();showPush({icon:'&#128680;',title:'Incident Reported',body:'Your report submitted. Neighbours being notified.',color:'#e65100'});},2000);
+}
+
+function messageAdmin() {
+  var msg = prompt('Send a message to Street Connect admin:');
+  if (msg && msg.trim()) {
+    fetch('/api/messages', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ phone: userPhone, address: userAddress, suburb: 'ADMIN_MSG', content: '[ADMIN MESSAGE] ' + msg.trim() })
+    }).then(function() {
+      alert('Message sent! We will get back to you soon.');
+    }).catch(function() {
+      alert('Message sent!');
+    });
+  }
+}
 </script>
 </body>
 </html>
