@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -167,9 +168,10 @@ body{background:#1a3020;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
   <div class="header">
     <div class="header-top">
       <div>
-        <div class="street-label">STREET CONNECT &middot; MORETON BAY REGION</div>
-        <div class="street-sub">&#10003; Moreton Bay Region &middot; 24 neighbours active</div>
-        <a href="/signup.html" style="display:inline-block;margin-top:6px;background:#69f0ae;color:#1a3020;font-size:11px;font-weight:700;padding:5px 14px;border-radius:20px;text-decoration:none;">+ Join Your Street</a>
+        <div class="street-label">STREET CONNECT &middot; GREATER BRISBANE</div>
+        <div class="street-sub" id="headerSub">&#10003; Greater Brisbane &middot; <span id="neighbourCount">...</span> neighbours active</div>
+        <div id="joinBtn"><a href="/signup.html" style="display:inline-block;margin-top:6px;background:#69f0ae;color:#1a3020;font-size:11px;font-weight:700;padding:5px 14px;border-radius:20px;text-decoration:none;">+ Join Your Street</a></div>
+        <div id="myAddressBtn" style="display:none;margin-top:6px;background:rgba(105,240,174,0.15);border:1px solid rgba(105,240,174,0.3);border-radius:20px;padding:5px 14px;font-size:11px;color:#69f0ae;font-weight:700;"></div>
       </div>
       <div style="display:flex;gap:8px;align-items:center;">
         <button onclick="messageAdmin()" style="background:rgba(105,240,174,0.15);border:1px solid rgba(105,240,174,0.3);border-radius:20px;padding:5px 11px;color:#69f0ae;font-size:10px;font-weight:700;cursor:pointer;font-family:inherit;">&#9993; Help</button>
@@ -192,7 +194,7 @@ body{background:#1a3020;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
       <button class="filter-btn" onclick="setFilter('neighbours',this)">&#127960; Neighbours</button>
     </div>
     <div class="messages" id="chatMessages">
-      <div class="date-div">Today &mdash; Moreton Bay Region</div>
+      <div class="date-div">Today &mdash; Greater Brisbane</div>
       <div class="auth-card" style="border-left-color:#1a3a6b;background:#f5f8ff;" data-type="official">
         <div class="auth-top"><span class="auth-av">&#127963;</span><div><div class="auth-name">Local Council Notice</div><div class="auth-time">7:00 AM &middot; Example</div></div><span class="auth-badge" style="background:#1a3a6b;">COUNCIL EXAMPLE</span></div>
         <p class="auth-body">&#128203; Bin collection this Thursday due to the public holiday. Green waste remains Monday. moretonbay.qld.gov.au</p>
@@ -219,7 +221,7 @@ body{background:#1a3020;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
         <input class="compose-input" id="chatInput" placeholder="Say something to the street..." onkeydown="if(event.key==='Enter')sendMsg()" oninput="document.getElementById('sendBtn').style.background=this.value.trim()?'#2d4a2d':'#ccc'"/>
         <button class="send-btn" id="sendBtn" onclick="sendMsg()">&#8593;</button>
       </div>
-      <div class="compose-foot">&#129302; AI moderated &middot; &#128205; Moreton Bay Region</div>
+      <div class="compose-foot">&#129302; AI moderated &middot; &#128205; Greater Brisbane</div>
     </div>
   </div>
   <div class="content" id="tab-map" style="display:none;">
