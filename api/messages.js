@@ -3,36 +3,43 @@ export default async function handler(req, res) {
   const supabaseKey = process.env.SUPABASE_KEY;
 
   if (!supabaseUrl || !supabaseKey) {
-    return res.status(500).json({ error: 'Missing env vars', hasUrl: !!supabaseUrl, hasKey: !!supabaseKey });
+    return res.status(500).json({ error: 'Missing config' });
   }
 
+  const base = supabaseUrl.replace(/\/$/, '');
   const headers = {
     'apikey': supabaseKey,
-    'Authorization': `Bearer ${supabaseKey}`,
-    'Content-Type': 'application/json'
+    'Authorization': 'Bearer ' + supabaseKey,
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
   };
 
-  if (req.method === 'POST') {
-    const { phone, address, suburb, content } = req.body;
-    const response = await fetch(`${supabaseUrl}/rest/v1/messages`, {
-      method: 'POST',
-      headers: { ...headers, 'Prefer': 'return=minimal' },
-      body: JSON.stringify({ phone, address, suburb, content })
-    });
-    const text = await response.text();
-    if (response.ok) return res.status(200).json({ success: true });
-    return res.status(500).json({ error: 'Supabase error', details: text, status: response.status });
-  }
+  try {
+    if (req.method === 'POST') {
+      const { phone, address, suburb, content } = req.body;
+      const r = await fetch(base + '/rest/v1/messages', {
+        method: 'POST',
+        headers: { ...headers, 'Prefer': 'return=minimal' },
+        body: JSON.stringify({ phone, address, suburb, content }),
+        signal: AbortSignal.timeout(8000)
+      });
+      const text = await r.text();
+      if (r.ok) return res.status(200).json({ success: true });
+      return res.status(500).json({ error: text });
+    }
 
-  if (req.method === 'GET') {
-    const { suburb } = req.query;
-    let url = `${supabaseUrl}/rest/v1/messages?select=*&order=created_at.asc&limit=50`;
-    if (suburb) url += `&suburb=eq.${encodeURIComponent(suburb)}`;
-    const response = await fetch(url, { headers });
-    const text = await response.text();
-    if (!response.ok) return res.status(500).json({ error: 'Supabase error', details: text });
-    return res.status(200).json({ messages: JSON.parse(text) });
-  }
+    if (req.method === 'GET') {
+      const r = await fetch(base + '/rest/v1/messages?select=*&order=created_at.asc&limit=50', {
+        headers,
+        signal: AbortSignal.timeout(8000)
+      });
+      const text = await r.text();
+      if (!r.ok) return res.status(500).json({ error: text });
+      return res.status(200).json({ messages: JSON.parse(text) });
+    }
 
-  res.status(405).json({ error: 'Method not allowed' });
+    return res.status(405).json({ error: 'Method not allowed' });
+  } catch(e) {
+    return res.status(500).json({ error: e.message, type: e.constructor.name });
+  }
 }
