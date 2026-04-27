@@ -35,3 +35,6 @@ async function updateNeighbourCount() {
 
 updateHeader();
 updateNeighbourCount();
+function switchTab(t,b){document.querySelectorAll('.content').forEach(e=>e.style.display='none');document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));document.getElementById('tab-'+t).style.display='flex';b.classList.add('active');}
+function setFilter(t,b){document.querySelectorAll('.filter-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('#chatMessages>[data-type]').forEach(e=>{if(t==='all')e.style.display='';else if(t==='official')e.style.display=e.dataset.type==='official'?'':'none';else e.style.display=(e.dataset.type==='neighbour'||e.dataset.type==='me')?'':'none';});}
+function toggleLike(b,c){if(b.classList.contains('liked')){b.classList.remove('liked');b.textContent=c>1?'👍 '+(c-1):'👍';}else{b.classList.add('liked');b.textContent='👍 '+(c+1);}}
