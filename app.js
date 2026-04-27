@@ -49,3 +49,10 @@ async function loadMessages(){try{var res=await fetch('/api/messages');var data=
 
 loadMessages();
 setInterval(loadMessages,10000);
+async function deleteMessage(id){
+  if(!confirm('Delete this message?'))return;
+  try{
+    await fetch('/api/messages',{method:'DELETE',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:id,phone:userPhone})});
+    loadMessages();
+  }catch(e){console.log('delete error:',e);}
+}
