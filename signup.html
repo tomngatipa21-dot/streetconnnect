@@ -22,6 +22,7 @@ label { font-size:12px; font-weight:700; color:#555; display:block; margin-botto
 .phone-wrap { display:flex; border:2px solid #1a3020; border-radius:12px; overflow:hidden; margin-bottom:14px; }
 .flag { background:#f5f0e8; padding:12px; font-size:13px; color:#555; border-right:1.5px solid #e0dbd0; flex-shrink:0; display:flex; align-items:center; }
 input[type=tel] { flex:1; border:none; outline:none; padding:12px; font-size:15px; font-family:inherit; color:#333; background:transparent; width:100%; }
+input[type=text] { width:100%; border:2px solid #1a3020; border-radius:12px; padding:12px 14px; font-size:14px; font-family:inherit; color:#333; outline:none; margin-bottom:14px; }
 .address-wrap { border:2px solid #1a3020; border-radius:12px; display:flex; align-items:center; padding:0 12px; gap:8px; margin-bottom:14px; }
 .address-wrap input { flex:1; border:none; outline:none; padding:12px 0; font-size:14px; font-family:inherit; color:#333; background:transparent; width:100%; }
 .code-input { width:100%; border:2px solid #1a3020; border-radius:12px; padding:14px; font-size:24px; text-align:center; letter-spacing:8px; outline:none; font-family:inherit; color:#1a3020; margin-bottom:14px; }
@@ -38,13 +39,20 @@ input[type=tel] { flex:1; border:none; outline:none; padding:12px; font-size:15p
 .dot { width:8px; height:8px; border-radius:50%; background:#e0dbd0; transition:all 0.3s; }
 .dot.active { background:#1a3020; width:20px; border-radius:4px; }
 .lang-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:16px; }
-.lang-btn { display:flex; align-items:center; gap:10px; background:#fff; border:1.5px solid #e0dbd0; border-radius:12px; padding:12px 14px; cursor:pointer; font-family:inherit; transition:all 0.15s; }
-.lang-btn:hover { border-color:#1a3020; background:#f5f0e8; }
+.lang-btn { display:flex; align-items:center; gap:10px; background:#fff; border:1.5px solid #e0dbd0; border-radius:12px; padding:12px 14px; cursor:pointer; font-family:inherit; transition:all 0.15s; text-align:left; }
 .lang-btn.selected { border-color:#1a3020; background:#e8f5e9; }
 .lang-flag { font-size:22px; }
 .lang-name { font-size:13px; font-weight:700; color:#1a3020; }
 .lang-native { font-size:10px; color:#888; }
 .map-badge { background:#1a3020; color:#69f0ae; font-size:10px; padding:4px 10px; border-radius:20px; display:inline-block; margin-bottom:12px; font-weight:700; letter-spacing:1px; }
+.display-options { display:flex; flex-direction:column; gap:8px; margin-bottom:16px; }
+.display-opt { display:flex; align-items:center; gap:12px; background:#fff; border:1.5px solid #e0dbd0; border-radius:12px; padding:13px 14px; cursor:pointer; font-family:inherit; transition:all 0.15s; text-align:left; width:100%; }
+.display-opt.selected { border-color:#1a3020; background:#e8f5e9; }
+.display-opt-icon { font-size:20px; flex-shrink:0; }
+.display-opt-name { font-size:13px; font-weight:700; color:#1a3020; }
+.display-opt-sub { font-size:10px; color:#888; margin-top:2px; }
+.custom-wrap { border:2px solid #1a3020; border-radius:12px; overflow:hidden; margin-bottom:14px; display:none; }
+.custom-wrap input { width:100%; border:none; outline:none; padding:12px 14px; font-size:14px; font-family:inherit; color:#333; }
 </style>
 </head>
 <body>
@@ -61,6 +69,7 @@ input[type=tel] { flex:1; border:none; outline:none; padding:12px; font-size:15p
     <div class="dot" id="dot3"></div>
     <div class="dot" id="dot4"></div>
     <div class="dot" id="dot5"></div>
+    <div class="dot" id="dot6"></div>
   </div>
 
   <!-- SCREEN 1: PHONE -->
@@ -92,27 +101,27 @@ input[type=tel] { flex:1; border:none; outline:none; padding:12px; font-size:15p
     <h2>Choose your language</h2>
     <p>All notices and chats will appear in your language.</p>
     <div class="lang-grid">
-      <button class="lang-btn selected" id="lang-en" onclick="selectLang('en',this)">
+      <button class="lang-btn selected" onclick="selectLang('en',this)">
         <span class="lang-flag">&#127462;&#127482;</span>
         <div><div class="lang-name">English</div><div class="lang-native">English</div></div>
       </button>
-      <button class="lang-btn" id="lang-hi" onclick="selectLang('hi',this)">
+      <button class="lang-btn" onclick="selectLang('hi',this)">
         <span class="lang-flag">&#127470;&#127475;</span>
         <div><div class="lang-name">Hindi</div><div class="lang-native">&#2361;&#2367;&#2344;&#2381;&#2342;&#2368;</div></div>
       </button>
-      <button class="lang-btn" id="lang-vi" onclick="selectLang('vi',this)">
+      <button class="lang-btn" onclick="selectLang('vi',this)">
         <span class="lang-flag">&#127483;&#127475;</span>
         <div><div class="lang-name">Vietnamese</div><div class="lang-native">Ti&#7871;ng Vi&#7879;t</div></div>
       </button>
-      <button class="lang-btn" id="lang-zh" onclick="selectLang('zh',this)">
+      <button class="lang-btn" onclick="selectLang('zh',this)">
         <span class="lang-flag">&#127464;&#127475;</span>
         <div><div class="lang-name">Chinese</div><div class="lang-native">&#20013;&#25991;</div></div>
       </button>
-      <button class="lang-btn" id="lang-ar" onclick="selectLang('ar',this)">
+      <button class="lang-btn" onclick="selectLang('ar',this)">
         <span class="lang-flag">&#127462;&#127466;</span>
         <div><div class="lang-name">Arabic</div><div class="lang-native">&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</div></div>
       </button>
-      <button class="lang-btn" id="lang-es" onclick="selectLang('es',this)">
+      <button class="lang-btn" onclick="selectLang('es',this)">
         <span class="lang-flag">&#127466;&#127480;</span>
         <div><div class="lang-name">Spanish</div><div class="lang-native">Espa&#241;ol</div></div>
       </button>
@@ -136,12 +145,25 @@ input[type=tel] { flex:1; border:none; outline:none; padding:12px; font-size:15p
       <div class="selected-text" id="selectedText"></div>
     </div>
     <div class="error-box" id="addressError"></div>
-    <button class="btn" id="confirmBtn" onclick="confirmAddress()" disabled>This is my home &#10003;</button>
+    <button class="btn" id="confirmBtn" onclick="showDisplayOptions()" disabled>Continue &#8594;</button>
     <button class="btn secondary" onclick="showScreen(3)">&#8592; Back</button>
   </div>
 
-  <!-- SCREEN 5: SUCCESS -->
+  <!-- SCREEN 5: DISPLAY NAME -->
   <div class="screen" id="screen5">
+    <h2>How should neighbours see you?</h2>
+    <p>Choose how your name appears when you post in the community chat.</p>
+    <div class="display-options" id="displayOptions"></div>
+    <div class="custom-wrap" id="customWrap">
+      <input type="text" id="customName" placeholder="Enter your display name..." maxlength="30"/>
+    </div>
+    <div class="error-box" id="displayError"></div>
+    <button class="btn" id="confirmDisplayBtn" onclick="confirmDisplay()">Join Street Connect &#8594;</button>
+    <button class="btn secondary" onclick="showScreen(4)">&#8592; Back</button>
+  </div>
+
+  <!-- SCREEN 6: SUCCESS -->
+  <div class="screen" id="screen6">
     <div class="success-icon">&#127881;</div>
     <h2>You're in!</h2>
     <p id="successMsg">Welcome to Street Connect. You're now connected with your neighbours.</p>
@@ -153,7 +175,10 @@ input[type=tel] { flex:1; border:none; outline:none; padding:12px; font-size:15p
 <script>
 var userPhone = '';
 var selectedAddress = '';
+var selectedStreet = '';
+var selectedSuburb = '';
 var selectedLang = 'en';
+var selectedDisplay = '';
 var autocomplete = null;
 var mapsLoaded = false;
 
@@ -205,6 +230,15 @@ function setupAutocomplete() {
     var place = autocomplete.getPlace();
     if (place && place.formatted_address) {
       selectedAddress = place.formatted_address;
+      // Extract street name and suburb
+      var parts = selectedAddress.split(',');
+      var streetPart = parts[0] ? parts[0].trim() : '';
+      // Get just street name without number
+      var streetWords = streetPart.split(' ');
+      streetWords.shift(); // remove house number
+      selectedStreet = streetWords.join(' ');
+      selectedSuburb = parts[1] ? parts[1].trim() : '';
+      // Get initials from suburb
       document.getElementById('selectedText').textContent = selectedAddress;
       document.getElementById('selectedBox').style.display = 'block';
       document.getElementById('confirmBtn').disabled = false;
@@ -212,14 +246,71 @@ function setupAutocomplete() {
   });
 }
 
-async function confirmAddress() {
+function showDisplayOptions() {
   if (!selectedAddress) {
     showError('addressError', 'Please select your address from the dropdown.');
     return;
   }
+  // Build display name options from their actual address
   var parts = selectedAddress.split(',');
-  var street = parts[0] ? parts[0].trim() : '';
+  var streetPart = parts[0] ? parts[0].trim() : '';
+  var streetWords = streetPart.split(' ');
+  var houseNum = streetWords[0];
+  streetWords.shift();
+  var streetName = streetWords.join(' ');
+  var suburb = parts[1] ? parts[1].trim().split(' ')[0] : '';
+
+  // Get initials from phone (last 4 digits as identifier)
+  var phoneEnd = userPhone.slice(-4);
+
+  var options = [
+    { value: streetName, icon: '&#127960;', name: streetName, sub: 'Street only — most private' },
+    { value: 'No. ' + houseNum + ', ' + streetName, icon: '&#127968;', name: 'No. ' + houseNum + ', ' + streetName, sub: 'House number visible' },
+    { value: phoneEnd + ', ' + streetName, icon: '&#128100;', name: phoneEnd + ', ' + streetName, sub: 'ID + street — balanced privacy' },
+    { value: 'custom', icon: '&#9998;', name: 'Custom name', sub: 'Type your own display name' },
+  ];
+
+  var html = '';
+  options.forEach(function(opt, i) {
+    html += '<button class="display-opt' + (i===0?' selected':'') + '" onclick="selectDisplay(\'' + opt.value.replace(/'/g,"\\'") + '\', this)">' +
+      '<span class="display-opt-icon">' + opt.icon + '</span>' +
+      '<div><div class="display-opt-name">' + opt.name + '</div><div class="display-opt-sub">' + opt.sub + '</div></div>' +
+      '</button>';
+  });
+
+  document.getElementById('displayOptions').innerHTML = html;
+  selectedDisplay = streetName; // default
+  showScreen(5);
+}
+
+function selectDisplay(value, btn) {
+  document.querySelectorAll('.display-opt').forEach(function(b){ b.classList.remove('selected'); });
+  btn.classList.add('selected');
+  if (value === 'custom') {
+    document.getElementById('customWrap').style.display = 'block';
+    selectedDisplay = '';
+  } else {
+    document.getElementById('customWrap').style.display = 'none';
+    selectedDisplay = value;
+  }
+}
+
+async function confirmDisplay() {
+  var customVal = document.getElementById('customName').value.trim();
+  if (!selectedDisplay && !customVal) {
+    showError('displayError', 'Please choose or enter a display name.');
+    return;
+  }
+  var displayName = selectedDisplay || customVal;
+
+  // Save to database
+  var parts = selectedAddress.split(',');
+  var streetPart = parts[0] ? parts[0].trim() : '';
+  var streetWords = streetPart.split(' ');
+  streetWords.shift();
+  var street = streetWords.join(' ');
   var suburb = parts[1] ? parts[1].trim() : '';
+
   try {
     await fetch('/api/save-user', {
       method: 'POST',
@@ -229,14 +320,20 @@ async function confirmAddress() {
         address: selectedAddress,
         street: street,
         suburb: suburb,
-        language: selectedLang
+        language: selectedLang,
+        display_name: displayName
       })
     });
-  } catch(e) {
-    console.log('Save error:', e);
-  }
-  document.getElementById('successMsg').textContent = 'Welcome to Street Connect! You\'re now connected with your neighbours at ' + selectedAddress + '.';
-  showScreen(5);
+  } catch(e) { console.log('Save error:', e); }
+
+  // Save to localStorage for use in the main app
+  localStorage.setItem('sc_phone', userPhone);
+  localStorage.setItem('sc_address', selectedAddress);
+  localStorage.setItem('sc_display', displayName);
+  localStorage.setItem('sc_suburb', suburb);
+
+  document.getElementById('successMsg').textContent = 'Welcome to Street Connect! You\'re now connected with your neighbours. You\'ll appear as "' + displayName + '".';
+  showScreen(6);
 }
 
 async function sendCode() {
