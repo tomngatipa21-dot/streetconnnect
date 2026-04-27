@@ -359,6 +359,7 @@ function setFilter(t,b){document.querySelectorAll('.filter-btn').forEach(x=>x.cl
 var userAddress = localStorage.getItem('sc_address') || 'Moreton Bay Region';
 var userPhone = localStorage.getItem('sc_phone') || '';
 var userSuburb = localStorage.getItem('sc_suburb') || '';
+var userDisplay = localStorage.getItem('sc_display') || 'Neighbour';
 var lastMsgId = null;
 
 async function sendMsg(){
@@ -371,7 +372,7 @@ async function sendMsg(){
     await fetch('/api/messages', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ phone: userPhone, address: userAddress, suburb: userSuburb, content: content })
+      body: JSON.stringify({ phone: userPhone, address: userAddress, suburb: userSuburb, content: content, display_name: userDisplay })
     });
     loadMessages();
   } catch(e) {
@@ -398,13 +399,15 @@ async function loadMessages() {
     msgs.forEach(function(msg) {
       var isMe = msg.phone === userPhone;
       var n = new Date(msg.created_at).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+      var displayName = msg.display_name || msg.address || 'Neighbour';
       var d = document.createElement('div');
       d.className = 'msg-row' + (isMe ? ' me' : '');
       d.dataset.type = isMe ? 'me' : 'neighbour';
+      var deleteBtn = isMe ? '<button onclick="deleteMessage('' + msg.id + '')" style="background:none;border:none;color:rgba(255,255,255,0.4);font-size:10px;cursor:pointer;padding:2px 4px;margin-top:2px;text-align:right;display:block;width:100%;">&#128465; delete</button>' : '';
       if (isMe) {
-        d.innerHTML = '<div style="max-width:75%"><div class="bubble me"><p>' + msg.content + '</p><div style="font-size:9px;color:rgba(255,255,255,0.45);text-align:right;margin-top:3px;">' + n + '</div></div></div><div class="msg-av">&#127968;</div>';
+        d.innerHTML = '<div style="max-width:75%"><div class="bubble me"><p>' + msg.content + '</p><div style="font-size:9px;color:rgba(255,255,255,0.45);text-align:right;margin-top:3px;">' + n + '</div></div>' + deleteBtn + '</div><div class="msg-av">&#127968;</div>';
       } else {
-        d.innerHTML = '<div class="msg-av">&#127968;</div><div style="max-width:75%"><div class="msg-meta">' + (msg.address || 'Neighbour') + ' · ' + n + '</div><div class="bubble them"><p>' + msg.content + '</p></div></div>';
+        d.innerHTML = '<div class="msg-av">&#127968;</div><div style="max-width:75%"><div class="msg-meta">' + displayName + ' · ' + n + '</div><div class="bubble them"><p>' + msg.content + '</p></div></div>';
       }
       container.appendChild(d);
     });
@@ -440,6 +443,18 @@ async function submitReport(){
   document.getElementById('reportForm').style.display='none';
   document.getElementById('reportSuccess').style.display='block';
   setTimeout(()=>{closeReport();showPush({icon:'&#128680;',title:'Incident Reported',body:'Your report submitted. Neighbours being notified.',color:'#e65100'});},2000);
+}
+
+async function deleteMessage(id) {
+  if (!confirm('Delete this message?')) return;
+  try {
+    await fetch('/api/messages', {
+      method: 'DELETE',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ id: id, phone: userPhone })
+    });
+    loadMessages();
+  } catch(e) { console.log('Delete error:', e); }
 }
 
 function messageAdmin() {
