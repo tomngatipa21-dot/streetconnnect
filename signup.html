@@ -13,7 +13,7 @@ body { background:#1a3020; font-family:-apple-system,BlinkMacSystemFont,'Segoe U
 .logo-icon { font-size:26px; }
 .logo-name { font-size:22px; font-weight:900; color:#1a3020; }
 .logo-name span { color:#4a7a4a; }
-.estate-badge { background:#f5f0e8; border-radius:8px; padding:8px 12px; margin-bottom:20px; font-size:11px; color:#666; text-align:center; letter-spacing:1px; font-weight:700; }
+.region-badge { background:#f5f0e8; border-radius:8px; padding:8px 12px; margin-bottom:20px; font-size:11px; color:#666; text-align:center; letter-spacing:1px; font-weight:700; }
 h2 { font-size:22px; font-weight:900; color:#1a3020; margin-bottom:6px; }
 p { font-size:13px; color:#888; line-height:1.5; margin-bottom:20px; }
 .screen { display:none; }
@@ -37,10 +37,14 @@ input[type=tel] { flex:1; border:none; outline:none; padding:12px; font-size:15p
 .step-dots { display:flex; gap:6px; justify-content:center; margin-bottom:20px; }
 .dot { width:8px; height:8px; border-radius:50%; background:#e0dbd0; transition:all 0.3s; }
 .dot.active { background:#1a3020; width:20px; border-radius:4px; }
-.region-badge { background:#1a3020; color:#69f0ae; font-size:10px; padding:4px 10px; border-radius:20px; display:inline-block; margin-bottom:12px; font-weight:700; letter-spacing:1px; }
-.pac-container { border-radius:12px !important; border:1.5px solid #e0dbd0 !important; box-shadow:0 8px 24px rgba(0,0,0,0.12) !important; font-family:inherit !important; }
-.pac-item { padding:10px 14px !important; font-size:13px !important; cursor:pointer !important; }
-.pac-item-query { font-size:13px !important; color:#1a3020 !important; }
+.lang-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:16px; }
+.lang-btn { display:flex; align-items:center; gap:10px; background:#fff; border:1.5px solid #e0dbd0; border-radius:12px; padding:12px 14px; cursor:pointer; font-family:inherit; transition:all 0.15s; }
+.lang-btn:hover { border-color:#1a3020; background:#f5f0e8; }
+.lang-btn.selected { border-color:#1a3020; background:#e8f5e9; }
+.lang-flag { font-size:22px; }
+.lang-name { font-size:13px; font-weight:700; color:#1a3020; }
+.lang-native { font-size:10px; color:#888; }
+.map-badge { background:#1a3020; color:#69f0ae; font-size:10px; padding:4px 10px; border-radius:20px; display:inline-block; margin-bottom:12px; font-weight:700; letter-spacing:1px; }
 </style>
 </head>
 <body>
@@ -49,13 +53,14 @@ input[type=tel] { flex:1; border:none; outline:none; padding:12px; font-size:15p
     <span class="logo-icon">&#127960;</span>
     <div class="logo-name">Street<span>Connect</span></div>
   </div>
-  <div class="estate-badge">&#127987; MORETON BAY REGION · QUEENSLAND</div>
+  <div class="region-badge">&#127987; MORETON BAY REGION · QUEENSLAND</div>
 
   <div class="step-dots">
     <div class="dot active" id="dot1"></div>
     <div class="dot" id="dot2"></div>
     <div class="dot" id="dot3"></div>
     <div class="dot" id="dot4"></div>
+    <div class="dot" id="dot5"></div>
   </div>
 
   <!-- SCREEN 1: PHONE -->
@@ -82,11 +87,45 @@ input[type=tel] { flex:1; border:none; outline:none; padding:12px; font-size:15p
     <button class="btn secondary" onclick="showScreen(1)">&#8592; Back</button>
   </div>
 
-  <!-- SCREEN 3: ADDRESS -->
+  <!-- SCREEN 3: LANGUAGE -->
   <div class="screen" id="screen3">
+    <h2>Choose your language</h2>
+    <p>All notices and chats will appear in your language.</p>
+    <div class="lang-grid">
+      <button class="lang-btn selected" id="lang-en" onclick="selectLang('en',this)">
+        <span class="lang-flag">&#127462;&#127482;</span>
+        <div><div class="lang-name">English</div><div class="lang-native">English</div></div>
+      </button>
+      <button class="lang-btn" id="lang-hi" onclick="selectLang('hi',this)">
+        <span class="lang-flag">&#127470;&#127475;</span>
+        <div><div class="lang-name">Hindi</div><div class="lang-native">&#2361;&#2367;&#2344;&#2381;&#2342;&#2368;</div></div>
+      </button>
+      <button class="lang-btn" id="lang-vi" onclick="selectLang('vi',this)">
+        <span class="lang-flag">&#127483;&#127475;</span>
+        <div><div class="lang-name">Vietnamese</div><div class="lang-native">Ti&#7871;ng Vi&#7879;t</div></div>
+      </button>
+      <button class="lang-btn" id="lang-zh" onclick="selectLang('zh',this)">
+        <span class="lang-flag">&#127464;&#127475;</span>
+        <div><div class="lang-name">Chinese</div><div class="lang-native">&#20013;&#25991;</div></div>
+      </button>
+      <button class="lang-btn" id="lang-ar" onclick="selectLang('ar',this)">
+        <span class="lang-flag">&#127462;&#127466;</span>
+        <div><div class="lang-name">Arabic</div><div class="lang-native">&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</div></div>
+      </button>
+      <button class="lang-btn" id="lang-es" onclick="selectLang('es',this)">
+        <span class="lang-flag">&#127466;&#127480;</span>
+        <div><div class="lang-name">Spanish</div><div class="lang-native">Espa&#241;ol</div></div>
+      </button>
+    </div>
+    <button class="btn" onclick="showScreen(4)">Continue &#8594;</button>
+    <button class="btn secondary" onclick="showScreen(2)">&#8592; Back</button>
+  </div>
+
+  <!-- SCREEN 4: ADDRESS -->
+  <div class="screen" id="screen4">
     <h2>Find your address</h2>
     <p>Start typing your address — we'll find it automatically.</p>
-    <div class="region-badge">&#128205; Moreton Bay Region, QLD</div>
+    <div class="map-badge">&#128205; Moreton Bay Region, QLD</div>
     <label>Your home address</label>
     <div class="address-wrap">
       <span style="font-size:16px;">&#128269;</span>
@@ -98,21 +137,23 @@ input[type=tel] { flex:1; border:none; outline:none; padding:12px; font-size:15p
     </div>
     <div class="error-box" id="addressError"></div>
     <button class="btn" id="confirmBtn" onclick="confirmAddress()" disabled>This is my home &#10003;</button>
-    <button class="btn secondary" onclick="showScreen(2)">&#8592; Back</button>
+    <button class="btn secondary" onclick="showScreen(3)">&#8592; Back</button>
   </div>
 
-  <!-- SCREEN 4: SUCCESS -->
-  <div class="screen" id="screen4">
+  <!-- SCREEN 5: SUCCESS -->
+  <div class="screen" id="screen5">
     <div class="success-icon">&#127881;</div>
     <h2>You're in!</h2>
     <p id="successMsg">Welcome to Street Connect. You're now connected with your neighbours.</p>
     <button class="btn" onclick="window.location.href='/'">Open Street Connect &#8594;</button>
+    <div class="privacy" style="margin-top:12px;">&#127960; Your street community is waiting</div>
   </div>
 </div>
 
 <script>
 var userPhone = '';
 var selectedAddress = '';
+var selectedLang = 'en';
 var autocomplete = null;
 var mapsLoaded = false;
 
@@ -131,7 +172,7 @@ function showScreen(n) {
   document.getElementById('screen' + n).classList.add('active');
   document.querySelectorAll('.dot').forEach(function(d){ d.classList.remove('active'); });
   document.getElementById('dot' + n).classList.add('active');
-  if (n === 3 && mapsLoaded) setupAutocomplete();
+  if (n === 4 && mapsLoaded) setupAutocomplete();
 }
 
 function showError(id, msg) {
@@ -139,6 +180,12 @@ function showError(id, msg) {
   el.textContent = msg;
   el.style.display = 'block';
   setTimeout(function(){ el.style.display = 'none'; }, 4000);
+}
+
+function selectLang(lang, btn) {
+  selectedLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(function(b){ b.classList.remove('selected'); });
+  btn.classList.add('selected');
 }
 
 function setupAutocomplete() {
@@ -152,7 +199,7 @@ function setupAutocomplete() {
     ),
     strictBounds: false,
     types: ['address'],
-    fields: ['formatted_address']
+    fields: ['formatted_address', 'address_components']
   });
   autocomplete.addListener('place_changed', function() {
     var place = autocomplete.getPlace();
@@ -165,13 +212,31 @@ function setupAutocomplete() {
   });
 }
 
-function confirmAddress() {
+async function confirmAddress() {
   if (!selectedAddress) {
     showError('addressError', 'Please select your address from the dropdown.');
     return;
   }
-  document.getElementById('successMsg').textContent = 'Welcome to Street Connect, ' + selectedAddress + '. Your neighbours are waiting!';
-  showScreen(4);
+  var parts = selectedAddress.split(',');
+  var street = parts[0] ? parts[0].trim() : '';
+  var suburb = parts[1] ? parts[1].trim() : '';
+  try {
+    await fetch('/api/save-user', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        phone: userPhone,
+        address: selectedAddress,
+        street: street,
+        suburb: suburb,
+        language: selectedLang
+      })
+    });
+  } catch(e) {
+    console.log('Save error:', e);
+  }
+  document.getElementById('successMsg').textContent = 'Welcome to Street Connect! You\'re now connected with your neighbours at ' + selectedAddress + '.';
+  showScreen(5);
 }
 
 async function sendCode() {
@@ -226,7 +291,6 @@ async function verifyCode() {
   }
 }
 
-// Load Google Maps API key from server
 fetch('/api/maps-key')
   .then(function(r){ return r.json(); })
   .then(function(d){
