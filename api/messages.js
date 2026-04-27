@@ -15,12 +15,23 @@ export default async function handler(req, res) {
   };
 
   try {
+    if (req.method === 'DELETE') {
+      const { id, phone } = req.body;
+      const r = await fetch(base + '/rest/v1/messages?id=eq.' + id + '&phone=eq.' + encodeURIComponent(phone), {
+        method: 'DELETE',
+        headers,
+        signal: AbortSignal.timeout(8000)
+      });
+      if (r.ok) return res.status(200).json({ success: true });
+      return res.status(500).json({ error: 'Failed to delete' });
+    }
+
     if (req.method === 'POST') {
-      const { phone, address, suburb, content } = req.body;
+      const { phone, address, suburb, content, display_name } = req.body;
       const r = await fetch(base + '/rest/v1/messages', {
         method: 'POST',
         headers: { ...headers, 'Prefer': 'return=minimal' },
-        body: JSON.stringify({ phone, address, suburb, content }),
+        body: JSON.stringify({ phone, address, suburb, content, display_name }),
         signal: AbortSignal.timeout(8000)
       });
       const text = await r.text();
