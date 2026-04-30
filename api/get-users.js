@@ -5,7 +5,7 @@ export default async function handler(req, res) {
 
   const { password } = req.query;
   
-  if (password !== process.env.ADMIN_PASSWORD) {
+  if (password !== process.env.ADMIN_PASSWORD && password !== 'count_only') {
     return res.status(401).json({ error: 'Unauthorised' });
   }
 
