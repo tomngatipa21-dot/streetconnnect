@@ -808,7 +808,15 @@ function messageAdmin() {
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
-updateHeader();
+// Fix display name in chat
+var savedDisplay = localStorage.getItem('sc_display');
+if (savedDisplay) userDisplay = savedDisplay;
+var savedPhone = localStorage.getItem('sc_phone');
+if (savedPhone) userPhone = savedPhone;
+var savedAddress = localStorage.getItem('sc_address');
+if (savedAddress) userAddress = savedAddress;
+var savedSuburb = localStorage.getItem('sc_suburb');
+if (savedSuburb) userSuburb = savedSuburb;updateHeader();
 updateNeighbourCount();
 applyEstateBranding();
 renderLocalTab();
