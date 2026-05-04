@@ -601,12 +601,12 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
           <circle id="radiusRing" cx="155" cy="143" r="33" fill="rgba(201,168,76,0.06)" stroke="rgba(201,168,76,0.5)" stroke-width="1.5" stroke-dasharray="6,4"/>
           <rect id="radiusLabelBg" x="133" y="107" width="44" height="12" rx="4" fill="rgba(201,168,76,0.9)"/>
           <text id="radiusLabelTxt" x="155" y="116" font-size="7" fill="#1a1a1a" font-family="sans-serif" font-weight="700" text-anchor="middle">500m</text>
-          <g onclick="selectInc(1)" style="cursor:pointer;"><circle cx="152" cy="110" r="11" fill="rgba(0,0,0,0.7)" stroke="#fb8c00" stroke-width="1.5"/><text x="152" y="114" font-size="9" text-anchor="middle">&#128663;</text></g>
-          <g onclick="selectInc(2)" style="cursor:pointer;"><circle cx="140" cy="88" r="11" fill="rgba(0,0,0,0.7)" stroke="#e53935" stroke-width="1.5"/><text x="140" y="92" font-size="9" text-anchor="middle">&#128230;</text></g>
-          <g onclick="selectInc(3)" style="cursor:pointer;"><circle cx="100" cy="55" r="11" fill="rgba(0,0,0,0.7)" stroke="#7b1fa2" stroke-width="1.5"/><text x="100" y="59" font-size="9" text-anchor="middle">&#9998;</text></g>
-          <g onclick="selectInc(4)" style="cursor:pointer;"><circle cx="200" cy="175" r="11" fill="rgba(0,0,0,0.7)" stroke="#e53935" stroke-width="1.5"/><text x="200" y="179" font-size="9" text-anchor="middle">&#128690;</text></g>
-          <g onclick="selectInc(5)" style="cursor:pointer;"><circle cx="120" cy="40" r="11" fill="rgba(0,0,0,0.7)" stroke="#388e3c" stroke-width="1.5"/><text x="120" y="44" font-size="9" text-anchor="middle">&#128021;</text></g>
-          <g onclick="selectInc(6)" style="cursor:pointer;"><circle cx="160" cy="160" r="11" fill="rgba(0,0,0,0.7)" stroke="#fb8c00" stroke-width="1.5"/><text x="160" y="164" font-size="9" text-anchor="middle">&#9888;</text></g>
+          <g id="incMarker1" onclick="selectInc(1)" style="cursor:pointer;"><circle cx="152" cy="110" r="11" fill="rgba(0,0,0,0.7)" stroke="#fb8c00" stroke-width="1.5"/><text x="152" y="114" font-size="9" text-anchor="middle">&#128663;</text></g>
+          <g id="incMarker2" onclick="selectInc(2)" style="cursor:pointer;"><circle cx="140" cy="88" r="11" fill="rgba(0,0,0,0.7)" stroke="#e53935" stroke-width="1.5"/><text x="140" y="92" font-size="9" text-anchor="middle">&#128230;</text></g>
+          <g id="incMarker3" onclick="selectInc(3)" style="cursor:pointer;"><circle cx="100" cy="55" r="11" fill="rgba(0,0,0,0.7)" stroke="#7b1fa2" stroke-width="1.5"/><text x="100" y="59" font-size="9" text-anchor="middle">&#9998;</text></g>
+          <g id="incMarker4" onclick="selectInc(4)" style="cursor:pointer;"><circle cx="200" cy="175" r="11" fill="rgba(0,0,0,0.7)" stroke="#e53935" stroke-width="1.5"/><text x="200" y="179" font-size="9" text-anchor="middle">&#128690;</text></g>
+          <g id="incMarker5" onclick="selectInc(5)" style="cursor:pointer;"><circle cx="120" cy="40" r="11" fill="rgba(0,0,0,0.7)" stroke="#388e3c" stroke-width="1.5"/><text x="120" y="44" font-size="9" text-anchor="middle">&#128021;</text></g>
+          <g id="incMarker6" onclick="selectInc(6)" style="cursor:pointer;"><circle cx="160" cy="160" r="11" fill="rgba(0,0,0,0.7)" stroke="#fb8c00" stroke-width="1.5"/><text x="160" y="164" font-size="9" text-anchor="middle">&#9888;</text></g>
           <!-- Street highlight line -->
           <line id="streetHighlight" x1="155" y1="0" x2="155" y2="290" stroke="rgba(201,168,76,0.8)" stroke-width="5" display="none" stroke-linecap="round"/>
           <circle cx="155" cy="143" r="6" fill="#4fc3f7" stroke="#fff" stroke-width="2"/>
@@ -1023,8 +1023,10 @@ function updateRadius(v){
     var inside=INCIDENT_DISTS[id]<=rM;if(inside)inRange++;
     var btn=document.getElementById("incBtn"+id);
     if(btn)btn.className="inc-list-btn"+(inside?"":" dimmed");
+    var marker=document.getElementById("incMarker"+id);
+    if(marker)marker.style.opacity=inside?"1":"0.25";
   }
-  document.getElementById("radiusInfo").textContent="&#128225; "+inRange+" of 6 incidents within "+d+" &middot; "+(6-inRange)+" filtered";
+  document.getElementById("radiusInfo").textContent="&#128225; "+inRange+" of 6 incidents within "+d+" · "+(6-inRange)+" filtered";
 }
 function setRadius(v){document.getElementById("radiusSlider").value=v;updateRadius(v);}
 function toggleRadius(){var t=document.getElementById("radiusToggle");var on=t.textContent==="ON";t.textContent=on?"OFF":"ON";t.className=on?"radius-toggle off":"radius-toggle";["radiusRing","radiusLabelBg","radiusLabelTxt","radiusInfo"].forEach(function(id){document.getElementById(id).style.display=on?"none":"";});}
@@ -1142,7 +1144,7 @@ function applyEstateBranding(){
   var header=document.getElementById("mainHeader");if(header)header.style.background=estate.color;
   var logo=document.getElementById("estateLogo");
   var placeholder=document.getElementById("estatePlaceholder");
-  if(logo&&estate.logo){logo.src=estate.logo;logo.style.display="block";if(placeholder)placeholder.style.display="none";}
+  if(logo&&estate.logo){logo.src=estate.logo;logo.style.cssText="display:block;max-width:220px;max-height:90px;object-fit:contain;";if(placeholder)placeholder.style.display="none";}
   else if(estate.seriesM){
     if(logo)logo.style.display="none";
     if(placeholder){
