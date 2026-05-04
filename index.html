@@ -14,6 +14,11 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
 /* OFFLINE BANNER */
 .offline-banner{background:#e53935;color:#fff;font-size:11px;text-align:center;padding:6px;display:none;flex-shrink:0;}
 
+/* WELCOME SPLASH */
+.splash-screen{position:absolute;inset:0;background:var(--ec);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:200;border-radius:36px;transition:opacity 0.5s;gap:16px;}
+.splash-logo{max-width:240px;max-height:100px;object-fit:contain;}
+.splash-text{color:rgba(255,255,255,0.6);font-size:13px;letter-spacing:2px;}
+
 /* HEADER */
 .header{background:var(--ec);padding-top:36px;flex-shrink:0;transition:background 0.5s;}
 .estate-hero{display:flex;flex-direction:column;align-items:center;padding:16px 14px 10px;border-bottom:1px solid rgba(255,255,255,0.1);}
@@ -51,6 +56,7 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
 .loading-spinner{display:flex;align-items:center;justify-content:center;padding:20px;gap:8px;color:#aaa;font-size:12px;}
 .spinner{width:16px;height:16px;border:2px solid #eee;border-top-color:var(--ec);border-radius:50%;animation:spin 0.8s linear infinite;}
 .new-msgs-banner{background:var(--ec);color:#fff;font-size:11px;font-weight:700;text-align:center;padding:6px;cursor:pointer;display:none;flex-shrink:0;}
+.unread-chat-badge{position:absolute;top:4px;left:4px;background:#e53935;color:#fff;font-size:7px;font-weight:700;width:13px;height:13px;border-radius:50%;display:none;align-items:center;justify-content:center;}
 
 /* PINNED */
 .pinned-notice{background:linear-gradient(135deg,#2a2a2a,#3a3020);border-radius:12px;padding:10px 12px;border-left:3px solid var(--ea);flex-shrink:0;}
@@ -137,8 +143,8 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
 .map-mode-btn{flex:1;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:7px 4px;font-size:10px;font-weight:700;color:rgba(255,255,255,0.6);cursor:pointer;font-family:inherit;transition:all 0.2s;}
 .map-mode-btn.active{background:var(--ea);color:#1a1a1a;border-color:var(--ea);}
 .mode-info{font-size:10px;color:rgba(255,255,255,0.6);line-height:1.5;padding:4px 0;}
-.real-map-container{border-radius:12px;overflow:hidden;border:1.5px solid #d0d8d5;margin-bottom:10px;}
-.map-legend{position:absolute;top:7px;right:7px;background:rgba(0,0,0,0.8);border-radius:8px;padding:5px 9px;display:flex;flex-direction:column;gap:3px;z-index:10;}
+.map-svg-wrap{border-radius:12px;overflow:hidden;border:1.5px solid #d0d8d5;position:relative;}
+.map-legend{position:absolute;top:7px;right:7px;background:rgba(0,0,0,0.8);border-radius:8px;padding:5px 9px;display:flex;flex-direction:column;gap:3px;}
 .legend-row{display:flex;align-items:center;gap:5px;font-size:8px;color:#fff;}
 .legend-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
 .inc-detail{background:#fff;border-radius:14px;padding:13px;border-left:4px solid;display:none;animation:fadeIn 0.2s ease;}
@@ -209,6 +215,8 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
 .interest-tag{background:#f5f0e8;border:1.5px solid #e0dbd0;border-radius:20px;padding:5px 12px;font-size:11px;cursor:pointer;color:#666;font-family:inherit;transition:all 0.15s;}
 .interest-tag.selected{background:var(--ec);color:#fff;border-color:var(--ec);}
 .logout-btn{width:100%;background:#fff0f0;color:#e53935;border:1.5px solid #ffcdd2;border-radius:12px;padding:12px;font-size:14px;cursor:pointer;font-weight:700;font-family:inherit;}
+.interest-tag{background:#f5f0e8;border:1.5px solid #e0dbd0;border-radius:20px;padding:5px 10px;font-size:11px;cursor:pointer;color:#666;font-family:inherit;transition:all 0.2s;}
+.interest-tag.selected{background:var(--ec);color:#fff;border-color:var(--ec);}
 .edit-btn{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:20px;padding:4px 12px;font-size:11px;color:#fff;cursor:pointer;font-family:inherit;margin-top:6px;}
 
 /* DM */
@@ -227,7 +235,7 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
 .settings-sub{font-size:10px;color:#aaa;margin-top:2px;}
 .toggle{width:40px;height:22px;background:#ddd;border-radius:11px;position:relative;cursor:pointer;transition:background 0.2s;flex-shrink:0;}
 .toggle.on{background:var(--ec);}
-.toggle-thumb{width:18px;height:18px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:left 0.2s;}
+.toggle-thumb{width:18px;height:18px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:left 0.2s;box-shadow:0 1px 3px rgba(0,0,0,0.2);}
 .toggle.on .toggle-thumb{left:20px;}
 
 /* PUSH */
@@ -244,27 +252,251 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
 .empty-state{text-align:center;padding:32px 16px;color:#aaa;font-size:13px;line-height:1.8;}
 
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
-@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeInUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 @keyframes tabFade{from{opacity:0}to{opacity:1}}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes welcomeIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
+
+/* WELCOME SPLASH */
+.welcome-splash{position:absolute;inset:0;background:var(--ec);z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:36px;animation:welcomeIn 0.5s ease;}
+.welcome-logo{max-width:240px;max-height:100px;object-fit:contain;margin-bottom:20px;}
+.welcome-text{color:rgba(255,255,255,0.7);font-size:13px;letter-spacing:2px;}
+.welcome-estate{font-size:18px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:1px;}
+
+/* LOADING SPINNER */
+.loading-spinner{display:flex;align-items:center;justify-content:center;padding:20px;gap:8px;color:#aaa;font-size:12px;}
+.spinner{width:18px;height:18px;border:2px solid #eee;border-top-color:var(--ec);border-radius:50%;animation:spin 0.8s linear infinite;}
+
+/* NEW MESSAGES BANNER */
+.new-msg-banner{position:sticky;bottom:60px;left:0;right:0;display:none;justify-content:center;z-index:10;padding:4px 0;}
+.new-msg-btn{background:var(--ec);color:#fff;border:none;border-radius:20px;padding:6px 16px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 12px rgba(0,0,0,0.2);}
+
+/* TYPING INDICATOR */
+.typing-indicator{display:none;align-items:center;gap:6px;padding:4px 12px;}
+.typing-text{font-size:10px;color:#aaa;font-style:italic;}
+.typing-dots{display:flex;gap:3px;}
+.typing-dot{width:5px;height:5px;border-radius:50%;background:#ccc;animation:bounce 0.8s infinite;}
+.typing-dot:nth-child(2){animation-delay:0.15s;}
+.typing-dot:nth-child(3){animation-delay:0.3s;}
+
+/* SETTINGS SCREEN */
+.settings-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid #f0ece3;}
+.settings-row:last-child{border-bottom:none;}
+.settings-label{font-size:13px;color:#333;font-weight:600;}
+.settings-sub{font-size:11px;color:#aaa;margin-top:2px;}
+.toggle-switch{width:44px;height:24px;background:#ddd;border-radius:12px;position:relative;cursor:pointer;transition:background 0.3s;border:none;flex-shrink:0;}
+.toggle-switch.on{background:var(--ec);}
+.toggle-knob{width:20px;height:20px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:left 0.3s;box-shadow:0 1px 3px rgba(0,0,0,0.2);}
+.toggle-switch.on .toggle-knob{left:22px;}
+
+/* DM SCREEN */
+.dm-list{display:flex;flex-direction:column;gap:8px;}
+.dm-item{display:flex;align-items:center;gap:12px;background:#fff;border:1.5px solid #ede8e0;border-radius:14px;padding:12px 14px;cursor:pointer;transition:all 0.15s;}
+.dm-item:hover{border-color:var(--ec);background:#faf7f0;}
+.dm-avatar{width:40px;height:40px;background:var(--ec);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--ea);font-size:16px;font-weight:700;flex-shrink:0;}
+.dm-name{font-size:13px;font-weight:700;color:#222;}
+.dm-preview{font-size:11px;color:#aaa;margin-top:2px;}
+.dm-time{font-size:10px;color:#bbb;flex-shrink:0;}
+.dm-unread{width:8px;height:8px;border-radius:50%;background:var(--ec);flex-shrink:0;}
+
+/* REACTION TOOLTIP */
+.reactions{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap;}
+.reaction{background:#f5f0e8;border:1px solid #e0dbd0;border-radius:12px;padding:2px 7px;font-size:11px;cursor:pointer;transition:all 0.15s;}
+.reaction:hover{background:#e8f5e9;border-color:#a5d6a7;}
+.reaction.mine{background:#e8f5e9;border-color:#a5d6a7;}
+
+/* ONLINE DOT */
+.online-dot{width:8px;height:8px;border-radius:50%;background:#4caf50;display:inline-block;margin-left:4px;}
+
+/* OFFLINE BANNER */
+.offline-banner{background:#e53935;color:#fff;font-size:11px;text-align:center;padding:6px;display:none;flex-shrink:0;}
+
+/* REPORT MESSAGE */
+.msg-actions-popup{position:absolute;background:#fff;border:1.5px solid #ede8e0;border-radius:12px;padding:8px;box-shadow:0 8px 24px rgba(0,0,0,0.15);display:none;z-index:50;min-width:140px;}
+.msg-action-btn{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;cursor:pointer;font-size:12px;color:#333;transition:background 0.15s;}
+.msg-action-btn:hover{background:#f5f0e8;}
+
+/* UNREAD CHAT BADGE */
+.chat-unread{position:absolute;top:4px;right:2px;background:#e53935;color:#fff;font-size:7px;font-weight:700;min-width:13px;height:13px;border-radius:7px;display:none;align-items:center;justify-content:center;padding:0 2px;}
+
+/* CONTENT ANIMATION */
+.content{animation:tabFade 0.2s ease;}
+
 @keyframes slideDown{from{transform:translateY(-100%);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
 </style>
-<!-- Google Maps API -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCSghMHYl7Q6QgR18xXU3bE_Hb6cn3Q85U&libraries=geometry,places"></script>
 </head>
 <body>
 <div class="phone" id="app">
   <div class="notch"></div>
-  
-  <div class="offline-banner" id="offlineBanner">📡 You are offline — showing cached content</div>
+  <input type="file" id="photoUpload" accept="image/*" style="display:none;" onchange="handlePhotoUpload(event)"/>
+  <div class="welcome-splash" id="welcomeSplash" style="display:none;">
+    <img class="welcome-logo" id="welcomeLogo" src="" alt=""/>
+    <div class="welcome-estate" id="welcomeEstateName"></div>
+    <div class="welcome-text">STREET CONNECT</div>
+  </div>
+  <div class="offline-banner" id="offlineBanner">&#128262; You are offline &mdash; showing cached content</div>
+
+  <!-- SPLASH SCREEN -->
+  <div class="splash-screen" id="splashScreen">
+    <img class="splash-logo" id="splashLogo" src="" alt=""/>
+    <div class="splash-text" id="splashText">STREET CONNECT</div>
+  </div>
+
+  <!-- OFFLINE BANNER -->
+  <div class="offline-banner" id="offlineBanner">&#128683; You're offline — showing cached content</div>
+
+  <!-- PUSH BANNER -->
+  <div class="push-banner" id="pushBanner">
+    <span class="push-icon" id="pushIcon">&#128680;</span>
+    <div class="push-text"><div class="push-title" id="pushTitle"></div><div class="push-body-text" id="pushBodyText"></div></div>
+    <button class="push-close" onclick="dismissPush()">&#10005;</button>
+  </div>
+
+  <!-- REPORT MODAL -->
+  <div class="modal-overlay" id="reportModal">
+    <div class="modal-sheet">
+      <div class="modal-hdr"><div class="modal-title">&#128680; Report Incident</div><button class="modal-close" onclick="closeReport()">&#10005;</button></div>
+      <div id="reportForm">
+        <label class="form-label">Incident type</label>
+        <div class="type-btns">
+          <button class="type-btn active" onclick="setType(this)">&#128230; Theft</button>
+          <button class="type-btn" onclick="setType(this)">&#128663; Suspicious</button>
+          <button class="type-btn" onclick="setType(this)">&#9998; Vandalism</button>
+          <button class="type-btn" onclick="setType(this)">&#9888; Safety</button>
+          <button class="type-btn" onclick="setType(this)">&#128021; Animal</button>
+          <button class="type-btn" onclick="setType(this)">&#128290; Scam</button>
+        </div><br/>
+        <label class="form-label">What happened?</label>
+        <textarea class="form-textarea" id="reportDesc" rows="4" placeholder="Describe what you saw — time, description, vehicle details..."></textarea>
+        <div class="warn-box">&#9888; For emergencies always call 000 first. This is for community awareness only.</div>
+        <button class="submit-btn" onclick="submitReport()">Submit &amp; Notify Neighbours</button>
+      </div>
+      <div id="reportSuccess" style="display:none;text-align:center;padding:24px 0;">
+        <div style="font-size:44px;margin-bottom:10px;">&#9989;</div>
+        <div style="font-size:15px;font-weight:700;color:#2e7d32;">Submitted!</div>
+        <div style="font-size:12px;color:#888;margin-top:4px;">Neighbours are being notified</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROFILE MODAL -->
+  <div class="modal-overlay" id="profileModal">
+    <div class="modal-sheet">
+      <div class="modal-hdr"><div class="modal-title">My Profile</div><button class="modal-close" onclick="closeProfile()">&#10005;</button></div>
+      <div class="profile-hero">
+        <div class="profile-avatar" id="profileAvatar" onclick="document.getElementById('photoUpload').click()" style="cursor:pointer;position:relative;overflow:hidden;">
+          <span id="profileAvatarText">&#127968;</span>
+          <img id="profileAvatarImg" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:50%;"/>
+          <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.5);color:#fff;font-size:8px;text-align:center;padding:2px;">📷 Change</div>
+        </div>
+        <div class="profile-name" id="profileName">Neighbour</div>
+        <span class="profile-badge">&#10003; Verified Resident</span><br/>
+        <button class="edit-btn" onclick="editDisplayName()">&#9998; Edit display name</button>
+      </div>
+      <div class="profile-detail-row"><span class="profile-detail-icon">&#128205;</span><div><div class="profile-detail-label">Address</div><div class="profile-detail-value" id="profileAddress">Not set</div></div></div>
+      <div class="profile-detail-row"><span class="profile-detail-icon">&#127960;</span><div><div class="profile-detail-label">Estate &amp; Suburb</div><div class="profile-detail-value" id="profileEstate">Not set</div></div></div>
+      <div class="profile-detail-row"><span class="profile-detail-icon">&#127963;</span><div><div class="profile-detail-label">Council Area</div><div class="profile-detail-value" id="profileCouncil">Not set</div></div></div>
+      <div class="profile-detail-row"><span class="profile-detail-icon">&#128222;</span><div><div class="profile-detail-label">Verified via</div><div class="profile-detail-value">SMS &middot; Australian mobile &#10003;</div></div></div>
+      <div>
+        <label class="form-label">My interests</label>
+        <div class="profile-interests" id="profileInterests">
+          <button class="interest-tag" onclick="toggleInterest(this)">&#127793; Gardens</button>
+          <button class="interest-tag" onclick="toggleInterest(this)">&#128104;&#8205;&#128105;&#8205;&#128103; Kids</button>
+          <button class="interest-tag" onclick="toggleInterest(this)">&#127936; Sport</button>
+          <button class="interest-tag" onclick="toggleInterest(this)">&#128021; Pets</button>
+          <button class="interest-tag" onclick="toggleInterest(this)">&#128187; Tech</button>
+          <button class="interest-tag" onclick="toggleInterest(this)">&#127969; DIY</button>
+          <button class="interest-tag" onclick="toggleInterest(this)">&#127859; Food</button>
+          <button class="interest-tag" onclick="toggleInterest(this)">&#127926; Music</button>
+        </div>
+      </div>
+      <div style="background:#f9f6f0;border-radius:12px;padding:14px;">
+        <div style="font-size:12px;font-weight:700;color:#555;margin-bottom:10px;">Edit Profile</div>
+        <div style="margin-bottom:8px;">
+          <label style="font-size:10px;color:#aaa;display:block;margin-bottom:4px;">Display Name</label>
+          <input id="editDisplayName" style="width:100%;border:1.5px solid #e0dbd0;border-radius:8px;padding:8px 10px;font-size:13px;font-family:inherit;outline:none;background:#fff;" placeholder="How neighbours see you"/>
+        </div>
+        <div style="margin-bottom:8px;">
+          <label style="font-size:10px;color:#aaa;display:block;margin-bottom:4px;">Bio (optional)</label>
+          <input id="editBio" style="width:100%;border:1.5px solid #e0dbd0;border-radius:8px;padding:8px 10px;font-size:13px;font-family:inherit;outline:none;background:#fff;" placeholder="e.g. Dad of 2, been here 3 years"/>
+        </div>
+        <div style="margin-bottom:10px;">
+          <label style="font-size:10px;color:#aaa;display:block;margin-bottom:6px;">Interests</label>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;" id="interestTags">
+            <button class="interest-tag" onclick="toggleInterest(this,'Gardens')">&#127807; Gardens</button>
+            <button class="interest-tag" onclick="toggleInterest(this,'Kids')">&#128106; Kids</button>
+            <button class="interest-tag" onclick="toggleInterest(this,'Sport')">&#9917; Sport</button>
+            <button class="interest-tag" onclick="toggleInterest(this,'Pets')">&#128054; Pets</button>
+            <button class="interest-tag" onclick="toggleInterest(this,'Business')">&#128188; Business</button>
+            <button class="interest-tag" onclick="toggleInterest(this,'Music')">&#127925; Music</button>
+            <button class="interest-tag" onclick="toggleInterest(this,'Food')">&#127859; Food</button>
+          </div>
+        </div>
+        <button onclick="saveProfile()" style="width:100%;background:var(--ec);color:#fff;border:none;border-radius:10px;padding:11px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">Save Changes</button>
+      </div>
+      <button class="logout-btn" onclick="logout()">&#128682; Logout</button>
+    </div>
+  </div>
+
+  <!-- DM MODAL -->
+  <div class="modal-overlay" id="dmModal">
+    <div class="modal-sheet">
+      <div class="modal-hdr"><div class="modal-title" id="dmTitle">Direct Message</div><button class="modal-close" onclick="closeDM()">&#10005;</button></div>
+      <div id="dmMessages" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:8px;min-height:200px;max-height:300px;padding:4px 0;"></div>
+      <div style="display:flex;gap:8px;">
+        <input class="form-input" id="dmInput" placeholder="Send a private message..." style="margin-bottom:0;" onkeydown="if(event.key==='Enter')sendDM()"/>
+        <button class="send-btn" style="background:var(--ec);" onclick="sendDM()">&#8593;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SETTINGS MODAL -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal-sheet">
+      <div class="modal-hdr"><div class="modal-title">&#9881; Settings</div><button class="modal-close" onclick="closeSettings()">&#10005;</button></div>
+      <div class="settings-section">
+        <div class="settings-title">NOTIFICATIONS</div>
+        <div class="settings-row">
+          <div><div class="settings-label">Safety Alerts</div><div class="settings-sub">Incidents near you</div></div>
+          <div class="toggle on" onclick="toggleSetting(this)"><div class="toggle-thumb"></div></div>
+        </div>
+        <div class="settings-row">
+          <div><div class="settings-label">Chat Messages</div><div class="settings-sub">New messages on your street</div></div>
+          <div class="toggle on" onclick="toggleSetting(this)"><div class="toggle-thumb"></div></div>
+        </div>
+        <div class="settings-row">
+          <div><div class="settings-label">Quiet Hours</div><div class="settings-sub">No notifications 10pm &ndash; 7am</div></div>
+          <div class="toggle" onclick="toggleSetting(this)"><div class="toggle-thumb"></div></div>
+        </div>
+      </div>
+      <div class="settings-section">
+        <div class="settings-title">APPEARANCE</div>
+        <div class="settings-row">
+          <div><div class="settings-label">Dark Mode</div><div class="settings-sub">Coming soon</div></div>
+          <div class="toggle" onclick="toggleSetting(this)"><div class="toggle-thumb"></div></div>
+        </div>
+      </div>
+      <div class="settings-section">
+        <div class="settings-title">ABOUT</div>
+        <div class="settings-row" style="cursor:pointer;" onclick="messageAdmin()">
+          <div><div class="settings-label">Contact Support</div><div class="settings-sub">Send a message to our team</div></div>
+          <span style="color:#aaa;">&#8250;</span>
+        </div>
+        <div class="settings-row">
+          <div><div class="settings-label">Street Connect</div><div class="settings-sub">Community infrastructure for Greater Brisbane</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- HEADER -->
   <div class="header" id="mainHeader">
     <div class="estate-hero">
       <img class="estate-logo" id="estateLogo" src="" alt=""/>
-      <div class="estate-placeholder" id="estatePlaceholder">🏘️</div>
+      <div class="estate-placeholder" id="estatePlaceholder">&#127960;</div>
       <div class="hierarchy">
         <div class="h-street" id="hStreet"></div>
         <div class="h-suburb" id="hSuburb"></div>
@@ -277,21 +509,22 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
       <div id="joinBtnWrap"><a href="/signup.html" class="join-btn">+ Join Your Street</a></div>
       <button class="my-addr-btn" id="myAddrBtn" onclick="openProfile()">
         <img id="headerAvatarImg" src="" style="display:none;width:22px;height:22px;border-radius:50%;object-fit:cover;border:1.5px solid var(--ea);vertical-align:middle;margin-right:4px;"/>
-        <span id="headerAvatarText">👤</span> <span id="myAddrText"></span>
+        <span id="headerAvatarText">&#128100;</span> <span id="myAddrText"></span>
       </button>
       <div class="header-btns">
-        <button class="help-btn" onclick="openSettings()">⚙️</button>
-        <button class="help-btn" onclick="messageAdmin()">✉️ Help</button>
-        <button class="notif-btn" onclick="switchTab('notifs',this);markNotifsRead()">🔔<span class="notif-badge" id="notifBadge" style="display:none;"></span></button>
+        <button class="help-btn" onclick="openSettings()">&#9881;</button>
+        <button class="help-btn" onclick="messageAdmin()">&#9993; Help</button>
+        <button class="notif-btn" onclick="switchTab('notifs',this);markNotifsRead()">&#128276;<span class="notif-badge" id="notifBadge" style="display:none;"></span></button>
       </div>
     </div>
-    <div class="alert-banner"><span class="alert-dot"></span><span class="alert-text" id="alertText">🎉 Street Connect is live — invite your neighbours!</span></div>
+    <div class="alert-banner"><span class="alert-dot"></span><span class="alert-text" id="alertText">&#127881; Street Connect is live &mdash; invite your neighbours!</span></div>
     <div class="tabs">
-      <button class="tab active" onclick="switchTab('chat',this)">💬 Chat</button>
-      <button class="tab" onclick="switchTab('map',this)">🗺️ Map</button>
-      <button class="tab" onclick="switchTab('official',this)">🏛️ Official</button>
-      <button class="tab" onclick="switchTab('local',this);renderLocalTab()">🏘️ Local</button>
-      <button class="tab" onclick="switchTab('notifs',this);markNotifsRead()">🔔 Alerts</button>
+      <button class="tab active" onclick="switchTab('chat',this)" style="position:relative;">&#128172; Chat<span class="unread-chat-badge" id="unreadChatBadge"></span></button>
+      <button class="tab" onclick="switchTab('map',this)">&#128506; Map</button>
+      <button class="tab" onclick="switchTab('official',this)">&#127963; Official</button>
+      <button class="tab" onclick="switchTab('local',this);renderLocalTab()">&#127960; Local</button>
+      <button class="tab" onclick="switchTab('notifs',this);markNotifsRead()">&#128276; Alerts<span class="tab-badge" id="tabNotifBadge" style="display:none;"></span></button>
+      <button class="tab" onclick="switchTab('dms',this)">&#128172; DMs</button>
     </div>
   </div>
 
@@ -299,81 +532,137 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
   <div class="content" id="tab-chat">
     <div class="filter-row">
       <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
-      <button class="filter-btn" onclick="setFilter('official',this)">🏛️ Official</button>
-      <button class="filter-btn" onclick="setFilter('neighbours',this)">🏘️ Neighbours</button>
+      <button class="filter-btn" onclick="setFilter('official',this)">&#127963; Official</button>
+      <button class="filter-btn" onclick="setFilter('neighbours',this)">&#127960; Neighbours</button>
     </div>
     <div class="chat-level-tabs">
-      <button class="clt-btn active" onclick="setChatLevel('street',this)">🏠 My Street</button>
-      <button class="clt-btn" onclick="setChatLevel('estate',this)">🏘️ My Estate</button>
-      <button class="clt-btn" onclick="setChatLevel('council',this)">🏛️ Council Area</button>
+      <button class="clt-btn active" onclick="setChatLevel('street',this)">&#127968; My Street</button>
+      <button class="clt-btn" onclick="setChatLevel('estate',this)">&#127960; My Estate</button>
+      <button class="clt-btn" onclick="setChatLevel('council',this)">&#127963; Council Area</button>
     </div>
-    <div class="new-msgs-banner" id="newMsgsBanner" onclick="scrollToBottom()">↓ New messages</div>
+    <div class="new-msgs-banner" id="newMsgsBanner" onclick="scrollToBottom()">&#8595; New messages</div>
     <div class="messages" id="chatMessages">
       <div class="date-div">Today</div>
       <div class="pinned-notice">
-        <div class="pinned-top"><span style="font-size:16px;">🛑</span><span class="pinned-title" id="pinnedBinTitle">Bin Day</span><span class="pinned-badge">PINNED</span></div>
+        <div class="pinned-top"><span style="font-size:16px;">&#128721;</span><span class="pinned-title" id="pinnedBinTitle">Bin Day</span><span class="pinned-badge">PINNED</span></div>
         <div class="pinned-body" id="pinnedBinBody">Loading bin schedule...</div>
       </div>
-      <div id="myMessages"></div>
+      <div class="auth-card" style="border-left-color:#1a3a6b;background:#f5f8ff;" data-type="official">
+        <div class="auth-top"><span class="auth-av">&#127963;</span><div><div class="auth-name">Local Council Notice</div><div class="auth-time">Example only</div></div><span class="auth-badge" style="background:#1a3a6b;">EXAMPLE</span></div>
+        <p class="auth-body">&#128203; Bin collection Thursday due to the public holiday. Green waste remains Monday.</p>
+        <div class="auth-foot"><button class="like-btn" onclick="toggleLike(this,12)">&#128077; 12</button><span class="verified">&#10003; Example notice only</span></div>
+      </div>
+      <div class="auth-card" style="border-left-color:#c62828;background:#fff8f8;" data-type="official">
+        <div class="auth-top"><span class="auth-av">&#128110;</span><div><div class="auth-name">Local Police Notice</div><div class="auth-time">Example only</div></div><span class="auth-badge" style="background:#c62828;">EXAMPLE</span></div>
+        <p class="auth-body">&#9888; TARGETED ALERT: Suspicious white sedan reported in your area. Call 000 or Policelink 131 444.</p>
+        <div class="auth-foot"><button class="like-btn" onclick="toggleLike(this,28)">&#128077; 28</button><span class="verified">&#10003; Example notice only</span></div>
+      </div>
       <div class="typing-indicator" id="typingIndicator">Someone is typing...</div>
+      <div id="myMessages"></div>
       <div id="chatBottom"></div>
     </div>
-    <div class="ai-note" id="aiNote">🤖 Post received. AI moderation active.</div>
+    <div class="ai-note" id="aiNote">&#129302; Post received. AI moderation active.</div>
     <div class="compose">
       <div class="compose-row">
-        <span style="font-size:20px;">🏠</span>
+        <span style="font-size:20px;">&#127968;</span>
         <input class="compose-input" id="chatInput" placeholder="Say something to your street..." onkeydown="if(event.key==='Enter')sendMsg()" oninput="document.getElementById('sendBtn').style.background=this.value.trim()?'var(--ec)':'#ccc'"/>
-        <button class="send-btn" id="sendBtn" onclick="sendMsg()">↑</button>
+        <button class="send-btn" id="sendBtn" onclick="sendMsg()">&#8593;</button>
       </div>
-      <div class="compose-foot">🤖 AI moderated · <span id="composeLocation">Greater Brisbane</span></div>
+      <div class="compose-foot">&#129302; AI moderated &middot; <span id="composeLocation">Greater Brisbane</span></div>
     </div>
   </div>
 
-  <!-- MAP TAB WITH REAL GOOGLE MAP -->
+  <!-- MAP TAB -->
   <div class="content" id="tab-map" style="display:none;">
     <div class="map-wrap">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-        <div><div style="font-size:13px;font-weight:700;color:#333;">Incident Map</div><div style="font-size:11px;color:#888;">Tap marker · Community verified</div></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div><div style="font-size:13px;font-weight:700;color:#333;">Incident Map</div><div style="font-size:11px;color:#888;">Tap marker &middot; Community verified</div></div>
         <button class="report-btn" onclick="openReport()">+ Report</button>
       </div>
-      
-      <!-- Map mode buttons -->
-      <div style="display:flex;gap:6px;margin-bottom:10px;">
-        <button class="map-mode-btn active" id="modeStreet" onclick="setMapMode('street',this)">🏠 My Street</button>
-        <button class="map-mode-btn" id="modeEstate" onclick="setMapMode('estate',this)">🏘️ My Estate</button>
-        <button class="map-mode-btn" id="modeRadius" onclick="setMapMode('radius',this)">📍 Radius</button>
+      <div class="map-controls">
+        <div style="display:flex;gap:6px;margin-bottom:10px;">
+          <button class="map-mode-btn active" id="modeStreet" onclick="setMapMode('street',this)">&#127968; My Street</button>
+          <button class="map-mode-btn" id="modeEstate" onclick="setMapMode('estate',this)">&#127960; My Estate</button>
+          <button class="map-mode-btn" id="modeRadius" onclick="setMapMode('radius',this)">&#128225; Radius</button>
+        </div>
+        <div id="modeStreetInfo" class="mode-info">Showing incidents on your street only. Notifications limited to your street.</div>
+        <div id="modeEstateInfo" class="mode-info" style="display:none;">Showing all incidents within your estate boundary. Your estate is highlighted on the map.</div>
+        <div id="modeRadiusControls" style="display:none;">
+          <div class="map-ctrl-top">
+            <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:14px;">&#128225;</span><div><div class="map-ctrl-title">Custom Radius</div><div class="map-ctrl-sub">Drag to expand your alert zone</div></div></div>
+            <div style="display:flex;align-items:center;gap:8px;"><span class="radius-val" id="radiusVal">500m</span><button class="radius-toggle" id="radiusToggle" onclick="toggleRadius()">ON</button></div>
+          </div>
+          <input type="range" class="radius-slider" id="radiusSlider" min="100" max="5000" step="100" value="500" oninput="updateRadius(this.value)"/>
+          <div class="radius-presets">
+            <button class="radius-preset" onclick="setRadius(100)">100m</button>
+            <button class="radius-preset" onclick="setRadius(500)">500m</button>
+            <button class="radius-preset" onclick="setRadius(1500)">1.5km</button>
+            <button class="radius-preset" onclick="setRadius(3000)">3km</button>
+            <button class="radius-preset" onclick="setRadius(5000)">Suburb</button>
+          </div>
+        </div>
+        <div class="radius-info" id="radiusInfo">&#127968; Notifications from your street only</div>
       </div>
-      
-      <!-- REAL GOOGLE MAP -->
-      <div class="real-map-container" style="position:relative;">
-        <div id="realMap" style="width:100%;height:350px;border-radius:12px;"></div>
+      <div class="map-svg-wrap">
+        <svg viewBox="0 0 320 290" style="width:100%;display:block;">
+          <rect width="320" height="290" fill="#1a2e1a"/>
+          <rect x="0" y="0" width="38" height="55" fill="#1e3d1e" rx="2"/>
+          <rect x="270" y="0" width="50" height="45" fill="#1e3d1e" rx="2"/>
+          <path d="M155,0 L155,290" stroke="#3a4a3a" stroke-width="10" fill="none"/>
+          <path d="M155,0 L155,290" stroke="#5a6e5a" stroke-width="6" fill="none"/>
+          <path d="M155,0 L155,290" stroke="rgba(255,255,255,0.1)" stroke-width="2" fill="none" stroke-dasharray="12,8"/>
+          <path d="M245,0 L245,290" stroke="#3a4a3a" stroke-width="8" fill="none"/>
+          <path d="M245,0 L245,290" stroke="#4a5e4a" stroke-width="5" fill="none"/>
+          <path d="M0,270 L155,270" stroke="#3a4a3a" stroke-width="8" fill="none"/>
+          <path d="M0,270 L155,270" stroke="#5a6e5a" stroke-width="5" fill="none"/>
+          <path d="M38,65 L155,65" stroke="#2a3a2a" stroke-width="4" fill="none"/>
+          <path d="M38,155 L245,155" stroke="#2a3a2a" stroke-width="4" fill="none"/>
+          <path d="M100,240 L280,240" stroke="#2a3a2a" stroke-width="4" fill="none"/>
+          <rect x="80" y="75" width="26" height="14" rx="2" fill="#2a3e2a" stroke="#3a5a3a" stroke-width="0.5"/>
+          <rect x="80" y="95" width="26" height="14" rx="2" fill="#2a3e2a" stroke="#3a5a3a" stroke-width="0.5"/>
+          <rect x="80" y="115" width="26" height="14" rx="2" fill="#2a3e2a" stroke="#3a5a3a" stroke-width="0.5"/>
+          <rect x="80" y="135" width="26" height="14" rx="2" fill="#2a3e2a" stroke="#3a5a3a" stroke-width="0.5"/>
+          <rect x="165" y="75" width="26" height="14" rx="2" fill="#2a3e2a" stroke="#3a5a3a" stroke-width="0.5"/>
+          <rect x="165" y="95" width="26" height="14" rx="2" fill="#2a3e2a" stroke="#3a5a3a" stroke-width="0.5"/>
+          <rect x="165" y="115" width="26" height="14" rx="2" fill="#2a3e2a" stroke="#3a5a3a" stroke-width="0.5"/>
+          <rect x="165" y="135" width="26" height="14" rx="2" fill="#2a3e2a" stroke="#3a5a3a" stroke-width="0.5"/>
+          <rect x="210" y="165" width="24" height="14" rx="2" fill="#2a3e2a" stroke="#3a5a3a" stroke-width="0.5"/>
+          <rect x="255" y="165" width="24" height="14" rx="2" fill="#2a3e2a" stroke="#3a5a3a" stroke-width="0.5"/>
+          <text x="158" y="145" font-size="6" fill="rgba(255,255,255,0.3)" font-family="sans-serif" transform="rotate(-90,158,145)">Summerstone Blvd</text>
+          <text x="248" y="145" font-size="5" fill="rgba(255,255,255,0.2)" font-family="sans-serif" transform="rotate(-90,248,145)">Bloom Dr</text>
+          <text x="55" y="62" font-size="5" fill="rgba(255,255,255,0.2)" font-family="sans-serif">Freshwater St</text>
+          <polygon id="estateBoundary" points="55,45 215,45 215,265 55,265" fill="rgba(201,168,76,0.05)" stroke="rgba(201,168,76,0.4)" stroke-width="1.5" stroke-dasharray="8,4" display="none"/>
+          <circle id="radiusRing" cx="155" cy="143" r="33" fill="rgba(201,168,76,0.06)" stroke="rgba(201,168,76,0.5)" stroke-width="1.5" stroke-dasharray="6,4"/>
+          <rect id="radiusLabelBg" x="133" y="107" width="44" height="12" rx="4" fill="rgba(201,168,76,0.9)"/>
+          <text id="radiusLabelTxt" x="155" y="116" font-size="7" fill="#1a1a1a" font-family="sans-serif" font-weight="700" text-anchor="middle">500m</text>
+          <g id="incMarker1" onclick="selectInc(1)" style="cursor:pointer;"><circle cx="152" cy="110" r="11" fill="rgba(0,0,0,0.7)" stroke="#fb8c00" stroke-width="1.5"/><text x="152" y="114" font-size="9" text-anchor="middle">&#128663;</text></g>
+          <g id="incMarker2" onclick="selectInc(2)" style="cursor:pointer;"><circle cx="140" cy="88" r="11" fill="rgba(0,0,0,0.7)" stroke="#e53935" stroke-width="1.5"/><text x="140" y="92" font-size="9" text-anchor="middle">&#128230;</text></g>
+          <g id="incMarker3" onclick="selectInc(3)" style="cursor:pointer;"><circle cx="100" cy="55" r="11" fill="rgba(0,0,0,0.7)" stroke="#7b1fa2" stroke-width="1.5"/><text x="100" y="59" font-size="9" text-anchor="middle">&#9998;</text></g>
+          <g id="incMarker4" onclick="selectInc(4)" style="cursor:pointer;"><circle cx="200" cy="175" r="11" fill="rgba(0,0,0,0.7)" stroke="#e53935" stroke-width="1.5"/><text x="200" y="179" font-size="9" text-anchor="middle">&#128690;</text></g>
+          <g id="incMarker5" onclick="selectInc(5)" style="cursor:pointer;"><circle cx="120" cy="40" r="11" fill="rgba(0,0,0,0.7)" stroke="#388e3c" stroke-width="1.5"/><text x="120" y="44" font-size="9" text-anchor="middle">&#128021;</text></g>
+          <g id="incMarker6" onclick="selectInc(6)" style="cursor:pointer;"><circle cx="160" cy="160" r="11" fill="rgba(0,0,0,0.7)" stroke="#fb8c00" stroke-width="1.5"/><text x="160" y="164" font-size="9" text-anchor="middle">&#9888;</text></g>
+          <!-- Street highlight line -->
+          <line id="streetHighlight" x1="155" y1="0" x2="155" y2="290" stroke="rgba(201,168,76,0.8)" stroke-width="5" display="none" stroke-linecap="round"/>
+          <circle cx="155" cy="143" r="6" fill="#4fc3f7" stroke="#fff" stroke-width="2"/>
+          <circle cx="155" cy="143" r="12" fill="rgba(79,195,247,0.2)"/>
+          <text x="164" y="139" font-size="5.5" fill="#4fc3f7" font-family="sans-serif" font-weight="700">You</text>
+        </svg>
         <div class="map-legend">
           <div class="legend-row"><div class="legend-dot" style="background:#e53935;"></div>Theft</div>
           <div class="legend-row"><div class="legend-dot" style="background:#fb8c00;"></div>Suspicious</div>
           <div class="legend-row"><div class="legend-dot" style="background:#7b1fa2;"></div>Vandalism</div>
           <div class="legend-row"><div class="legend-dot" style="background:#388e3c;"></div>Safety</div>
+          <div class="legend-row"><div class="legend-dot" style="background:rgba(201,168,76,0.8);border:1px solid #c9a84c;"></div>My Estate</div>
         </div>
       </div>
-      
-      <!-- Radius controls -->
-      <div id="radiusControlPanel" style="background:var(--ec);border-radius:12px;padding:12px;margin-bottom:10px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-          <span style="font-size:12px;font-weight:700;color:#fff;">📍 Custom Radius</span>
-          <span id="radiusValueDisplay" style="color:var(--ea);font-weight:700;">500m</span>
-        </div>
-        <input type="range" id="radiusSlider" min="100" max="5000" step="100" value="500" style="width:100%;accent-color:var(--ea);" oninput="updateRadiusValue(this.value)">
-        <div style="display:flex;gap:8px;margin-top:6px;">
-          <button onclick="setRadiusPreset(100)" style="background:rgba(255,255,255,0.1);border:none;border-radius:16px;padding:4px 12px;color:#fff;font-size:11px;cursor:pointer;">100m</button>
-          <button onclick="setRadiusPreset(500)" style="background:rgba(255,255,255,0.1);border:none;border-radius:16px;padding:4px 12px;color:#fff;font-size:11px;cursor:pointer;">500m</button>
-          <button onclick="setRadiusPreset(1000)" style="background:rgba(255,255,255,0.1);border:none;border-radius:16px;padding:4px 12px;color:#fff;font-size:11px;cursor:pointer;">1km</button>
-          <button onclick="setRadiusPreset(3000)" style="background:rgba(255,255,255,0.1);border:none;border-radius:16px;padding:4px 12px;color:#fff;font-size:11px;cursor:pointer;">3km</button>
-        </div>
-      </div>
-      
-      <div class="radius-info" id="radiusInfo">📍 0 incidents within radius</div>
-      
-      <div class="sec-title">ALL INCIDENTS · LAST 7 DAYS</div>
-      <div id="incidentList"></div>
+      <div class="inc-detail" id="incDetail"></div>
+      <div class="sec-title">ALL INCIDENTS &middot; LAST 7 DAYS</div>
+      <button class="inc-list-btn" id="incBtn1" onclick="selectInc(1)"><span class="inc-list-em">&#128663;</span><div style="flex:1;text-align:left;"><div class="inc-list-name">Suspicious Vehicle</div><div class="inc-list-sub">Summerstone Blvd &middot; Today &middot; <span style="color:#fb8c00;">Unverified</span></div></div><div class="sev-dot" style="background:#e53935;"></div></button>
+      <button class="inc-list-btn" id="incBtn2" onclick="selectInc(2)"><span class="inc-list-em">&#128230;</span><div style="flex:1;text-align:left;"><div class="inc-list-name">Package Theft</div><div class="inc-list-sub">Summerstone Blvd &middot; Yesterday &middot; <span style="color:#2e7d32;">Verified x3</span></div></div><div class="sev-dot" style="background:#fb8c00;"></div></button>
+      <button class="inc-list-btn" id="incBtn3" onclick="selectInc(3)"><span class="inc-list-em">&#9998;</span><div style="flex:1;text-align:left;"><div class="inc-list-name">Graffiti</div><div class="inc-list-sub">Freshwater St &middot; 2 days ago &middot; <span style="color:#1565c0;">Resolved</span></div></div><div class="sev-dot" style="background:#43a047;"></div></button>
+      <button class="inc-list-btn" id="incBtn4" onclick="selectInc(4)"><span class="inc-list-em">&#128690;</span><div style="flex:1;text-align:left;"><div class="inc-list-name">Bike Stolen</div><div class="inc-list-sub">Local street &middot; 3 days ago &middot; <span style="color:#fb8c00;">Reported x2</span></div></div><div class="sev-dot" style="background:#fb8c00;"></div></button>
+      <button class="inc-list-btn" id="incBtn5" onclick="selectInc(5)"><span class="inc-list-em">&#128021;</span><div style="flex:1;text-align:left;"><div class="inc-list-name">Loose Dog</div><div class="inc-list-sub">Local street &middot; Today &middot; <span style="color:#e53935;">High Priority</span></div></div><div class="sev-dot" style="background:#e53935;"></div></button>
+      <button class="inc-list-btn" id="incBtn6" onclick="selectInc(6)"><span class="inc-list-em">&#9888;</span><div style="flex:1;text-align:left;"><div class="inc-list-name">Door-to-Door Scam</div><div class="inc-list-sub">Local area &middot; Yesterday &middot; <span style="color:#2e7d32;">Verified x5</span></div></div><div class="sev-dot" style="background:#fb8c00;"></div></button>
     </div>
   </div>
 
@@ -382,9 +671,19 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
     <div class="messages">
       <div class="date-div">Authority Broadcasts</div>
       <div style="background:#f5f0e8;border-radius:12px;padding:16px;text-align:center;">
-        <div style="font-size:28px;margin-bottom:8px;">🙌</div>
+        <div style="font-size:28px;margin-bottom:8px;">&#128588;</div>
         <div style="font-size:13px;font-weight:700;color:#1a3020;margin-bottom:6px;">Official Partnerships Coming Soon</div>
         <div style="font-size:12px;color:#888;line-height:1.6;">Working with Moreton Bay Council, QPS and SES to establish official broadcast partnerships.</div>
+      </div>
+      <div class="auth-card" style="border-left-color:#1a3a6b;background:#f5f8ff;">
+        <div class="auth-top"><span class="auth-av">&#127963;</span><div><div class="auth-name">Local Council</div><div class="auth-time">Example only</div></div><span class="auth-badge" style="background:#1a3a6b;">EXAMPLE</span></div>
+        <p class="auth-body" style="color:#888;font-style:italic;">Bin collection, road works and community events.</p>
+        <span class="verified">&#10003; Example only &mdash; not an official broadcast</span>
+      </div>
+      <div class="auth-card" style="border-left-color:#0d47a1;background:#f5f8ff;">
+        <div class="auth-top"><span class="auth-av">&#128110;</span><div><div class="auth-name">Local Police</div><div class="auth-time">Example only</div></div><span class="auth-badge" style="background:#0d47a1;">EXAMPLE</span></div>
+        <p class="auth-body" style="color:#888;font-style:italic;">Safety alerts and community policing notices.</p>
+        <span class="verified">&#10003; Example only &mdash; not an official broadcast</span>
       </div>
     </div>
   </div>
@@ -392,11 +691,11 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
   <!-- LOCAL TAB -->
   <div class="content" id="tab-local" style="display:none;">
     <div class="messages">
-      <div class="date-div" id="localTitle">🏘️ LOCAL — YOUR AREA</div>
+      <div class="date-div" id="localTitle">&#127960; LOCAL &mdash; YOUR AREA</div>
       <div id="localListings"></div>
       <div style="text-align:center;padding:8px 0 4px;">
         <button class="add-btn" onclick="addListing()">+ Add your listing</button>
-        <div style="font-size:10px;color:#aaa;margin-top:6px;">Free for verified residents · AI moderated</div>
+        <div style="font-size:10px;color:#aaa;margin-top:6px;">Free for verified residents &middot; AI moderated</div>
       </div>
     </div>
   </div>
@@ -409,7 +708,40 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
         <button class="mark-all-btn" onclick="markNotifsRead()">Mark all read</button>
       </div>
       <div class="notif-card" id="notif1" style="border-color:#c9a84c;background:#fffbf0;" onclick="markNotifRead(this)">
-        <div class="notif-top"><span class="notif-icon">🎉</span><div style="flex:1;"><div class="notif-title">Welcome to Street Connect!</div><div class="notif-body">You are now connected with your neighbours. Say hello to your street!</div><div class="notif-time">Just now</div></div><div class="unread-dot"></div></div>
+        <div class="notif-top"><span class="notif-icon">&#127881;</span><div style="flex:1;"><div class="notif-title">Welcome to Street Connect!</div><div class="notif-body">You are now connected with your neighbours. Say hello to your street!</div><div class="notif-time">Just now</div></div><div class="unread-dot"></div></div>
+      </div>
+      <div class="notif-card" id="notif2" style="border-color:#ffcdd2;background:#fff8f8;" onclick="markNotifRead(this)">
+        <div class="notif-top"><span class="notif-icon">&#128680;</span><div style="flex:1;"><div class="notif-title">New Incident Nearby</div><div class="notif-body">Package theft reported. 5 neighbours confirmed. Check the map.</div><div class="notif-time">Earlier today</div></div><div class="unread-dot"></div></div>
+      </div>
+      <div class="notif-card read" style="border-color:#e8e2d8;background:#fff;" onclick="markNotifRead(this)">
+        <div class="notif-top"><span class="notif-icon">&#128721;</span><div style="flex:1;"><div class="notif-title">Bin Day Reminder</div><div class="notif-body">General waste collection tomorrow. Put bins out tonight!</div><div class="notif-time">Yesterday</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DMS TAB -->
+  <div class="content" id="tab-dms" style="display:none;">
+    <div id="dmInbox" style="flex:1;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:8px;">
+      <div class="date-div">DIRECT MESSAGES</div>
+      <div id="dmList">
+        <div class="empty-state">&#128172;<br/>No direct messages yet.<br/><span style="font-size:11px;">Tap a neighbour's name in chat<br/>to start a private conversation.</span></div>
+      </div>
+    </div>
+    <div id="dmConvo" style="display:none;flex:1;flex-direction:column;">
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid #ede8e0;background:#fff;flex-shrink:0;">
+        <button onclick="closeDMConvo()" style="background:none;border:none;font-size:18px;cursor:pointer;color:#666;">&#8592;</button>
+        <div id="dmConvoName" style="font-size:14px;font-weight:700;color:#222;"></div>
+        <div style="font-size:10px;color:#4caf50;margin-left:auto;">&#9679; Verified resident</div>
+      </div>
+      <div id="dmMessages" style="flex:1;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:8px;">
+        <div class="empty-state">&#128172;<br/>Start the conversation!</div>
+      </div>
+      <div style="border-top:1px solid #ede8e0;padding:10px 12px;flex-shrink:0;">
+        <div style="display:flex;gap:8px;align-items:center;">
+          <input id="dmInput" style="flex:1;border:1.5px solid #e0dbd0;border-radius:22px;padding:10px 13px;font-size:13px;background:#f9f6f0;outline:none;font-family:inherit;" placeholder="Private message..." onkeydown="if(event.key==='Enter')sendDM()"/>
+          <button onclick="sendDM()" style="width:38px;height:38px;border-radius:50%;border:none;background:var(--ec);color:#fff;font-size:18px;cursor:pointer;">&#8593;</button>
+        </div>
+        <div style="font-size:10px;color:#bbb;text-align:center;margin-top:4px;">&#128274; Private &middot; Only you two can see this</div>
       </div>
     </div>
   </div>
@@ -417,449 +749,828 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
   <div class="disclaimer">Street Connect is an independent community platform. Authority notices are examples only. Not affiliated with any government body.</div>
   <div class="home-bar"><div class="home-ind"></div></div>
 </div>
-
-<!-- MODALS (kept from original) -->
-<div class="modal-overlay" id="reportModal">
-  <div class="modal-sheet">
-    <div class="modal-hdr"><div class="modal-title">🚨 Report Incident</div><button class="modal-close" onclick="closeReport()">✕</button></div>
-    <div id="reportForm">
-      <label class="form-label">Incident type</label>
-      <div class="type-btns">
-        <button class="type-btn active" onclick="setType(this)">📦 Theft</button>
-        <button class="type-btn" onclick="setType(this)">🚗 Suspicious</button>
-        <button class="type-btn" onclick="setType(this)">✏️ Vandalism</button>
-        <button class="type-btn" onclick="setType(this)">⚠️ Safety</button>
-        <button class="type-btn" onclick="setType(this)">🐕 Animal</button>
-      </div>
-      <label class="form-label">What happened?</label>
-      <textarea class="form-textarea" id="reportDesc" rows="4" placeholder="Describe what you saw..."></textarea>
-      <div class="warn-box">⚠️ For emergencies always call 000 first.</div>
-      <button class="submit-btn" onclick="submitReport()">Submit &amp; Notify Neighbours</button>
-    </div>
-    <div id="reportSuccess" style="display:none;text-align:center;padding:24px 0;">
-      <div style="font-size:44px;margin-bottom:10px;">✅</div>
-      <div style="font-size:15px;font-weight:700;color:#2e7d32;">Submitted!</div>
-    </div>
-  </div>
-</div>
-
-<div class="modal-overlay" id="profileModal">
-  <div class="modal-sheet">
-    <div class="modal-hdr"><div class="modal-title">My Profile</div><button class="modal-close" onclick="closeProfile()">✕</button></div>
-    <div class="profile-hero">
-      <div class="profile-name" id="profileName">Neighbour</div>
-      <span class="profile-badge">✓ Verified Resident</span>
-    </div>
-    <div class="profile-detail-row"><span class="profile-detail-icon">📍</span><div><div class="profile-detail-label">Address</div><div class="profile-detail-value" id="profileAddress">Not set</div></div></div>
-    <button class="logout-btn" onclick="logout()">🚪 Logout</button>
-  </div>
-</div>
-
-<div class="modal-overlay" id="settingsModal">
-  <div class="modal-sheet">
-    <div class="modal-hdr"><div class="modal-title">⚙️ Settings</div><button class="modal-close" onclick="closeSettings()">✕</button></div>
-    <div class="settings-section">
-      <div class="settings-title">NOTIFICATIONS</div>
-      <div class="settings-row">
-        <div><div class="settings-label">Safety Alerts</div><div class="settings-sub">Incidents near you</div></div>
-        <div class="toggle on" onclick="toggleSetting(this)"><div class="toggle-thumb"></div></div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <script>
-// ========== APP STATE ==========
-var userPhone = localStorage.getItem("sc_phone") || "";
-var userAddress = localStorage.getItem("sc_address") || "";
-var userSuburb = localStorage.getItem("sc_suburb") || "";
-var userDisplay = localStorage.getItem("sc_display") || "Neighbour";
-var isLoggedIn = userPhone !== "";
 
-// ========== GOOGLE MAP VARIABLES ==========
-var googleMap = null;
-var markers = [];
-var radiusCircle = null;
-var userLat = -27.112;  // Morayfield default
-var userLng = 152.956;
-var allIncidents = [];
+var ESTATE_LOOKUP = {
+  "Amber Street":"summerstone","Amber St":"summerstone",
+  "Summerstone Boulevard":"summerstone","Summerstone Blvd":"summerstone",
+  "Breeze Street":"summerstone","Festival Street":"summerstone",
+  "Tropic Street":"summerstone","Dune Street":"summerstone",
+  "Sunrise Street":"summerstone","Island Parade":"summerstone",
+  "Sunset Street":"summerstone","Golden Road":"summerstone",
+  "Pocketstone Court":"summerstone","Moreton Parade":"summerstone",
+  "Bloom Drive":"summerstone","Harvest Street":"summerstone",
+  "Essence Street":"summerstone","Freshwater Street":"summerstone",
+  "Kingfisher Avenue":"summerstone",
+  "Anderson Road":"montrose","Baird Road":"montrose",
+  "Batchen Street":"montrose","Blaven Street":"montrose",
+  "Blewers Road":"montrose","Carisbrook Street":"montrose",
+  "Earlisland Circuit":"montrose","Fig Tree Esplanade":"montrose",
+  "Glenmore Street":"montrose","Grandtown Drive":"montrose",
+  "Hepworth Way":"montrose","Landings Boulevard":"montrose",
+  "Lindsay Road":"montrose","Moray Street":"montrose",
+  "Mosset Street":"montrose","Prosperous Street":"montrose",
+  "Randolph Boulevard":"montrose","Robbs Road":"montrose",
+  "Roysvale Way":"montrose","Varis Street":"montrose",
+  "Wellside Street":"montrose"
+};
 
-// ========== HELPER FUNCTIONS ==========
-function showScreen(n) { /* kept for compatibility */ }
-function validatePhone() { /* kept */ }
-function validateCode() { /* kept */ }
+var ESTATES = {
+  summerstone:{name:"Summerstone Estate",suburb:"Morayfield",council:"Moreton Bay City",color:"#313131",accent:"#c9a84c",logo:"/summerstone.png",boundary:"55,45 215,45 215,265 55,265",binDay:"&#128721; General waste: Wednesday &middot; Recycling: alternating Wednesday &middot; Green waste: Monday &middot; Put out: Tuesday night"},
+  montrose:{name:"Montrose",suburb:"Morayfield",council:"Moreton Bay City",color:"#1a2a6b",accent:"#b8c5d6",logo:null,seriesM:true,boundary:"160,45 310,45 310,200 160,200",binDay:"&#128721; General waste: Wednesday &middot; Recycling: alternating Wednesday &middot; Put out: Tuesday night"},
+  default:{name:null,suburb:null,council:"Greater Brisbane",color:"#1a3020",accent:"#69f0ae",logo:null,boundary:null,binDay:"&#128721; Check moretonbay.qld.gov.au for your bin day schedule"}
+};
 
-function switchTab(tab, btn) {
-  document.querySelectorAll('.content').forEach(function(c) { c.style.display = 'none'; });
-  document.querySelectorAll('.tab').forEach(function(b) { b.classList.remove('active'); });
-  document.getElementById('tab-' + tab).style.display = 'flex';
-  if (btn) btn.classList.add('active');
-  
-  // Initialize map when map tab is clicked
-  if (tab === 'map' && !googleMap) {
-    setTimeout(function() { initRealMap(); }, 100);
-  }
+var BIN_SCHEDULES = {
+  "morayfield":"&#128721; General waste: Wednesday &middot; Recycling: alternating Wednesday &middot; Green waste: Monday &middot; Put out: Tuesday night",
+  "caboolture":"&#128721; General waste: Thursday &middot; Recycling: alternating Thursday &middot; Put out: Wednesday night",
+  "redcliffe":"&#128721; General waste: Tuesday &middot; Recycling: alternating Tuesday &middot; Put out: Monday night",
+  "narangba":"&#128721; General waste: Wednesday &middot; Recycling: alternating Wednesday &middot; Put out: Tuesday night",
+  "burpengary":"&#128721; General waste: Thursday &middot; Recycling: alternating Thursday &middot; Put out: Wednesday night"
+};
+
+function getEstateFromAddress(a){if(!a)return"default";var al=a.toLowerCase();for(var s in ESTATE_LOOKUP){if(al.indexOf(s.toLowerCase())!==-1)return ESTATE_LOOKUP[s];}return"default";}
+function getCouncilFromSuburb(s){if(!s)return"Greater Brisbane";var sl=s.toLowerCase();if(["morayfield","caboolture","redcliffe","narangba","burpengary","deception bay","kippa-ring","rothwell","clontarf","scarborough","woody point","margate"].some(function(x){return sl.indexOf(x)!==-1;}))return"Moreton Bay City";if(["ipswich","springfield","ripley","goodna","redbank","camira"].some(function(x){return sl.indexOf(x)!==-1;}))return"Ipswich City";if(["logan","beenleigh","browns plains","springwood","loganholme"].some(function(x){return sl.indexOf(x)!==-1;}))return"Logan City";if(["brisbane","chermside","fortitude valley","paddington","newstead"].some(function(x){return sl.indexOf(x)!==-1;}))return"Brisbane City";return"Greater Brisbane";}
+
+var userAddress=localStorage.getItem("sc_address")||"";
+var userPhone=localStorage.getItem("sc_phone")||"";
+var userSuburb=localStorage.getItem("sc_suburb")||"";
+var userDisplay=localStorage.getItem("sc_display")||"Neighbour";
+var isLoggedIn=userPhone!=="";
+var currentChatLevel="street";
+var lastMsgCount=0;
+var isScrolledToBottom=true;
+var dmRecipient=null;
+var dmConversations={};
+
+window.addEventListener("online",function(){document.getElementById("offlineBanner").style.display="none";loadMessages();});
+window.addEventListener("offline",function(){document.getElementById("offlineBanner").style.display="block";});
+
+function switchTab(t,b){
+  document.querySelectorAll(".content").forEach(function(e){e.style.display="none";});
+  document.querySelectorAll(".tab").forEach(function(e){e.classList.remove("active");});
+  document.getElementById("tab-"+t).style.display="flex";
+  if(b&&b.classList)b.classList.add("active");
 }
 
-function showError(id, msg) {
-  var el = document.getElementById(id);
-  if (el) { el.textContent = msg; el.style.display = 'block'; setTimeout(function(){ el.style.display = 'none'; }, 3000); }
+function setChatLevel(level,btn){
+  currentChatLevel=level;
+  document.querySelectorAll(".clt-btn").forEach(function(b){b.classList.remove("active");});
+  btn.classList.add("active");
+  loadMessages();
 }
 
-// ========== REAL GOOGLE MAP ==========
-function initRealMap() {
-  var mapDiv = document.getElementById('realMap');
-  if (!mapDiv) return;
-  
-  googleMap = new google.maps.Map(mapDiv, {
-    center: { lat: userLat, lng: userLng },
-    zoom: 14,
-    mapTypeControl: false,
-    fullscreenControl: true,
-    streetViewControl: false,
-    zoomControl: true
+function setFilter(t,b){
+  document.querySelectorAll(".filter-btn").forEach(function(x){x.classList.remove("active");});
+  b.classList.add("active");
+  document.querySelectorAll("#chatMessages>[data-type]").forEach(function(e){
+    if(t==="all")e.style.display="";
+    else if(t==="official")e.style.display=e.dataset.type==="official"?"":"none";
+    else e.style.display=(e.dataset.type==="neighbour"||e.dataset.type==="me")?"":"none";
   });
-  
-  // Add draggable radius circle
-  radiusCircle = new google.maps.Circle({
-    strokeColor: "#c9a84c",
-    strokeOpacity: 0.8,
-    strokeWeight: 2,
-    fillColor: "#c9a84c",
-    fillOpacity: 0.1,
-    map: googleMap,
-    center: { lat: userLat, lng: userLng },
-    radius: 500,
-    editable: true,
-    draggable: true
-  });
-  
-  radiusCircle.addListener('radius_changed', function() {
-    var newRadius = Math.round(radiusCircle.getRadius());
-    document.getElementById('radiusSlider').value = newRadius;
-    var display = newRadius >= 1000 ? (newRadius/1000).toFixed(1)+'km' : newRadius+'m';
-    document.getElementById('radiusValueDisplay').innerText = display;
-    filterMarkersByRadius();
-  });
-  
-  radiusCircle.addListener('center_changed', function() {
-    filterMarkersByRadius();
-  });
-  
-  loadIncidents();
 }
 
-function loadIncidents() {
-  // Demo incidents with coordinates near Morayfield
-  allIncidents = [
-    { id:1, title:"Suspicious Vehicle", lat:-27.115, lng:152.958, type:"suspicious", verified:1, desc:"White sedan parked for 3+ hours", time:"Today", addr:"Summerstone Blvd" },
-    { id:2, title:"Package Theft", lat:-27.108, lng:152.954, type:"theft", verified:3, desc:"Parcel stolen from porch", time:"Yesterday", addr:"Summerstone Blvd" },
-    { id:3, title:"Graffiti", lat:-27.120, lng:152.960, type:"vandalism", verified:5, desc:"Graffiti on bus shelter", time:"2 days ago", addr:"Freshwater St" },
-    { id:4, title:"Loose Dog", lat:-27.105, lng:152.962, type:"animal", verified:2, desc:"Large dog running loose", time:"Today", addr:"Tide St" },
-    { id:5, title:"Door-to-Door Scam", lat:-27.118, lng:152.950, type:"scam", verified:4, desc:"Fake energy company", time:"Yesterday", addr:"Amber St" }
-  ];
-  addMarkersToMap();
+function toggleLike(b,c){
+  if(b.classList.contains("liked")){b.classList.remove("liked");b.textContent=c>1?"&#128077; "+(c-1):"&#128077;";}
+  else{b.classList.add("liked");b.textContent="&#128077; "+(c+1);}
 }
 
-function addMarkersToMap() {
-  if (!googleMap) return;
-  
-  // Clear existing markers
-  markers.forEach(function(m) { m.setMap(null); });
-  markers = [];
-  
-  allIncidents.forEach(function(inc) {
-    if (!inc.lat || !inc.lng) return;
-    
-    var iconUrl = getMarkerIcon(inc.type);
-    var marker = new google.maps.Marker({
-      position: { lat: inc.lat, lng: inc.lng },
-      map: googleMap,
-      icon: {
-        url: iconUrl,
-        scaledSize: new google.maps.Size(32, 32)
-      },
-      title: inc.title
+function scrollToBottom(){
+  document.getElementById("chatBottom").scrollIntoView({behavior:"smooth"});
+  document.getElementById("newMsgsBanner").style.display="none";
+}
+
+function sendMsg(){
+  var i=document.getElementById("chatInput");
+  if(!i.value.trim())return;
+  if(!isLoggedIn){alert("Please sign up to post messages.");window.location.href="/signup.html";return;}
+  var content=i.value.trim();
+  i.value="";
+  document.getElementById("sendBtn").style.background="#ccc";
+  fetch("/api/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:userPhone,address:userAddress,suburb:userSuburb,content:content,display_name:userDisplay})}).then(function(){loadMessages();}).catch(function(){});
+  var a=document.getElementById("aiNote");a.style.display="block";
+  setTimeout(function(){a.style.display="none";},3000);
+}
+
+async function loadMessages(){
+  try{
+    var res=await fetch("/api/messages");
+    if(!res.ok)return;
+    var data=await res.json();
+    var msgs=data.messages||[];
+
+        if(currentChatLevel==="street"&&userAddress){
+      var myStreet=userAddress.split(",")[0].trim().replace(/^[0-9]+[a-zA-Z]?\s+/,"").toLowerCase();
+      if(myStreet)msgs=msgs.filter(function(m){
+        var mStreet=(m.address||"").split(",")[0].trim().replace(/^[0-9]+[a-zA-Z]?\s+/,"").toLowerCase();
+        return mStreet.indexOf(myStreet)!==-1||myStreet.indexOf(mStreet)!==-1||m.suburb==="ADMIN_MSG";
+      });
+    } else if(currentChatLevel==="estate"){
+      var myEstate=getEstateFromAddress(userAddress);
+      if(myEstate!=="default")msgs=msgs.filter(function(m){
+        return getEstateFromAddress(m.address||"")===myEstate||m.suburb==="ADMIN_MSG";
+      });
+    }
+
+    var container=document.getElementById("myMessages");
+    container.innerHTML="";
+
+    msgs.forEach(function(msg){
+      var isMe=msg.phone===userPhone;
+      var n=new Date(msg.created_at).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
+            var displayName=msg.display_name||"Neighbour";
+            var rawStreet=(msg.address||"").split(",")[0].trim();
+      var streetName=rawStreet.replace(/^[0-9]+[a-zA-Z]?\s+/,"");
+      if(!streetName&&msg.suburb&&msg.suburb!=="ADMIN_MSG")streetName=msg.suburb;
+
+      var d=document.createElement("div");
+      d.className="msg-row"+(isMe?" me":"");
+      d.dataset.type=isMe?"me":"neighbour";
+
+      if(isMe){
+        d.innerHTML="<div style='max-width:75%'>"+
+          "<div class='msg-meta' style='text-align:right;'><span style='color:#aaa;font-size:9px;'>"+n+"</span></div>"+
+          "<div class='bubble me'><p>"+msg.content+"</p></div>"+
+          "<button onclick='deleteMsg("+JSON.stringify(msg.id)+")' class='del-btn'>&#128465; delete</button>"+
+          "</div><div class='msg-av' style='margin-bottom:22px;'>"+(userPhoto?"<img src='"+userPhoto+"' style='width:32px;height:32px;border-radius:50%;object-fit:cover;border:1.5px solid var(--ea);'/>":"&#127968;")+"</div>";
+      } else {
+        d.innerHTML="<div class='msg-av'>&#127968;</div>"+
+          "<div style='max-width:75%'>"+
+          "<div class='msg-meta'><strong style='color:#444;font-size:10px;'>"+displayName+"</strong>"+
+          (streetName?"<span style='color:#aaa;font-size:9px;'> &middot; "+streetName+"</span>":"")+
+          "<span style='color:#bbb;font-size:9px;'> &middot; "+n+"</span></div>"+
+          "<div class='bubble them'><p>"+msg.content+"</p></div>"+
+          "</div>";
+      }
+      container.appendChild(d);
     });
-    
-    var infoWindow = new google.maps.InfoWindow({
-      content: '<div style="padding:8px;"><strong>' + inc.title + '</strong><br>' + 
-               (inc.verified > 1 ? '✓ Verified by ' + inc.verified + ' neighbours' : '⚠️ Unverified') +
-               '<br><button onclick="selectIncident(' + inc.id + ')">View details</button></div>'
-    });
-    
-    marker.addListener('click', function() {
-      infoWindow.open(googleMap, marker);
-      selectIncident(inc.id);
-    });
-    
-    markers.push(marker);
-  });
-  
-  filterMarkersByRadius();
+
+    var bottom=document.getElementById("chatBottom");
+    if(bottom)bottom.scrollIntoView({behavior:"smooth"});
+  } catch(e){console.log("msg error:",e);}
 }
 
-function filterMarkersByRadius() {
-  if (!radiusCircle) return;
-  var center = radiusCircle.getCenter();
-  var radius = radiusCircle.getRadius();
-  var visibleCount = 0;
-  
-  markers.forEach(function(marker) {
-    var pos = marker.getPosition();
-    var distance = google.maps.geometry.spherical.computeDistanceBetween(center, pos);
-    var isInside = distance <= radius;
-    marker.setVisible(isInside);
-    if (isInside) visibleCount++;
-  });
-  
-  document.getElementById('radiusInfo').innerHTML = '📍 ' + visibleCount + ' of ' + allIncidents.length + ' incidents within ' + 
-    (radius >= 1000 ? (radius/1000).toFixed(1)+'km' : Math.round(radius)+'m');
-  updateIncidentList();
+async function deleteMessage(id){
+  if(!confirm("Delete this message?"))return;
+  try{await fetch("/api/messages",{method:"DELETE",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:id,phone:userPhone})});loadMessages();}catch(e){}
 }
 
-function updateRadiusValue(val) {
-  var radius = parseInt(val);
-  if (radiusCircle) radiusCircle.setRadius(radius);
-  var display = radius >= 1000 ? (radius/1000).toFixed(1)+'km' : radius+'m';
-  document.getElementById('radiusValueDisplay').innerText = display;
-  filterMarkersByRadius();
-}
+async function deleteMsg(id){if(!confirm("Delete this message?"))return;try{await fetch("/api/messages",{method:"DELETE",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:id,phone:userPhone})});loadMessages();}catch(e){}}
+loadMessages();
+setInterval(loadMessages,10000);
 
-function setRadiusPreset(radius) {
-  document.getElementById('radiusSlider').value = radius;
-  updateRadiusValue(radius);
-}
+// ── PROFILE PHOTO ────────────────────────────────────────────────────────────
+var userPhoto = localStorage.getItem("sc_photo") || "";
 
-function getMarkerIcon(type) {
-  var icons = {
-    theft: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
-    suspicious: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
-    vandalism: 'http://maps.google.com/mapfiles/ms/icons/purple-dot.png',
-    animal: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
-    scam: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+function handlePhotoUpload(event){
+  var file = event.target.files[0];
+  if(!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e){
+    var img = new Image();
+    img.onload = function(){
+      var canvas = document.createElement('canvas');
+      var maxSize = 150;
+      var w = img.width, h = img.height;
+      if(w > h){ h = Math.round(h*(maxSize/w)); w = maxSize; } else { w = Math.round(w*(maxSize/h)); h = maxSize; }
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      var compressed = canvas.toDataURL('image/jpeg', 0.8);
+      userPhoto = compressed;
+      localStorage.setItem("sc_photo", compressed);
+      updatePhotoDisplay();
+      showPush({icon:"&#128247;",title:"Photo updated!",body:"Your profile photo has been saved.",color:"var(--ec)"});
+    };
+    img.src = e.target.result;
   };
-  return icons[type] || 'http://maps.google.com/mapfiles/ms/icons/red-dot.png';
+  reader.readAsDataURL(file);
 }
 
-function updateIncidentList() {
-  var container = document.getElementById('incidentList');
-  if (!container) return;
-  
-  if (!radiusCircle) {
-    container.innerHTML = '<div class="empty-state">🗺️ Loading map...</div>';
+function updatePhotoDisplay(){
+  var avatarImg = document.getElementById("profileAvatarImg");
+  var avatarText = document.getElementById("profileAvatarText");
+  if(userPhoto && avatarImg){
+    avatarImg.src = userPhoto;
+    avatarImg.style.display = "block";
+    if(avatarText) avatarText.style.display = "none";
+  } else if(avatarImg){
+    avatarImg.style.display = "none";
+    if(avatarText) avatarText.style.display = "block";
+  }
+  var headerImg = document.getElementById("headerAvatarImg");
+  var headerText = document.getElementById("headerAvatarText");
+  if(userPhoto && headerImg){
+    headerImg.src = userPhoto;
+    headerImg.style.display = "inline-block";
+    if(headerText) headerText.style.display = "none";
+  } else if(headerImg){
+    headerImg.style.display = "none";
+    if(headerText) headerText.style.display = "inline";
+  }
+}
+
+function openDMWith(name,phone){
+  if(!isLoggedIn){alert("Please sign up to send direct messages.");return;}
+  if(phone===userPhone)return;
+  dmRecipient={name:name,phone:phone};
+  document.getElementById("dmTitle").textContent="&#128172; "+name;
+  if(!dmConversations[phone])dmConversations[phone]=[];
+  renderDMs();
+  document.getElementById("dmModal").style.display="flex";
+}
+
+function closeDM(){document.getElementById("dmModal").style.display="none";}
+
+function renderDMs(){
+  if(!dmRecipient)return;
+  var msgs=dmConversations[dmRecipient.phone]||[];
+  var container=document.getElementById("dmMessages");
+  container.innerHTML="";
+  if(msgs.length===0){
+    container.innerHTML="<div class='empty-state' style='padding:16px;'>Start a private conversation with "+dmRecipient.name+"</div>";
     return;
   }
-  
-  var center = radiusCircle.getCenter();
-  var radius = radiusCircle.getRadius();
-  
-  var visibleIncidents = allIncidents.filter(function(inc) {
-    if (!inc.lat || !inc.lng) return false;
-    var pos = new google.maps.LatLng(inc.lat, inc.lng);
-    var distance = google.maps.geometry.spherical.computeDistanceBetween(center, pos);
-    return distance <= radius;
+  msgs.forEach(function(m){
+    var isMe=m.from===userPhone;
+    var d=document.createElement("div");
+    d.className="msg-row"+(isMe?" me":"");
+    if(isMe){
+      d.innerHTML="<div style='max-width:75%'><div class='bubble me'><p>"+m.text+"</p></div></div><div class='msg-av'>&#127968;</div>";
+    } else {
+      d.innerHTML="<div class='msg-av'>&#127968;</div><div style='max-width:75%'><div class='bubble them'><p>"+m.text+"</p></div></div>";
+    }
+    container.appendChild(d);
   });
-  
-  if (visibleIncidents.length === 0) {
-    container.innerHTML = '<div class="empty-state">📍 No incidents within your radius</div>';
-    return;
+  container.scrollTop=container.scrollHeight;
+}
+
+function sendDM(){
+  var input=document.getElementById("dmInput");
+  if(!input.value.trim()||!dmRecipient)return;
+  var msg={from:userPhone,to:dmRecipient.phone,text:input.value.trim(),time:new Date()};
+  if(!dmConversations[dmRecipient.phone])dmConversations[dmRecipient.phone]=[];
+  dmConversations[dmRecipient.phone].push(msg);
+  input.value="";
+  renderDMs();
+  showPush({icon:"&#128172;",title:"DM sent to "+dmRecipient.name,body:msg.text.substring(0,50),color:"#313131"});
+}
+
+var INCIDENT_DISTS={1:120,2:80,3:350,4:600,5:420,6:180};
+var INCS={
+  1:{emoji:"&#128663;",title:"Suspicious Vehicle",addr:"Summerstone Blvd",time:"Today",sev:"high",sc:"#e53935",desc:"White sedan parked for 3+ hours. Police alerted.",status:"Patrols active",rep:"Local resident",color:"#fb8c00",trust:1},
+  2:{emoji:"&#128230;",title:"Package Theft",addr:"Summerstone Blvd",time:"Yesterday",sev:"medium",sc:"#fb8c00",desc:"Parcel stolen from front porch. Reported to police.",status:"Police notified",rep:"Local resident",color:"#e53935",trust:3},
+  3:{emoji:"&#9998;",title:"Graffiti",addr:"Freshwater St",time:"2 days ago",sev:"low",sc:"#43a047",desc:"Graffiti on bus shelter. Council notified.",status:"Resolved",rep:"Local resident",color:"#7b1fa2",trust:5},
+  4:{emoji:"&#128690;",title:"Bike Stolen",addr:"Local street",time:"3 days ago",sev:"medium",sc:"#fb8c00",desc:"Mountain bike stolen overnight.",status:"Police report filed",rep:"Local resident",color:"#e53935",trust:2},
+  5:{emoji:"&#128021;",title:"Loose Dog",addr:"Local street",time:"Today",sev:"high",sc:"#e53935",desc:"Large staffy running loose. Rangers called.",status:"Rangers called",rep:"Local resident",color:"#388e3c",trust:4},
+  6:{emoji:"&#9888;",title:"Door-to-Door Scam",addr:"Local area",time:"Yesterday",sev:"medium",sc:"#fb8c00",desc:"Men claiming to be from energy company. NOT legitimate.",status:"Scam Aware notified",rep:"Multiple residents",color:"#fb8c00",trust:5}
+};
+
+var currentMapMode = 'street';
+
+var ESTATE_SVG_HIGHLIGHTS = {
+  summerstone: {
+    boundary: '55,45 215,45 215,265 55,265',
+    streets: [
+      {d:'M155,0 L155,290', label:'Summerstone Blvd', color:'rgba(201,168,76,0.6)', width:4},
+      {d:'M38,65 L155,65', label:'Freshwater St', color:'rgba(201,168,76,0.4)', width:3},
+      {d:'M38,155 L245,155', label:'Tide St', color:'rgba(201,168,76,0.4)', width:3},
+      {d:'M100,240 L280,240', label:'Amber St area', color:'rgba(201,168,76,0.4)', width:3}
+    ]
+  },
+  montrose: {
+    boundary: '160,45 310,45 310,200 160,200',
+    streets: [
+      {d:'M245,0 L245,290', label:'Grandtown Dr', color:'rgba(184,197,214,0.6)', width:4},
+      {d:'M195,155 L320,155', label:'Montrose streets', color:'rgba(184,197,214,0.4)', width:3}
+    ]
   }
-  
-  container.innerHTML = visibleIncidents.map(function(inc) {
-    return '<button class="inc-list-btn" onclick="selectIncident(' + inc.id + ')">' +
-      '<span class="inc-list-em">' + getIncidentEmoji(inc.type) + '</span>' +
-      '<div style="flex:1;text-align:left;">' +
-        '<div class="inc-list-name">' + inc.title + '</div>' +
-        '<div class="inc-list-sub">' + inc.addr + ' · ' + inc.time + '</div>' +
-      '</div>' +
-      '<div class="sev-dot" style="background:' + getSeverityColor(inc.type) + ';"></div>' +
-    '</button>';
-  }).join('');
-}
-
-function getIncidentEmoji(type) {
-  var emojis = { theft:'📦', suspicious:'🚗', vandalism:'✏️', animal:'🐕', scam:'📞' };
-  return emojis[type] || '⚠️';
-}
-
-function getSeverityColor(type) {
-  var colors = { theft:'#e53935', suspicious:'#fb8c00', vandalism:'#7b1fa2', animal:'#388e3c', scam:'#fb8c00' };
-  return colors[type] || '#fb8c00';
-}
-
-function selectIncident(id) {
-  var inc = allIncidents.find(function(i) { return i.id === id; });
-  if (!inc) return;
-  showPush({icon:"📍", title:inc.title, body:inc.desc, color:"var(--ec)"});
-}
+};
 
 function setMapMode(mode, btn) {
-  document.querySelectorAll('.map-mode-btn').forEach(function(b) { b.classList.remove('active'); });
+  currentMapMode = mode;
+  document.querySelectorAll('.map-mode-btn').forEach(function(b){b.classList.remove('active');});
   btn.classList.add('active');
-  // Mode logic can be expanded later
+
+  var streetInfo = document.getElementById('modeStreetInfo');
+  var estateInfo = document.getElementById('modeEstateInfo');
+  var radiusControls = document.getElementById('modeRadiusControls');
+  var radiusInfo = document.getElementById('radiusInfo');
+  var radiusRing = document.getElementById('radiusRing');
+  var radiusLabelBg = document.getElementById('radiusLabelBg');
+  var radiusLabelTxt = document.getElementById('radiusLabelTxt');
+  var boundary = document.getElementById('estateBoundary');
+  var streetHighlight = document.getElementById('streetHighlight');
+
+    if(streetInfo) streetInfo.style.display = 'none';
+  if(estateInfo) estateInfo.style.display = 'none';
+  if(radiusControls) radiusControls.style.display = 'none';
+  if(radiusRing) radiusRing.style.display = 'none';
+  if(radiusLabelBg) radiusLabelBg.style.display = 'none';
+  if(radiusLabelTxt) radiusLabelTxt.style.display = 'none';
+  if(boundary) boundary.setAttribute('display', 'none');
+  if(streetHighlight) streetHighlight.setAttribute('display', 'none');
+
+  var ek = getEstateFromAddress(userAddress);
+  var estate = ESTATES[ek] || ESTATES.default;
+  var highlights = ESTATE_SVG_HIGHLIGHTS[ek];
+
+  if(mode === 'street') {
+    if(streetInfo) streetInfo.style.display = 'block';
+    if(radiusInfo) radiusInfo.textContent = '&#127968; Notifications from ' + (userAddress ? userAddress.split(',')[0].replace(/^\d+\s+/,'') : 'your street') + ' only';
+        if(streetHighlight) {
+      streetHighlight.setAttribute('display', '');
+            var myStreet = userAddress ? userAddress.split(',')[0].replace(/^\d+\s+/,'').toLowerCase() : '';
+      var strokeColor = ek === 'montrose' ? 'rgba(184,197,214,0.8)' : 'rgba(201,168,76,0.8)';
+      streetHighlight.setAttribute('stroke', strokeColor);
+    }
+  } else if(mode === 'estate') {
+    if(estateInfo) estateInfo.style.display = 'block';
+    if(radiusInfo) radiusInfo.innerHTML = '&#127960; Notifications from ' + (estate.name || 'your estate') + ' only';
+        if(boundary && highlights) {
+      boundary.setAttribute('points', highlights.boundary);
+      var strokeColor = ek === 'montrose' ? 'rgba(184,197,214,0.5)' : 'rgba(201,168,76,0.5)';
+      var fillColor = ek === 'montrose' ? 'rgba(184,197,214,0.08)' : 'rgba(201,168,76,0.08)';
+      boundary.setAttribute('stroke', strokeColor);
+      boundary.setAttribute('fill', fillColor);
+      boundary.setAttribute('display', '');
+    }
+  } else if(mode === 'radius') {
+    if(radiusControls) radiusControls.style.display = 'block';
+    if(radiusRing) radiusRing.style.display = '';
+    if(radiusLabelBg) radiusLabelBg.style.display = '';
+    if(radiusLabelTxt) radiusLabelTxt.style.display = '';
+    updateRadius(document.getElementById('radiusSlider').value);
+  }
 }
 
-// ========== CHAT FUNCTIONS ==========
-function sendMsg() {
-  var input = document.getElementById('chatInput');
-  if (!input.value.trim()) return;
-  var content = input.value.trim();
-  input.value = '';
-  document.getElementById('sendBtn').style.background = '#ccc';
-  
-  var msgDiv = document.createElement('div');
-  msgDiv.className = 'msg-row me';
-  msgDiv.innerHTML = '<div style="max-width:75%"><div class="msg-meta" style="text-align:right;"><span style="color:#aaa;font-size:9px;">Just now</span></div><div class="bubble me"><p>' + content + '</p></div></div><div class="msg-av">👤</div>';
-  document.getElementById('myMessages').appendChild(msgDiv);
-  document.getElementById('chatBottom').scrollIntoView({behavior:'smooth'});
-  
-  var aiNote = document.getElementById('aiNote');
-  aiNote.style.display = 'block';
-  setTimeout(function() { aiNote.style.display = 'none'; }, 2000);
+function updateRadius(v){
+  var rM=parseInt(v);
+  var d=rM>=5000?"Suburb wide":rM>=1000?(rM/1000).toFixed(1)+"km":rM+"m";
+  document.getElementById("radiusVal").textContent=d;
+  document.getElementById("radiusLabelTxt").textContent=d;
+  var r=(rM/1500)*100;
+  document.getElementById("radiusRing").setAttribute("r",r);
+  document.getElementById("radiusLabelBg").setAttribute("x",155-22);
+  document.getElementById("radiusLabelBg").setAttribute("y",143-r-14);
+  document.getElementById("radiusLabelTxt").setAttribute("x",155);
+  document.getElementById("radiusLabelTxt").setAttribute("y",143-r-5);
+  var inRange=0;
+  for(var id in INCIDENT_DISTS){
+    var inside=INCIDENT_DISTS[id]<=rM;if(inside)inRange++;
+    var btn=document.getElementById("incBtn"+id);
+    if(btn)btn.className="inc-list-btn"+(inside?"":" dimmed");
+    var marker=document.getElementById("incMarker"+id);
+    if(marker)marker.style.opacity=inside?"1":"0.25";
+  }
+  document.getElementById("radiusInfo").textContent="&#128225; "+inRange+" of 6 incidents within "+d+" · "+(6-inRange)+" filtered";
+}
+function setRadius(v){document.getElementById("radiusSlider").value=v;updateRadius(v);}
+function toggleRadius(){var t=document.getElementById("radiusToggle");var on=t.textContent==="ON";t.textContent=on?"OFF":"ON";t.className=on?"radius-toggle off":"radius-toggle";["radiusRing","radiusLabelBg","radiusLabelTxt","radiusInfo"].forEach(function(id){document.getElementById(id).style.display=on?"none":"";});}
+
+function selectInc(id){
+  var sel=window.selI===id?null:id;window.selI=sel;
+  document.querySelectorAll("[id^=incBtn]").forEach(function(b){b.classList.remove("selected");});
+  var detail=document.getElementById("incDetail");
+  if(!sel){detail.style.display="none";return;}
+  document.getElementById("incBtn"+id).classList.add("selected");
+  var inc=INCS[id];
+  var trustPct=Math.min(100,(inc.trust/5)*100);
+  detail.style.borderLeftColor=inc.color;detail.style.display="block";
+  detail.innerHTML="<div class='inc-detail-top'><span class='inc-emoji-lg'>"+inc.emoji+"</span><div style='flex:1'><div style='display:flex;align-items:center;margin-bottom:3px'><div class='inc-title'>"+inc.title+"</div><span class='sev-badge' style='background:"+inc.sc+"'>"+inc.sev.toUpperCase()+"</span></div><div class='inc-addr-text'>&#128205; "+inc.addr+" &middot; "+inc.time+"</div></div><button class='close-btn' onclick='selectInc("+id+")'>&#10005;</button></div><p class='inc-desc-text'>"+inc.desc+"</p><div style='display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:10px;color:#888;'><div class='trust-bar'><div class='trust-fill' style='width:"+trustPct+"%'></div></div>"+inc.trust+"/5 verified</div><div class='inc-verify'><button class='verify-btn vb-confirm' onclick='verifyInc("+id+",1)'>&#10003; Confirm</button><button class='verify-btn vb-still' onclick='verifyInc("+id+",2)'>&#128337; Still there</button><button class='verify-btn vb-resolved' onclick='verifyInc("+id+",3)'>&#9989; Resolved</button><button class='verify-btn vb-notthere' onclick='verifyInc("+id+",4)'>&#10007; Not there</button></div><div class='tags' style='margin-top:8px;'><span class='tag'>By: "+inc.rep+"</span><span class='tag' style='background:#e8f5e9;color:#2e7d32;'>&#10003; "+inc.status+"</span></div>";
 }
 
-function loadMessages() {
-  // Keep original loadMessages functionality
+function verifyInc(id,action){
+  var inc=INCS[id];
+  if(action===1){inc.trust=Math.min(5,inc.trust+1);showPush({icon:"&#10003;",title:"Thanks for verifying!",body:"Your confirmation helps neighbours stay safe.",color:"#2e7d32"});}
+  else if(action===2){showPush({icon:"&#128337;",title:"Still active",body:"Marked as still ongoing.",color:"#f57f17"});}
+  else if(action===3){inc.status="Resolved";inc.trust=5;showPush({icon:"&#9989;",title:"Marked resolved",body:"Thanks for letting neighbours know.",color:"#1565c0"});}
+  else{inc.trust=Math.max(0,inc.trust-1);showPush({icon:"&#10007;",title:"Noted",body:"Recorded that you could not confirm this.",color:"#555"});}
+  selectInc(id);
 }
 
-function setChatLevel(level, btn) {
-  document.querySelectorAll('.clt-btn').forEach(function(b) { b.classList.remove('active'); });
-  btn.classList.add('active');
+function openReport(){document.getElementById("reportModal").style.display="flex";}
+function closeReport(){document.getElementById("reportModal").style.display="none";document.getElementById("reportForm").style.display="block";document.getElementById("reportSuccess").style.display="none";document.getElementById("reportDesc").value="";document.querySelectorAll(".type-btn").forEach(function(b,i){b.className=i===0?"type-btn active":"type-btn";});}
+function setType(b){document.querySelectorAll(".type-btn").forEach(function(x){x.className="type-btn";});b.className="type-btn active";}
+
+async function submitReport(){
+  var desc=document.getElementById("reportDesc").value.trim();if(!desc)return;
+  var activeType=document.querySelector(".type-btn.active");
+  var type=activeType?activeType.textContent.trim():"General";
+  try{var res=await fetch("/api/incidents",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:userPhone,address:userAddress,type:type,description:desc})});if(res.ok){document.getElementById("reportForm").style.display="none";document.getElementById("reportSuccess").style.display="block";setTimeout(function(){closeReport();showPush({icon:"&#128680;",title:"Incident Reported",body:"Submitted. Neighbours being notified.",color:"#e65100"});},2000);}}catch(e){}
 }
 
-function setFilter(type, btn) {
-  document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
-  btn.classList.add('active');
-}
+var pT;
+function showPush(n){var b=document.getElementById("pushBanner");document.getElementById("pushIcon").innerHTML=n.icon;document.getElementById("pushTitle").textContent=n.title;document.getElementById("pushBodyText").textContent=n.body;b.style.background=n.color||"#2d4a2d";b.style.display="flex";clearTimeout(pT);pT=setTimeout(dismissPush,5000);}
+function dismissPush(){document.getElementById("pushBanner").style.display="none";}
 
-function scrollToBottom() {
-  document.getElementById('chatBottom').scrollIntoView({behavior:'smooth'});
-}
+function markNotifRead(card){card.classList.add("read");var dot=card.querySelector(".unread-dot");if(dot)dot.style.display="none";updateNotifBadge();}
+function markNotifsRead(){document.querySelectorAll(".notif-card").forEach(function(c){markNotifRead(c);});}
+function updateNotifBadge(){var unread=document.querySelectorAll(".notif-card:not(.read)").length;var b=document.getElementById("notifBadge");var tb=document.getElementById("tabNotifBadge");if(unread>0){if(b){b.textContent=unread;b.style.display="flex";}if(tb){tb.textContent=unread;tb.style.display="flex";}}else{if(b)b.style.display="none";if(tb)tb.style.display="none";}}
 
-// ========== LOCAL FUNCTIONS ==========
-var LOCAL_LISTINGS = [
-  {emoji:"🥭", title:"Fruit Kart", location:"Summerstone Estate", desc:"Mangoes $1, bananas 50c", tags:["Fresh"], badge:"OPEN", badgeColor:"#2e7d32", estate:"summerstone"},
-  {emoji:"📊", title:"Bookkeeper", location:"Summerstone Estate", desc:"BAS, payroll, Xero", tags:["Paid"], badge:"NEIGHBOUR", badgeColor:"#bf360c", estate:"summerstone"}
+var LOCAL_LISTINGS=[
+  {emoji:"&#127818;",title:"Fruit Kart",location:"Summerstone Estate",desc:"Mangoes $1, bananas 50c. Cash only. 7am til sold out.",tags:["Fresh produce","Cash"],badge:"OPEN NOW",badgeColor:"#2e7d32",estate:"summerstone"},
+  {emoji:"&#128210;",title:"Bookkeeper",location:"Summerstone Estate",desc:"BAS, payroll, Xero. Tradies welcome. First consult free.",tags:["Paid","Tax"],badge:"NEIGHBOUR RATE",badgeColor:"#bf360c",estate:"summerstone"},
+  {emoji:"&#127939;",title:"Run Club",location:"Summerstone Estate",desc:"Saturday 5km. All paces welcome. Just show up!",tags:["Free","Sat 6am"],badge:"SAT 6AM",badgeColor:"#6a1b9a",estate:"summerstone"},
+  {emoji:"&#129370;",title:"Fresh Eggs $5/dozen",location:"Summerstone Estate",desc:"Free range, collected daily. Cash in letterbox.",tags:["$5/dozen","Cash"],badge:"AVAILABLE",badgeColor:"#e65100",estate:"summerstone"},
+  {emoji:"&#128170;",title:"Boot Camp",location:"Summerstone Estate",desc:"Free workout Tue & Thu 5:30pm. All levels.",tags:["Free","Tue & Thu"],badge:"TUE & THU",badgeColor:"#00695c",estate:"summerstone"}
 ];
 
-function renderLocalTab() {
-  var container = document.getElementById('localListings');
-  if (!container) return;
-  container.innerHTML = LOCAL_LISTINGS.map(function(item) {
-    return '<div class="local-card"><div class="local-top"><span class="local-emoji">' + item.emoji + '</span><div style="flex:1;"><div class="local-title">' + item.title + '</div><div class="local-addr">📍 ' + item.location + '</div></div><span class="local-badge" style="background:' + item.badgeColor + ';">' + item.badge + '</span></div><p class="local-desc">' + item.desc + '</p><div class="tags">' + item.tags.map(function(t){ return '<span class="tag">' + t + '</span>'; }).join('') + '</div></div>';
-  }).join('');
+function renderLocalTab(){
+  var container=document.getElementById("localListings");if(!container)return;
+  var ek=getEstateFromAddress(userAddress);
+  var filtered=LOCAL_LISTINGS.filter(function(l){return!userAddress||l.estate===ek;});
+  var estate=ESTATES[ek]||ESTATES.default;
+  var lt=document.getElementById("localTitle");
+  if(lt)lt.innerHTML="&#127960; LOCAL &mdash; "+(estate.name||"YOUR AREA").toUpperCase();
+  if(filtered.length===0){container.innerHTML="<div class='empty-state'>&#127960;<br/>No local listings for your area yet.<br/><strong>Be the first to add one!</strong></div>";return;}
+  container.innerHTML=filtered.map(function(item){return"<div class='local-card'><div class='local-top'><span class='local-emoji'>"+item.emoji+"</span><div style='flex:1;'><div class='local-title'>"+item.title+"</div><div class='local-addr'>&#128205; "+item.location+"</div></div><span class='local-badge' style='background:"+item.badgeColor+";'>"+item.badge+"</span></div><p class='local-desc'>"+item.desc+"</p><div class='tags'>"+item.tags.map(function(t){return"<span class='tag'>"+t+"</span>";}).join("")+"</div></div>";}).join("");
 }
 
-function addListing() {
-  var title = prompt("What are you offering?");
-  if (title) {
-    showPush({icon:"🏘️", title:"Listing Added!", body:title, color:"var(--ec)"});
-    renderLocalTab();
-  }
-}
-
-// ========== PROFILE FUNCTIONS ==========
-function openProfile() {
-  document.getElementById('profileModal').style.display = 'flex';
-  document.getElementById('profileName').textContent = userDisplay;
-  document.getElementById('profileAddress').textContent = userAddress || 'Not set';
-}
-
-function closeProfile() {
-  document.getElementById('profileModal').style.display = 'none';
-}
-
-function logout() {
-  localStorage.clear();
-  window.location.href = '/signup.html';
-}
-
-function openSettings() {
-  document.getElementById('settingsModal').style.display = 'flex';
-}
-
-function closeSettings() {
-  document.getElementById('settingsModal').style.display = 'none';
-}
-
-function toggleSetting(el) {
-  el.classList.toggle('on');
-}
-
-// ========== NOTIFICATION FUNCTIONS ==========
-function showPush(n) {
-  var banner = document.getElementById('pushBanner');
-  if (!banner) return;
-  document.getElementById('pushIcon').innerHTML = n.icon;
-  document.getElementById('pushTitle').textContent = n.title;
-  document.getElementById('pushBodyText').textContent = n.body;
-  banner.style.background = n.color || '#2d4a2d';
-  banner.style.display = 'flex';
-  setTimeout(function() { banner.style.display = 'none'; }, 4000);
-}
-
-function markNotifRead(card) {
-  card.classList.add('read');
-  var dot = card.querySelector('.unread-dot');
-  if (dot) dot.style.display = 'none';
-}
-
-function markNotifsRead() {
-  document.querySelectorAll('.notif-card').forEach(function(c) { markNotifRead(c); });
-}
-
-// ========== REPORT FUNCTIONS ==========
-function openReport() {
-  document.getElementById('reportModal').style.display = 'flex';
-}
-
-function closeReport() {
-  document.getElementById('reportModal').style.display = 'none';
-  document.getElementById('reportForm').style.display = 'block';
-  document.getElementById('reportSuccess').style.display = 'none';
-}
-
-function setType(btn) {
-  document.querySelectorAll('.type-btn').forEach(function(b) { b.classList.remove('active'); });
-  btn.classList.add('active');
-}
-
-function submitReport() {
-  document.getElementById('reportForm').style.display = 'none';
-  document.getElementById('reportSuccess').style.display = 'block';
-  setTimeout(function() { closeReport(); showPush({icon:"🚨", title:"Incident Reported", body:"Thanks for keeping neighbours safe", color:"#e65100"}); }, 1500);
-}
-
-function messageAdmin() {
-  alert("Email support@streetconnect.com for help");
-}
-
-// ========== ESTATE BRANDING ==========
-function applyEstateBranding() {
-  var estateName = userSuburb || "Greater Brisbane";
-  document.getElementById('hSuburb').textContent = estateName;
-  document.getElementById('composeLocation').textContent = estateName;
-  document.getElementById('pinnedBinBody').innerHTML = '🛑 Check moretonbay.qld.gov.au for your bin day schedule';
-}
-
-// ========== INITIALIZATION ==========
-function init() {
-  applyEstateBranding();
+function addListing(){
+  if(!isLoggedIn){alert("Please sign up first.");window.location.href="/signup.html";return;}
+  var title=prompt("What are you offering?");if(!title||!title.trim())return;
+  var desc=prompt("Describe it:");if(!desc||!desc.trim())return;
+  var price=prompt("Price? (e.g. Free, $5)");
+  var ek=getEstateFromAddress(userAddress);
+  LOCAL_LISTINGS.push({emoji:"&#127960;",title:title.trim(),location:(ESTATES[ek]||ESTATES.default).name||userSuburb||"Local",desc:desc.trim(),tags:[price||"Free"],badge:"NEW",badgeColor:"#313131",estate:ek});
   renderLocalTab();
-  updateIncidentList();
-  if (isLoggedIn) {
-    var myAddrBtn = document.getElementById('myAddrBtn');
-    var joinBtnWrap = document.getElementById('joinBtnWrap');
-    if (myAddrBtn) myAddrBtn.style.display = 'block';
-    if (joinBtnWrap) joinBtnWrap.style.display = 'none';
-    var myAddrText = document.getElementById('myAddrText');
-    if (myAddrText) myAddrText.textContent = userDisplay;
-  }
-  setInterval(loadMessages, 10000);
+  showPush({icon:"&#127960;",title:"Listing Added!",body:title.trim()+" added.",color:"#313131"});
 }
 
-init();
+function toggleInterest(btn){btn.classList.toggle("selected");var interests=[];document.querySelectorAll(".interest-tag.selected").forEach(function(b){interests.push(b.textContent);});localStorage.setItem("sc_interests",JSON.stringify(interests));}
+
+function editDisplayName(){
+  var newName=prompt("Enter your display name:",userDisplay);
+  if(newName&&newName.trim()){
+    userDisplay=newName.trim();
+    localStorage.setItem("sc_display",userDisplay);
+    var mt=document.getElementById("myAddrText");if(mt)mt.textContent=userDisplay;
+    var pn=document.getElementById("profileName");if(pn)pn.textContent=userDisplay;
+    var av=document.getElementById("profileAvatar");if(av)av.textContent=userDisplay.charAt(0).toUpperCase();
+    showPush({icon:"&#128100;",title:"Display name updated",body:"You now appear as "+userDisplay,color:"#313131"});
+  }
+}
+
+function toggleInterest(btn, interest){
+  btn.classList.toggle('selected');
+}
+
+function saveProfile(){
+  var newName = document.getElementById('editDisplayName').value.trim();
+  var newBio = document.getElementById('editBio').value.trim();
+  var interests = [];
+  document.querySelectorAll('.interest-tag.selected').forEach(function(t){interests.push(t.textContent.trim());});
+  
+  if(newName){
+    userDisplay = newName;
+    localStorage.setItem('sc_display', newName);
+  }
+  if(newBio) localStorage.setItem('sc_bio', newBio);
+  if(interests.length) localStorage.setItem('sc_interests', JSON.stringify(interests));
+  
+    var mt = document.getElementById('myAddrText');
+  if(mt) mt.textContent = userDisplay;
+  
+  showPush({icon:'&#10003;',title:'Profile updated!',body:'Your changes have been saved.',color:'var(--ec)'});
+  closeProfile();
+}
+
+function openProfile(){
+  var ek=getEstateFromAddress(userAddress);
+  var estate=ESTATES[ek]||ESTATES.default;
+  var council=getCouncilFromSuburb(userSuburb);
+  var av=document.getElementById("profileAvatar");if(av)av.textContent=userDisplay.charAt(0).toUpperCase()||"T";
+  var pn=document.getElementById("profileName");if(pn)pn.textContent=userDisplay;
+  var pa=document.getElementById("profileAddress");if(pa)pa.textContent=userAddress||"Not set";
+  var pe=document.getElementById("profileEstate");if(pe)pe.textContent=(estate.name||"Unknown")+" · "+(userSuburb||"");
+  var pc=document.getElementById("profileCouncil");if(pc)pc.textContent=council;
+  var interests=JSON.parse(localStorage.getItem("sc_interests")||"[]");
+  document.querySelectorAll(".interest-tag").forEach(function(b){b.classList.toggle("selected",interests.indexOf(b.textContent)!==-1);});
+  document.getElementById("profileModal").style.display="flex";
+}
+function closeProfile(){document.getElementById("profileModal").style.display="none";}
+function logout(){if(!confirm("Logout?"))return;["sc_address","sc_phone","sc_suburb","sc_display","sc_welcomed","sc_interests"].forEach(function(k){localStorage.removeItem(k);});closeProfile();location.reload();}
+
+function openSettings(){document.getElementById("settingsModal").style.display="flex";}
+function closeSettings(){document.getElementById("settingsModal").style.display="none";}
+function toggleSetting(el){el.classList.toggle("on");}
+
+function applyEstateBranding(){
+  var ek=getEstateFromAddress(userAddress);
+  var estate=ESTATES[ek]||ESTATES.default;
+  var council=getCouncilFromSuburb(userSuburb);
+  document.documentElement.style.setProperty("--ec",estate.color);
+  document.documentElement.style.setProperty("--ea",estate.accent);
+  var header=document.getElementById("mainHeader");if(header)header.style.background=estate.color;
+  var logo=document.getElementById("estateLogo");
+  var placeholder=document.getElementById("estatePlaceholder");
+  if(logo&&estate.logo){
+    logo.src=estate.logo;
+    logo.style.display="block";
+    logo.style.maxWidth="220px";
+    logo.style.maxHeight="90px";
+    logo.style.objectFit="contain";
+    if(placeholder)placeholder.style.display="none";
+  }
+  else if(estate.seriesM){
+    if(logo)logo.style.display="none";
+    if(placeholder){
+      placeholder.style.display="flex";placeholder.style.flexDirection="column";placeholder.style.alignItems="center";
+      var mImg=document.createElement("img");mImg.src="/montrose-m.png";mImg.style.cssText="height:60px;object-fit:contain;margin-bottom:6px;";
+      var nameDiv=document.createElement("div");nameDiv.style.cssText="font-size:20px;font-weight:300;color:#d4dde8;letter-spacing:7px;font-family:Georgia,serif;";nameDiv.textContent="MONTROSE";
+      var subDiv=document.createElement("div");subDiv.style.cssText="font-size:9px;color:rgba(184,197,214,0.5);letter-spacing:4px;margin-top:3px;";subDiv.textContent="MORAYFIELD";
+      placeholder.innerHTML="";placeholder.appendChild(mImg);placeholder.appendChild(nameDiv);placeholder.appendChild(subDiv);
+    }
+  } else {if(logo)logo.style.display="none";if(placeholder){placeholder.style.display="flex";placeholder.innerHTML="&#127960;";}}
+  var hStreet=document.getElementById("hStreet");var hSuburb=document.getElementById("hSuburb");var hEstate=document.getElementById("hEstate");var hCouncil=document.getElementById("hCouncil");var composeLocation=document.getElementById("composeLocation");
+  if(hStreet)hStreet.textContent=userDisplay||"";
+  if(hSuburb)hSuburb.textContent=userSuburb||"";
+  if(hEstate)hEstate.textContent=(estate.name||council).toUpperCase();
+  if(hCouncil)hCouncil.textContent=council.toUpperCase()+" · STREET CONNECT";
+  if(composeLocation)composeLocation.textContent=estate.name||council;
+  var boundary=document.getElementById("estateBoundary");
+  if(boundary&&estate.boundary){boundary.setAttribute("points",estate.boundary);boundary.setAttribute("display","");}else if(boundary){boundary.setAttribute("display","none");}
+    var COUNCIL_COLORS={"Moreton Bay City":{"c":"#2a3a00","a":"#b5cc18"},"Ipswich City":{"c":"#1a3020","a":"#69f0ae"},"Logan City":{"c":"#1a5c1a","a":"#81c784"},"Brisbane City":{"c":"#4a1a5c","a":"#ce93d8"}};
+  if(ek==="default"&&COUNCIL_COLORS[council]){
+    var cc=COUNCIL_COLORS[council];
+    document.documentElement.style.setProperty("--ec",cc.c);
+    document.documentElement.style.setProperty("--ea",cc.a);
+    if(header)header.style.background=cc.c;
+    if(placeholder){
+      placeholder.style.display="flex";placeholder.style.flexDirection="column";placeholder.style.alignItems="center";
+      var councilIcons={
+        "Moreton Bay City":"<svg width='60' height='60' viewBox='0 0 60 60' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='30' cy='30' r='28' fill='rgba(181,204,24,0.15)' stroke='rgba(181,204,24,0.4)' stroke-width='1.5'/><path d='M15 42 L15 28 L22 22 L30 18 L38 22 L45 28 L45 42 Z' fill='none' stroke='rgba(79,195,247,0.8)' stroke-width='1.5' stroke-linejoin='round'/><path d='M25 42 L25 34 L35 34 L35 42' fill='none' stroke='rgba(79,195,247,0.8)' stroke-width='1.5'/><path d='M10 42 L50 42' stroke='rgba(79,195,247,0.6)' stroke-width='1.5'/><circle cx='30' cy='26' r='3' fill='rgba(79,195,247,0.6)'/><path d='M20 42 L20 30' stroke='rgba(79,195,247,0.4)' stroke-width='1'/><path d='M40 42 L40 30' stroke='rgba(79,195,247,0.4)' stroke-width='1'/></svg>",
+        "Ipswich City":"<svg width='60' height='60' viewBox='0 0 60 60' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='30' cy='30' r='28' fill='rgba(255,138,101,0.15)' stroke='rgba(255,138,101,0.4)' stroke-width='1.5'/><path d='M18 42 L18 24 L30 16 L42 24 L42 42 Z' fill='none' stroke='rgba(255,138,101,0.8)' stroke-width='1.5' stroke-linejoin='round'/><rect x='26' y='32' width='8' height='10' fill='none' stroke='rgba(255,138,101,0.8)' stroke-width='1.5'/><rect x='20' y='28' width='6' height='6' fill='none' stroke='rgba(255,138,101,0.5)' stroke-width='1'/><rect x='34' y='28' width='6' height='6' fill='none' stroke='rgba(255,138,101,0.5)' stroke-width='1'/><path d='M10 42 L50 42' stroke='rgba(255,138,101,0.6)' stroke-width='1.5'/><path d='M30 16 L30 10 M27 13 L33 13' stroke='rgba(255,138,101,0.5)' stroke-width='1.5' stroke-linecap='round'/></svg>",
+        "Logan City":"<svg width='60' height='60' viewBox='0 0 60 60' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='30' cy='30' r='28' fill='rgba(129,199,132,0.15)' stroke='rgba(129,199,132,0.4)' stroke-width='1.5'/><path d='M30 12 C18 18 12 26 12 34 C12 42 20 48 30 48 C40 48 48 42 48 34 C48 26 42 18 30 12Z' fill='none' stroke='rgba(129,199,132,0.5)' stroke-width='1'/><path d='M30 18 C22 22 18 28 18 34 C18 40 24 44 30 44 C36 44 42 40 42 34 C42 28 38 22 30 18Z' fill='none' stroke='rgba(129,199,132,0.7)' stroke-width='1.5'/><circle cx='30' cy='34' r='5' fill='rgba(129,199,132,0.4)' stroke='rgba(129,199,132,0.8)' stroke-width='1.5'/><path d='M30 18 L30 12 M22 20 L18 16 M38 20 L42 16' stroke='rgba(129,199,132,0.5)' stroke-width='1' stroke-linecap='round'/></svg>",
+        "Brisbane City":"<svg width='60' height='60' viewBox='0 0 60 60' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='30' cy='30' r='28' fill='rgba(206,147,216,0.15)' stroke='rgba(206,147,216,0.4)' stroke-width='1.5'/><rect x='16' y='30' width='8' height='12' fill='none' stroke='rgba(206,147,216,0.6)' stroke-width='1.5'/><rect x='26' y='22' width='8' height='20' fill='none' stroke='rgba(206,147,216,0.8)' stroke-width='1.5'/><rect x='36' y='26' width='8' height='16' fill='none' stroke='rgba(206,147,216,0.6)' stroke-width='1.5'/><path d='M10 42 L50 42' stroke='rgba(206,147,216,0.6)' stroke-width='1.5'/><path d='M20 30 L20 24 M30 22 L30 14 M40 26 L40 18' stroke='rgba(206,147,216,0.4)' stroke-width='1' stroke-dasharray='2,2'/></svg>",
+        "Greater Brisbane":"<svg width='60' height='60' viewBox='0 0 60 60' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='30' cy='30' r='28' fill='rgba(105,240,174,0.1)' stroke='rgba(105,240,174,0.3)' stroke-width='1.5'/><path d='M20 38 C20 32 24 26 30 24 C36 26 40 32 40 38' fill='none' stroke='rgba(105,240,174,0.6)' stroke-width='1.5'/><circle cx='30' cy='24' r='4' fill='none' stroke='rgba(105,240,174,0.8)' stroke-width='1.5'/><path d='M15 38 L45 38' stroke='rgba(105,240,174,0.5)' stroke-width='1.5'/><path d='M22 38 L22 42 M30 38 L30 44 M38 38 L38 42' stroke='rgba(105,240,174,0.4)' stroke-width='1' stroke-linecap='round'/></svg>"
+      };
+      var icon=councilIcons[council]||councilIcons["Greater Brisbane"];
+      placeholder.innerHTML=icon+"<div style='font-size:9px;color:rgba(255,255,255,0.55);letter-spacing:2px;font-weight:700;text-align:center;margin-top:6px;'>"+council.toUpperCase()+"</div>";
+    }
+  }
+
+  var binKey=(userSuburb||"").toLowerCase();
+  var binText=BIN_SCHEDULES[binKey]||estate.binDay||"Check your council website for bin day.";
+  var pt=document.getElementById("pinnedBinTitle");var pb=document.getElementById("pinnedBinBody");
+  if(pt)pt.innerHTML="&#128721; Bin Day &mdash; "+(userSuburb||"Your Area");
+  if(pb)pb.innerHTML=binText;
+    var splash=document.getElementById("splashScreen");
+  var splashLogo=document.getElementById("splashLogo");
+  var splashText=document.getElementById("splashText");
+  if(splash&&isLoggedIn&&!localStorage.getItem("sc_splashed")){
+    if(estate.logo&&splashLogo){splashLogo.src=estate.logo;splashLogo.style.display="block";}
+    if(splashText)splashText.textContent="Welcome to "+(estate.name||"Street Connect");
+    splash.style.display="flex";
+    localStorage.setItem("sc_splashed","1");
+    setTimeout(function(){splash.style.opacity="0";setTimeout(function(){splash.style.display="none";},500);},2500);
+  } else if(splash){splash.style.display="none";}
+}
+
+function updateHeader(){
+  var jw=document.getElementById("joinBtnWrap");var mb=document.getElementById("myAddrBtn");var mt=document.getElementById("myAddrText");
+  if(isLoggedIn&&userAddress){if(jw)jw.style.display="none";if(mb)mb.style.display="block";if(mt)mt.textContent=userDisplay;}
+  else{if(jw)jw.style.display="block";if(mb)mb.style.display="none";}
+}
+
+async function updateNeighbourCount(){
+  try{var res=await fetch("/api/get-users?password=count_only");if(res.ok){var data=await res.json();var count=data.total||0;var el=document.getElementById("neighbourCount");if(el)el.textContent=count+" neighbour"+(count===1?"":"s")+" active";}}
+  catch(e){var el=document.getElementById("neighbourCount");if(el)el.textContent="community growing";}
+}
+
+function messageAdmin(){
+  var msg=prompt("Message to Street Connect support:");
+  if(msg&&msg.trim()){fetch("/api/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:userPhone,address:userAddress,suburb:"ADMIN_MSG",content:"[SUPPORT] "+msg.trim(),display_name:userDisplay})}).then(function(){alert("Message sent! We will get back to you soon.");});}
+}
+
+var settings={darkMode:localStorage.getItem("sc_darkmode")==="1",quietHours:localStorage.getItem("sc_quiet")==="1"};
+
+window.addEventListener("online",function(){var b=document.getElementById("offlineBanner");if(b)b.style.display="none";loadMessages();});
+window.addEventListener("offline",function(){var b=document.getElementById("offlineBanner");if(b)b.style.display="block";});
+
+function scrollToBottom(){document.getElementById("chatBottom").scrollIntoView({behavior:"smooth"});var banner=document.getElementById("newMsgBanner");if(banner)banner.style.display="none";}
+
+var currentDM = null;
+var dmMessages = {};
+
+// ── PROFILE PHOTO ────────────────────────────────────────────────────────────
+var userPhoto = localStorage.getItem("sc_photo") || "";
+
+function handlePhotoUpload(event){
+  var file = event.target.files[0];
+  if(!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e){
+    var img = new Image();
+    img.onload = function(){
+      var canvas = document.createElement('canvas');
+      var maxSize = 150;
+      var w = img.width, h = img.height;
+      if(w > h){ h = Math.round(h*(maxSize/w)); w = maxSize; } else { w = Math.round(w*(maxSize/h)); h = maxSize; }
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      var compressed = canvas.toDataURL('image/jpeg', 0.8);
+      userPhoto = compressed;
+      localStorage.setItem("sc_photo", compressed);
+      updatePhotoDisplay();
+      showPush({icon:"&#128247;",title:"Photo updated!",body:"Your profile photo has been saved.",color:"var(--ec)"});
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function updatePhotoDisplay(){
+  var avatarImg = document.getElementById("profileAvatarImg");
+  var avatarText = document.getElementById("profileAvatarText");
+  if(userPhoto && avatarImg){
+    avatarImg.src = userPhoto;
+    avatarImg.style.display = "block";
+    if(avatarText) avatarText.style.display = "none";
+  } else if(avatarImg){
+    avatarImg.style.display = "none";
+    if(avatarText) avatarText.style.display = "block";
+  }
+  var headerImg = document.getElementById("headerAvatarImg");
+  var headerText = document.getElementById("headerAvatarText");
+  if(userPhoto && headerImg){
+    headerImg.src = userPhoto;
+    headerImg.style.display = "inline-block";
+    if(headerText) headerText.style.display = "none";
+  } else if(headerImg){
+    headerImg.style.display = "none";
+    if(headerText) headerText.style.display = "inline";
+  }
+}
+
+function openDM(neighbourName, neighbourPhone){
+  if(!isLoggedIn){alert("Please sign up to send messages.");return;}
+  if(!neighbourPhone||neighbourPhone==="demo"||neighbourPhone===userPhone)return;
+  
+  currentDM = {name:neighbourName, phone:neighbourPhone};
+  if(!dmMessages[neighbourPhone])dmMessages[neighbourPhone]=[];
+  
+    var list=document.getElementById("dmList");
+  if(list){
+    var existing=document.getElementById("dm_"+neighbourPhone);
+    if(!existing){
+      var item=document.createElement("div");
+      item.className="dm-item";
+      item.id="dm_"+neighbourPhone;
+      item.onclick=function(){openDMConvo(neighbourName,neighbourPhone);};
+      item.innerHTML="<div class='dm-avatar'>"+neighbourName.charAt(0).toUpperCase()+"</div>"+
+        "<div style='flex:1'><div class='dm-name'>"+neighbourName+"</div>"+
+        "<div class='dm-preview'>Tap to open conversation</div></div>";
+      list.innerHTML="";
+      list.appendChild(item);
+    }
+  }
+  
+  switchTab("dms",null);
+  openDMConvo(neighbourName, neighbourPhone);
+}
+
+// ── PROFILE PHOTO ────────────────────────────────────────────────────────────
+var userPhoto = localStorage.getItem("sc_photo") || "";
+
+function handlePhotoUpload(event){
+  var file = event.target.files[0];
+  if(!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e){
+    var img = new Image();
+    img.onload = function(){
+      var canvas = document.createElement('canvas');
+      var maxSize = 150;
+      var w = img.width, h = img.height;
+      if(w > h){ h = Math.round(h*(maxSize/w)); w = maxSize; } else { w = Math.round(w*(maxSize/h)); h = maxSize; }
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      var compressed = canvas.toDataURL('image/jpeg', 0.8);
+      userPhoto = compressed;
+      localStorage.setItem("sc_photo", compressed);
+      updatePhotoDisplay();
+      showPush({icon:"&#128247;",title:"Photo updated!",body:"Your profile photo has been saved.",color:"var(--ec)"});
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function updatePhotoDisplay(){
+  var avatarImg = document.getElementById("profileAvatarImg");
+  var avatarText = document.getElementById("profileAvatarText");
+  if(userPhoto && avatarImg){
+    avatarImg.src = userPhoto;
+    avatarImg.style.display = "block";
+    if(avatarText) avatarText.style.display = "none";
+  } else if(avatarImg){
+    avatarImg.style.display = "none";
+    if(avatarText) avatarText.style.display = "block";
+  }
+  var headerImg = document.getElementById("headerAvatarImg");
+  var headerText = document.getElementById("headerAvatarText");
+  if(userPhoto && headerImg){
+    headerImg.src = userPhoto;
+    headerImg.style.display = "inline-block";
+    if(headerText) headerText.style.display = "none";
+  } else if(headerImg){
+    headerImg.style.display = "none";
+    if(headerText) headerText.style.display = "inline";
+  }
+}
+
+function openDMConvo(name, phone){
+  currentDM={name:name,phone:phone};
+  document.getElementById("dmInbox").style.display="none";
+  var convo=document.getElementById("dmConvo");
+  convo.style.display="flex";
+  convo.style.flexDirection="column";
+  document.getElementById("dmConvoName").textContent=name;
+  renderDMMessages(phone);
+}
+
+function closeDMConvo(){
+  document.getElementById("dmConvo").style.display="none";
+  document.getElementById("dmInbox").style.display="flex";
+  document.getElementById("dmInbox").style.flexDirection="column";
+}
+
+function renderDMMessages(phone){
+  var msgs=dmMessages[phone]||[];
+  var container=document.getElementById("dmMessages");
+  if(!msgs.length){
+    container.innerHTML="<div class='empty-state'>&#128172;<br/>Start the conversation!</div>";
+    return;
+  }
+  container.innerHTML=msgs.map(function(m){
+    var isMe=m.from==="me";
+    return "<div class='msg-row"+(isMe?" me":"")+"'>"+
+      (isMe?"":"<div class='msg-av'>&#127968;</div>")+
+      "<div style='max-width:75%'>"+
+      (isMe?"":"<div class='msg-meta'>"+currentDM.name+" &middot; "+m.time+"</div>")+
+      "<div class='bubble "+(isMe?"me":"them")+"'><p>"+m.text+"</p></div>"+
+      "</div>"+
+      (isMe?"<div class='msg-av'>&#127968;</div>":"")+
+      "</div>";
+  }).join("");
+  container.scrollTop=container.scrollHeight;
+}
+
+function sendDM(){
+  var input=document.getElementById("dmInput");
+  var text=input.value.trim();
+  if(!text||!currentDM)return;
+  input.value="";
+  var n=new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
+  if(!dmMessages[currentDM.phone])dmMessages[currentDM.phone]=[];
+  dmMessages[currentDM.phone].push({from:"me",text:text,time:n});
+  renderDMMessages(currentDM.phone);
+  showPush({icon:"&#128172;",title:"Message sent",body:"Your private message was delivered.",color:"var(--ec)"});
+}
+
+var msgReactions={};
+function addReaction(msgId,emoji){
+  if(!msgReactions[msgId])msgReactions[msgId]={};
+  if(msgReactions[msgId][emoji])delete msgReactions[msgId][emoji];
+  else msgReactions[msgId][emoji]=true;
+  loadMessages();
+}
+
+function showWelcomeSplash(){
+  var splash=document.getElementById("welcomeSplash");
+  var wLogo=document.getElementById("welcomeLogo");
+  var wName=document.getElementById("welcomeEstateName");
+  var ek=getEstateFromAddress(userAddress);
+  var estate=ESTATES[ek]||ESTATES.default;
+  if(!splash)return;
+  if(estate.logo&&wLogo){wLogo.src=estate.logo;wLogo.style.display="block";}
+  if(wName)wName.textContent=estate.name||"Street Connect";
+  splash.style.display="flex";
+  setTimeout(function(){
+    splash.style.opacity="0";
+    splash.style.transition="opacity 0.5s";
+    setTimeout(function(){splash.style.display="none";splash.style.opacity="1";},500);
+  },2500);
+}
+
+updateHeader();
+applyEstateBranding();
+updatePhotoDisplay();
+updateNeighbourCount();
+renderLocalTab();
+updateRadius(500);
+updateNotifBadge();
+
+if(!navigator.onLine){var b=document.getElementById("offlineBanner");if(b)b.style.display="block";}
+
+if(isLoggedIn&&!localStorage.getItem("sc_welcomed")){
+  showWelcomeSplash();
+  var ek2=getEstateFromAddress(userAddress);
+  var estate2=ESTATES[ek2]||ESTATES.default;
+  setTimeout(function(){showPush({icon:"&#127881;",title:"Welcome to Street Connect!",body:"You are now connected with your neighbours. Say hello!",color:estate2.color});localStorage.setItem("sc_welcomed","1");},3000);
+}
+
 </script>
 </body>
 </html>
