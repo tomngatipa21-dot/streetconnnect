@@ -1206,12 +1206,11 @@ function applyEstateBranding(){
   var logo=document.getElementById("estateLogo");
   var placeholder=document.getElementById("estatePlaceholder");
   if(logo&&estate.logo){
-    logo.setAttribute("src",estate.logo);
+    logo.src=estate.logo;
     logo.style.display="block";
     logo.style.maxWidth="220px";
     logo.style.maxHeight="90px";
     logo.style.objectFit="contain";
-    logo.onerror=function(){console.log("Logo failed to load");};
     if(placeholder)placeholder.style.display="none";
   }
   else if(estate.seriesM){
