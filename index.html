@@ -215,6 +215,8 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
 .interest-tag{background:#f5f0e8;border:1.5px solid #e0dbd0;border-radius:20px;padding:5px 12px;font-size:11px;cursor:pointer;color:#666;font-family:inherit;transition:all 0.15s;}
 .interest-tag.selected{background:var(--ec);color:#fff;border-color:var(--ec);}
 .logout-btn{width:100%;background:#fff0f0;color:#e53935;border:1.5px solid #ffcdd2;border-radius:12px;padding:12px;font-size:14px;cursor:pointer;font-weight:700;font-family:inherit;}
+.interest-tag{background:#f5f0e8;border:1.5px solid #e0dbd0;border-radius:20px;padding:5px 10px;font-size:11px;cursor:pointer;color:#666;font-family:inherit;transition:all 0.2s;}
+.interest-tag.selected{background:var(--ec);color:#fff;border-color:var(--ec);}
 .edit-btn{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:20px;padding:4px 12px;font-size:11px;color:#fff;cursor:pointer;font-family:inherit;margin-top:6px;}
 
 /* DM */
@@ -405,6 +407,30 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
           <button class="interest-tag" onclick="toggleInterest(this)">&#127859; Food</button>
           <button class="interest-tag" onclick="toggleInterest(this)">&#127926; Music</button>
         </div>
+      </div>
+      <div style="background:#f9f6f0;border-radius:12px;padding:14px;">
+        <div style="font-size:12px;font-weight:700;color:#555;margin-bottom:10px;">Edit Profile</div>
+        <div style="margin-bottom:8px;">
+          <label style="font-size:10px;color:#aaa;display:block;margin-bottom:4px;">Display Name</label>
+          <input id="editDisplayName" style="width:100%;border:1.5px solid #e0dbd0;border-radius:8px;padding:8px 10px;font-size:13px;font-family:inherit;outline:none;background:#fff;" placeholder="How neighbours see you"/>
+        </div>
+        <div style="margin-bottom:8px;">
+          <label style="font-size:10px;color:#aaa;display:block;margin-bottom:4px;">Bio (optional)</label>
+          <input id="editBio" style="width:100%;border:1.5px solid #e0dbd0;border-radius:8px;padding:8px 10px;font-size:13px;font-family:inherit;outline:none;background:#fff;" placeholder="e.g. Dad of 2, been here 3 years"/>
+        </div>
+        <div style="margin-bottom:10px;">
+          <label style="font-size:10px;color:#aaa;display:block;margin-bottom:6px;">Interests</label>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;" id="interestTags">
+            <button class="interest-tag" onclick="toggleInterest(this,'Gardens')">&#127807; Gardens</button>
+            <button class="interest-tag" onclick="toggleInterest(this,'Kids')">&#128106; Kids</button>
+            <button class="interest-tag" onclick="toggleInterest(this,'Sport')">&#9917; Sport</button>
+            <button class="interest-tag" onclick="toggleInterest(this,'Pets')">&#128054; Pets</button>
+            <button class="interest-tag" onclick="toggleInterest(this,'Business')">&#128188; Business</button>
+            <button class="interest-tag" onclick="toggleInterest(this,'Music')">&#127925; Music</button>
+            <button class="interest-tag" onclick="toggleInterest(this,'Food')">&#127859; Food</button>
+          </div>
+        </div>
+        <button onclick="saveProfile()" style="width:100%;background:var(--ec);color:#fff;border:none;border-radius:10px;padding:11px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">Save Changes</button>
       </div>
       <button class="logout-btn" onclick="logout()">&#128682; Logout</button>
     </div>
@@ -687,10 +713,27 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
 
   <!-- DMS TAB -->
   <div class="content" id="tab-dms" style="display:none;">
-    <div class="messages">
+    <div id="dmInbox" style="flex:1;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:8px;">
       <div class="date-div">DIRECT MESSAGES</div>
       <div id="dmList">
-        <div class="empty-state">&#128172;<br/>No direct messages yet.<br/>Tap a neighbour's name in chat to message them privately.</div>
+        <div class="empty-state">&#128172;<br/>No direct messages yet.<br/><span style="font-size:11px;">Tap a neighbour's name in chat<br/>to start a private conversation.</span></div>
+      </div>
+    </div>
+    <div id="dmConvo" style="display:none;flex:1;flex-direction:column;">
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid #ede8e0;background:#fff;flex-shrink:0;">
+        <button onclick="closeDMConvo()" style="background:none;border:none;font-size:18px;cursor:pointer;color:#666;">&#8592;</button>
+        <div id="dmConvoName" style="font-size:14px;font-weight:700;color:#222;"></div>
+        <div style="font-size:10px;color:#4caf50;margin-left:auto;">&#9679; Verified resident</div>
+      </div>
+      <div id="dmMessages" style="flex:1;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:8px;">
+        <div class="empty-state">&#128172;<br/>Start the conversation!</div>
+      </div>
+      <div style="border-top:1px solid #ede8e0;padding:10px 12px;flex-shrink:0;">
+        <div style="display:flex;gap:8px;align-items:center;">
+          <input id="dmInput" style="flex:1;border:1.5px solid #e0dbd0;border-radius:22px;padding:10px 13px;font-size:13px;background:#f9f6f0;outline:none;font-family:inherit;" placeholder="Private message..." onkeydown="if(event.key==='Enter')sendDM()"/>
+          <button onclick="sendDM()" style="width:38px;height:38px;border-radius:50%;border:none;background:var(--ec);color:#fff;font-size:18px;cursor:pointer;">&#8593;</button>
+        </div>
+        <div style="font-size:10px;color:#bbb;text-align:center;margin-top:4px;">&#128274; Private &middot; Only you two can see this</div>
       </div>
     </div>
   </div>
@@ -807,61 +850,69 @@ async function loadMessages(){
     if(!res.ok)return;
     var data=await res.json();
     var msgs=data.messages||[];
+
+    // Filter by chat level
     if(currentChatLevel==="street"&&userAddress){
-      var myStreet=userAddress.split(",")[0]?userAddress.split(",")[0].trim().replace(/^\d+\s+/,""):"";
-      if(myStreet)msgs=msgs.filter(function(m){return!m.address||(m.address.toLowerCase().indexOf(myStreet.toLowerCase())!==-1)||m.suburb==="ADMIN_MSG";});
+      var myStreet=userAddress.split(",")[0].trim().replace(/^[0-9]+[a-zA-Z]?\s+/,"").toLowerCase();
+      if(myStreet)msgs=msgs.filter(function(m){
+        var mStreet=(m.address||"").split(",")[0].trim().replace(/^[0-9]+[a-zA-Z]?\s+/,"").toLowerCase();
+        return mStreet.indexOf(myStreet)!==-1||myStreet.indexOf(mStreet)!==-1||m.suburb==="ADMIN_MSG";
+      });
     } else if(currentChatLevel==="estate"){
       var myEstate=getEstateFromAddress(userAddress);
-      if(myEstate!=="default")msgs=msgs.filter(function(m){return getEstateFromAddress(m.address||"")===myEstate||m.suburb==="ADMIN_MSG";});
+      if(myEstate!=="default")msgs=msgs.filter(function(m){
+        return getEstateFromAddress(m.address||"")===myEstate||m.suburb==="ADMIN_MSG";
+      });
     }
-    // Check scroll position
-    var chatTab=document.getElementById("tab-chat");
-    var scrolledUp=chatTab.scrollTop<chatTab.scrollHeight-chatTab.clientHeight-50;
-    var newCount=msgs.length;
-    if(newCount>lastMsgCount&&lastMsgCount>0&&scrolledUp){
-      var nb=document.getElementById("newMsgsBanner");
-      if(nb){nb.style.display="block";nb.textContent="&#8595; "+(newCount-lastMsgCount)+" new message"+(newCount-lastMsgCount>1?"s":"");}
-      var ucb=document.getElementById("unreadChatBadge");
-      if(ucb){ucb.textContent=newCount-lastMsgCount;ucb.style.display="flex";}
-    } else {
-      var nb=document.getElementById("newMsgsBanner");if(nb)nb.style.display="none";
-      var ucb=document.getElementById("unreadChatBadge");if(ucb)ucb.style.display="none";
-    }
-    lastMsgCount=newCount;
+
     var container=document.getElementById("myMessages");
     container.innerHTML="";
-    var prevPhone="";
+
     msgs.forEach(function(msg){
       var isMe=msg.phone===userPhone;
       var n=new Date(msg.created_at).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
-      // Display name - use chosen name, never raw address
+      // Always use display_name if available
       var displayName=msg.display_name||"Neighbour";
-      // Street part - show street name only, strip house number for privacy
-      var rawStreet=msg.address?msg.address.split(",")[0].trim():"";
-      var streetPart=rawStreet.replace(/^\d+[a-zA-Z]?\s+/,""); // remove house number
-      if(!streetPart&&msg.suburb&&msg.suburb!=="ADMIN_MSG")streetPart=msg.suburb;
+      // Street name only - strip house number
+      var rawStreet=(msg.address||"").split(",")[0].trim();
+      var streetName=rawStreet.replace(/^[0-9]+[a-zA-Z]?\s+/,"");
+      if(!streetName&&msg.suburb&&msg.suburb!=="ADMIN_MSG")streetName=msg.suburb;
+
       var d=document.createElement("div");
       d.className="msg-row"+(isMe?" me":"");
       d.dataset.type=isMe?"me":"neighbour";
-      var showMeta=true;
+
       if(isMe){
-        d.innerHTML="<div style='max-width:75%'><div class='bubble me'><p>"+msg.content+"</p></div><button onclick='deleteMessage("+JSON.stringify(msg.id)+")' class='del-btn'>&#128465; delete</button></div><div class='msg-av' onclick='openDMWith("+JSON.stringify(displayName)+","+JSON.stringify(msg.phone)+")'>&#127968;</div>";
+        d.innerHTML="<div style='max-width:75%'>"+
+          "<div class='msg-meta' style='text-align:right;'><span style='color:#aaa;font-size:9px;'>"+n+"</span></div>"+
+          "<div class='bubble me'><p>"+msg.content+"</p></div>"+
+          "<button onclick='deleteMsg("+JSON.stringify(msg.id)+")' class='del-btn'>&#128465; delete</button>"+
+          "</div><div class='msg-av'>&#127968;</div>";
       } else {
-        var metaHtml="<div class='msg-meta' style='font-size:10px;color:#999;margin-bottom:3px;'><strong style='color:#666;'>"+displayName+"</strong>"+(streetPart?" &middot; "+streetPart:"")+" &middot; "+n+"</div>";
-        d.innerHTML="<div class='msg-av' onclick='openDMWith("+JSON.stringify(displayName)+","+JSON.stringify(msg.phone)+")'>&#127968;</div><div style='max-width:75%'>"+metaHtml+"<div class='bubble them'><p>"+msg.content+"</p></div></div>";
+        d.innerHTML="<div class='msg-av'>&#127968;</div>"+
+          "<div style='max-width:75%'>"+
+          "<div class='msg-meta'><strong style='color:#444;font-size:10px;'>"+displayName+"</strong>"+
+          (streetName?"<span style='color:#aaa;font-size:9px;'> &middot; "+streetName+"</span>":"")+
+          "<span style='color:#bbb;font-size:9px;'> &middot; "+n+"</span></div>"+
+          "<div class='bubble them'><p>"+msg.content+"</p></div>"+
+          "</div>";
       }
       container.appendChild(d);
-      prevPhone=msg.phone;
     });
-    if(!scrolledUp||lastMsgCount===newCount)document.getElementById("chatBottom").scrollIntoView({behavior:"smooth"});
-  }catch(e){console.log("msg error:",e);}
+
+    var bottom=document.getElementById("chatBottom");
+    if(bottom)bottom.scrollIntoView({behavior:"smooth"});
+  } catch(e){console.log("msg error:",e);}
 }
+
 
 async function deleteMessage(id){
   if(!confirm("Delete this message?"))return;
   try{await fetch("/api/messages",{method:"DELETE",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:id,phone:userPhone})});loadMessages();}catch(e){}
 }
 
+
+async function deleteMsg(id){if(!confirm("Delete this message?"))return;try{await fetch("/api/messages",{method:"DELETE",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:id,phone:userPhone})});loadMessages();}catch(e){}}
 loadMessages();
 setInterval(loadMessages,10000);
 
@@ -1115,6 +1166,31 @@ function editDisplayName(){
   }
 }
 
+function toggleInterest(btn, interest){
+  btn.classList.toggle('selected');
+}
+
+function saveProfile(){
+  var newName = document.getElementById('editDisplayName').value.trim();
+  var newBio = document.getElementById('editBio').value.trim();
+  var interests = [];
+  document.querySelectorAll('.interest-tag.selected').forEach(function(t){interests.push(t.textContent.trim());});
+  
+  if(newName){
+    userDisplay = newName;
+    localStorage.setItem('sc_display', newName);
+  }
+  if(newBio) localStorage.setItem('sc_bio', newBio);
+  if(interests.length) localStorage.setItem('sc_interests', JSON.stringify(interests));
+  
+  // Update header
+  var mt = document.getElementById('myAddrText');
+  if(mt) mt.textContent = userDisplay;
+  
+  showPush({icon:'&#10003;',title:'Profile updated!',body:'Your changes have been saved.',color:'var(--ec)'});
+  closeProfile();
+}
+
 function openProfile(){
   var ek=getEstateFromAddress(userAddress);
   var estate=ESTATES[ek]||ESTATES.default;
@@ -1237,13 +1313,84 @@ window.addEventListener("offline",function(){var b=document.getElementById("offl
 function scrollToBottom(){document.getElementById("chatBottom").scrollIntoView({behavior:"smooth"});var banner=document.getElementById("newMsgBanner");if(banner)banner.style.display="none";}
 
 // ── DMS ───────────────────────────────────────────────────────────────────────
-function openDM(neighbourName,neighbourPhone){
-  if(!neighbourPhone||neighbourPhone==="")return;
+var currentDM = null;
+var dmMessages = {};
+
+function openDM(neighbourName, neighbourPhone){
+  if(!isLoggedIn){alert("Please sign up to send messages.");return;}
+  if(!neighbourPhone||neighbourPhone==="demo"||neighbourPhone===userPhone)return;
+  
+  currentDM = {name:neighbourName, phone:neighbourPhone};
+  if(!dmMessages[neighbourPhone])dmMessages[neighbourPhone]=[];
+  
+  // Update inbox
   var list=document.getElementById("dmList");
-  if(!list)return;
-  list.innerHTML="<div class='dm-item'><div class='dm-avatar'>"+neighbourName.charAt(0).toUpperCase()+"</div><div style='flex:1'><div class='dm-name'>"+neighbourName+"</div><div class='dm-preview'>Private conversation</div></div></div>";
+  if(list){
+    var existing=document.getElementById("dm_"+neighbourPhone);
+    if(!existing){
+      var item=document.createElement("div");
+      item.className="dm-item";
+      item.id="dm_"+neighbourPhone;
+      item.onclick=function(){openDMConvo(neighbourName,neighbourPhone);};
+      item.innerHTML="<div class='dm-avatar'>"+neighbourName.charAt(0).toUpperCase()+"</div>"+
+        "<div style='flex:1'><div class='dm-name'>"+neighbourName+"</div>"+
+        "<div class='dm-preview'>Tap to open conversation</div></div>";
+      list.innerHTML="";
+      list.appendChild(item);
+    }
+  }
+  
   switchTab("dms",null);
-  showPush({icon:"&#128172;",title:"DM opened",body:"Private conversation with "+neighbourName+". Full DMs launching soon!",color:"var(--ec)"});
+  openDMConvo(neighbourName, neighbourPhone);
+}
+
+function openDMConvo(name, phone){
+  currentDM={name:name,phone:phone};
+  document.getElementById("dmInbox").style.display="none";
+  var convo=document.getElementById("dmConvo");
+  convo.style.display="flex";
+  convo.style.flexDirection="column";
+  document.getElementById("dmConvoName").textContent=name;
+  renderDMMessages(phone);
+}
+
+function closeDMConvo(){
+  document.getElementById("dmConvo").style.display="none";
+  document.getElementById("dmInbox").style.display="flex";
+  document.getElementById("dmInbox").style.flexDirection="column";
+}
+
+function renderDMMessages(phone){
+  var msgs=dmMessages[phone]||[];
+  var container=document.getElementById("dmMessages");
+  if(!msgs.length){
+    container.innerHTML="<div class='empty-state'>&#128172;<br/>Start the conversation!</div>";
+    return;
+  }
+  container.innerHTML=msgs.map(function(m){
+    var isMe=m.from==="me";
+    return "<div class='msg-row"+(isMe?" me":"")+"'>"+
+      (isMe?"":"<div class='msg-av'>&#127968;</div>")+
+      "<div style='max-width:75%'>"+
+      (isMe?"":"<div class='msg-meta'>"+currentDM.name+" &middot; "+m.time+"</div>")+
+      "<div class='bubble "+(isMe?"me":"them")+"'><p>"+m.text+"</p></div>"+
+      "</div>"+
+      (isMe?"<div class='msg-av'>&#127968;</div>":"")+
+      "</div>";
+  }).join("");
+  container.scrollTop=container.scrollHeight;
+}
+
+function sendDM(){
+  var input=document.getElementById("dmInput");
+  var text=input.value.trim();
+  if(!text||!currentDM)return;
+  input.value="";
+  var n=new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
+  if(!dmMessages[currentDM.phone])dmMessages[currentDM.phone]=[];
+  dmMessages[currentDM.phone].push({from:"me",text:text,time:n});
+  renderDMMessages(currentDM.phone);
+  showPush({icon:"&#128172;",title:"Message sent",body:"Your private message was delivered.",color:"var(--ec)"});
 }
 
 // ── MESSAGE REACTIONS ─────────────────────────────────────────────────────────
