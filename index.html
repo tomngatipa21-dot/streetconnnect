@@ -794,7 +794,6 @@ var isScrolledToBottom=true;
 var dmRecipient=null;
 var dmConversations={};
 
-// OFFLINE DETECTION
 window.addEventListener("online",function(){document.getElementById("offlineBanner").style.display="none";loadMessages();});
 window.addEventListener("offline",function(){document.getElementById("offlineBanner").style.display="block";});
 
@@ -851,8 +850,7 @@ async function loadMessages(){
     var data=await res.json();
     var msgs=data.messages||[];
 
-    // Filter by chat level
-    if(currentChatLevel==="street"&&userAddress){
+        if(currentChatLevel==="street"&&userAddress){
       var myStreet=userAddress.split(",")[0].trim().replace(/^[0-9]+[a-zA-Z]?\s+/,"").toLowerCase();
       if(myStreet)msgs=msgs.filter(function(m){
         var mStreet=(m.address||"").split(",")[0].trim().replace(/^[0-9]+[a-zA-Z]?\s+/,"").toLowerCase();
@@ -871,10 +869,8 @@ async function loadMessages(){
     msgs.forEach(function(msg){
       var isMe=msg.phone===userPhone;
       var n=new Date(msg.created_at).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
-      // Always use display_name if available
-      var displayName=msg.display_name||"Neighbour";
-      // Street name only - strip house number
-      var rawStreet=(msg.address||"").split(",")[0].trim();
+            var displayName=msg.display_name||"Neighbour";
+            var rawStreet=(msg.address||"").split(",")[0].trim();
       var streetName=rawStreet.replace(/^[0-9]+[a-zA-Z]?\s+/,"");
       if(!streetName&&msg.suburb&&msg.suburb!=="ADMIN_MSG")streetName=msg.suburb;
 
@@ -905,18 +901,15 @@ async function loadMessages(){
   } catch(e){console.log("msg error:",e);}
 }
 
-
 async function deleteMessage(id){
   if(!confirm("Delete this message?"))return;
   try{await fetch("/api/messages",{method:"DELETE",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:id,phone:userPhone})});loadMessages();}catch(e){}
 }
 
-
 async function deleteMsg(id){if(!confirm("Delete this message?"))return;try{await fetch("/api/messages",{method:"DELETE",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:id,phone:userPhone})});loadMessages();}catch(e){}}
 loadMessages();
 setInterval(loadMessages,10000);
 
-// DM SYSTEM
 function openDMWith(name,phone){
   if(!isLoggedIn){alert("Please sign up to send direct messages.");return;}
   if(phone===userPhone)return;
@@ -963,7 +956,6 @@ function sendDM(){
   showPush({icon:"&#128172;",title:"DM sent to "+dmRecipient.name,body:msg.text.substring(0,50),color:"#313131"});
 }
 
-// INCIDENT MAP
 var INCIDENT_DISTS={1:120,2:80,3:350,4:600,5:420,6:180};
 var INCS={
   1:{emoji:"&#128663;",title:"Suspicious Vehicle",addr:"Summerstone Blvd",time:"Today",sev:"high",sc:"#e53935",desc:"White sedan parked for 3+ hours. Police alerted.",status:"Patrols active",rep:"Local resident",color:"#fb8c00",trust:1},
@@ -974,10 +966,8 @@ var INCS={
   6:{emoji:"&#9888;",title:"Door-to-Door Scam",addr:"Local area",time:"Yesterday",sev:"medium",sc:"#fb8c00",desc:"Men claiming to be from energy company. NOT legitimate.",status:"Scam Aware notified",rep:"Multiple residents",color:"#fb8c00",trust:5}
 };
 
-// ── MAP MODE ──────────────────────────────────────────────────────────────────
 var currentMapMode = 'street';
 
-// SVG street highlight paths for Summerstone
 var ESTATE_SVG_HIGHLIGHTS = {
   summerstone: {
     boundary: '55,45 215,45 215,265 55,265',
@@ -1012,8 +1002,7 @@ function setMapMode(mode, btn) {
   var boundary = document.getElementById('estateBoundary');
   var streetHighlight = document.getElementById('streetHighlight');
 
-  // Hide all
-  if(streetInfo) streetInfo.style.display = 'none';
+    if(streetInfo) streetInfo.style.display = 'none';
   if(estateInfo) estateInfo.style.display = 'none';
   if(radiusControls) radiusControls.style.display = 'none';
   if(radiusRing) radiusRing.style.display = 'none';
@@ -1029,19 +1018,16 @@ function setMapMode(mode, btn) {
   if(mode === 'street') {
     if(streetInfo) streetInfo.style.display = 'block';
     if(radiusInfo) radiusInfo.textContent = '&#127968; Notifications from ' + (userAddress ? userAddress.split(',')[0].replace(/^\d+\s+/,'') : 'your street') + ' only';
-    // Show street highlight
-    if(streetHighlight) {
+        if(streetHighlight) {
       streetHighlight.setAttribute('display', '');
-      // Find user's street in highlights
-      var myStreet = userAddress ? userAddress.split(',')[0].replace(/^\d+\s+/,'').toLowerCase() : '';
+            var myStreet = userAddress ? userAddress.split(',')[0].replace(/^\d+\s+/,'').toLowerCase() : '';
       var strokeColor = ek === 'montrose' ? 'rgba(184,197,214,0.8)' : 'rgba(201,168,76,0.8)';
       streetHighlight.setAttribute('stroke', strokeColor);
     }
   } else if(mode === 'estate') {
     if(estateInfo) estateInfo.style.display = 'block';
     if(radiusInfo) radiusInfo.innerHTML = '&#127960; Notifications from ' + (estate.name || 'your estate') + ' only';
-    // Show estate boundary
-    if(boundary && highlights) {
+        if(boundary && highlights) {
       boundary.setAttribute('points', highlights.boundary);
       var strokeColor = ek === 'montrose' ? 'rgba(184,197,214,0.5)' : 'rgba(201,168,76,0.5)';
       var fillColor = ek === 'montrose' ? 'rgba(184,197,214,0.08)' : 'rgba(201,168,76,0.08)';
@@ -1183,8 +1169,7 @@ function saveProfile(){
   if(newBio) localStorage.setItem('sc_bio', newBio);
   if(interests.length) localStorage.setItem('sc_interests', JSON.stringify(interests));
   
-  // Update header
-  var mt = document.getElementById('myAddrText');
+    var mt = document.getElementById('myAddrText');
   if(mt) mt.textContent = userDisplay;
   
   showPush({icon:'&#10003;',title:'Profile updated!',body:'Your changes have been saved.',color:'var(--ec)'});
@@ -1226,7 +1211,7 @@ function applyEstateBranding(){
     logo.style.maxWidth="220px";
     logo.style.maxHeight="90px";
     logo.style.objectFit="contain";
-    logo.onerror=function(){this.style.display="none";if(placeholder)placeholder.style.display="flex";};
+    logo.onerror=function(){console.log("Logo failed to load");};
     if(placeholder)placeholder.style.display="none";
   }
   else if(estate.seriesM){
@@ -1247,8 +1232,7 @@ function applyEstateBranding(){
   if(composeLocation)composeLocation.textContent=estate.name||council;
   var boundary=document.getElementById("estateBoundary");
   if(boundary&&estate.boundary){boundary.setAttribute("points",estate.boundary);boundary.setAttribute("display","");}else if(boundary){boundary.setAttribute("display","none");}
-  // Council branding for non-estate users
-  var COUNCIL_COLORS={"Moreton Bay City":{"c":"#2a3a00","a":"#b5cc18"},"Ipswich City":{"c":"#1a3020","a":"#69f0ae"},"Logan City":{"c":"#1a5c1a","a":"#81c784"},"Brisbane City":{"c":"#4a1a5c","a":"#ce93d8"}};
+    var COUNCIL_COLORS={"Moreton Bay City":{"c":"#2a3a00","a":"#b5cc18"},"Ipswich City":{"c":"#1a3020","a":"#69f0ae"},"Logan City":{"c":"#1a5c1a","a":"#81c784"},"Brisbane City":{"c":"#4a1a5c","a":"#ce93d8"}};
   if(ek==="default"&&COUNCIL_COLORS[council]){
     var cc=COUNCIL_COLORS[council];
     document.documentElement.style.setProperty("--ec",cc.c);
@@ -1273,8 +1257,7 @@ function applyEstateBranding(){
   var pt=document.getElementById("pinnedBinTitle");var pb=document.getElementById("pinnedBinBody");
   if(pt)pt.innerHTML="&#128721; Bin Day &mdash; "+(userSuburb||"Your Area");
   if(pb)pb.innerHTML=binText;
-  // Splash screen
-  var splash=document.getElementById("splashScreen");
+    var splash=document.getElementById("splashScreen");
   var splashLogo=document.getElementById("splashLogo");
   var splashText=document.getElementById("splashText");
   if(splash&&isLoggedIn&&!localStorage.getItem("sc_splashed")){
@@ -1302,17 +1285,13 @@ function messageAdmin(){
   if(msg&&msg.trim()){fetch("/api/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:userPhone,address:userAddress,suburb:"ADMIN_MSG",content:"[SUPPORT] "+msg.trim(),display_name:userDisplay})}).then(function(){alert("Message sent! We will get back to you soon.");});}
 }
 
-// ── SETTINGS ─────────────────────────────────────────────────────────────────
 var settings={darkMode:localStorage.getItem("sc_darkmode")==="1",quietHours:localStorage.getItem("sc_quiet")==="1"};
 
-// ── ONLINE/OFFLINE ────────────────────────────────────────────────────────────
 window.addEventListener("online",function(){var b=document.getElementById("offlineBanner");if(b)b.style.display="none";loadMessages();});
 window.addEventListener("offline",function(){var b=document.getElementById("offlineBanner");if(b)b.style.display="block";});
 
-// ── SCROLL TO BOTTOM ──────────────────────────────────────────────────────────
 function scrollToBottom(){document.getElementById("chatBottom").scrollIntoView({behavior:"smooth"});var banner=document.getElementById("newMsgBanner");if(banner)banner.style.display="none";}
 
-// ── DMS ───────────────────────────────────────────────────────────────────────
 var currentDM = null;
 var dmMessages = {};
 
@@ -1323,8 +1302,7 @@ function openDM(neighbourName, neighbourPhone){
   currentDM = {name:neighbourName, phone:neighbourPhone};
   if(!dmMessages[neighbourPhone])dmMessages[neighbourPhone]=[];
   
-  // Update inbox
-  var list=document.getElementById("dmList");
+    var list=document.getElementById("dmList");
   if(list){
     var existing=document.getElementById("dm_"+neighbourPhone);
     if(!existing){
@@ -1393,7 +1371,6 @@ function sendDM(){
   showPush({icon:"&#128172;",title:"Message sent",body:"Your private message was delivered.",color:"var(--ec)"});
 }
 
-// ── MESSAGE REACTIONS ─────────────────────────────────────────────────────────
 var msgReactions={};
 function addReaction(msgId,emoji){
   if(!msgReactions[msgId])msgReactions[msgId]={};
@@ -1402,7 +1379,6 @@ function addReaction(msgId,emoji){
   loadMessages();
 }
 
-// ── WELCOME SPLASH ────────────────────────────────────────────────────────────
 function showWelcomeSplash(){
   var splash=document.getElementById("welcomeSplash");
   var wLogo=document.getElementById("welcomeLogo");
@@ -1420,7 +1396,6 @@ function showWelcomeSplash(){
   },2500);
 }
 
-// ── INIT ──────────────────────────────────────────────────────────────────────
 updateHeader();
 applyEstateBranding();
 updateNeighbourCount();
