@@ -1110,14 +1110,7 @@ function setMapMode(mode, btn) {
 function updateRadius(v){
   var rM=parseInt(v);
   var d=rM>=5000?"Suburb wide":rM>=1000?(rM/1000).toFixed(1)+"km":rM+"m";
-  document.getElementById("radiusVal").textContent=d;
-  document.getElementById("radiusLabelTxt").textContent=d;
-  var r=(rM/1500)*100;
-  document.getElementById("radiusRing").setAttribute("r",r);
-  document.getElementById("radiusLabelBg").setAttribute("x",155-22);
-  document.getElementById("radiusLabelBg").setAttribute("y",143-r-14);
-  document.getElementById("radiusLabelTxt").setAttribute("x",155);
-  document.getElementById("radiusLabelTxt").setAttribute("y",143-r-5);
+ if(document.getElementById("radiusRing"))document.getElementById("radiusRing").setAttribute("r",r);
   var inRange=0;
   for(var id in INCIDENT_DISTS){
     var inside=INCIDENT_DISTS[id]<=rM;if(inside)inRange++;
