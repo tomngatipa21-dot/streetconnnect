@@ -520,7 +520,7 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
     <div class="alert-banner"><span class="alert-dot"></span><span class="alert-text" id="alertText">&#127881; Street Connect is live &mdash; invite your neighbours!</span></div>
     <div class="tabs">
       <button class="tab active" onclick="switchTab('chat',this)" style="position:relative;">&#128172; Chat<span class="unread-chat-badge" id="unreadChatBadge"></span></button>
-      <button class="tab" onclick="switchTab('map',this)">&#128506; Map</button>
+      <button class="tab" onclick="switchTab('map',this);setTimeout(function(){if(googleMap)google.maps.event.trigger(googleMap,'resize');},100)">&#128506; Map</button>
       <button class="tab" onclick="switchTab('official',this)">&#127963; Official</button>
       <button class="tab" onclick="switchTab('local',this);renderLocalTab()">&#127960; Local</button>
       <button class="tab" onclick="switchTab('notifs',this);markNotifsRead()">&#128276; Alerts<span class="tab-badge" id="tabNotifBadge" style="display:none;"></span></button>
@@ -603,7 +603,7 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
         </div>
         <div class="radius-info" id="radiusInfo">&#127968; Notifications from your street only</div>
       </div>
-     <div id="googleMapWrap" style="border-radius:12px;overflow:hidden;height:280px;background:#1a2e1a;"></div>
+     <div id="googleMapWrap" style="border-radius:12px;overflow:hidden;height:280px;background:#1a2e1a;min-height:280px;" style="border-radius:12px;overflow:hidden;height:280px;background:#1a2e1a;min-height:280px;" style="border-radius:12px;overflow:hidden;height:280px;background:#1a2e1a;"></div>
       <div class="sec-title">ALL INCIDENTS &middot; LAST 7 DAYS</div>
       <button class="inc-list-btn" id="incBtn1" onclick="selectInc(1)"><span class="inc-list-em">&#128663;</span><div style="flex:1;text-align:left;"><div class="inc-list-name">Suspicious Vehicle</div><div class="inc-list-sub">Summerstone Blvd &middot; Today &middot; <span style="color:#fb8c00;">Unverified</span></div></div><div class="sev-dot" style="background:#e53935;"></div></button>
       <button class="inc-list-btn" id="incBtn2" onclick="selectInc(2)"><span class="inc-list-em">&#128230;</span><div style="flex:1;text-align:left;"><div class="inc-list-name">Package Theft</div><div class="inc-list-sub">Summerstone Blvd &middot; Yesterday &middot; <span style="color:#2e7d32;">Verified x3</span></div></div><div class="sev-dot" style="background:#fb8c00;"></div></button>
@@ -1558,7 +1558,7 @@ updateNeighbourCount();
 renderLocalTab();
 updateRadius(500);
 updateNotifBadge();
-initGoogleMap();
+initGoogleMap(); document.querySelector('[onclick*="switchTab(\'map\'"]').addEventListener('click',function(){if(googleMap)google.maps.event.trigger(googleMap,'resize');});
 
 if(!navigator.onLine){var b=document.getElementById("offlineBanner");if(b)b.style.display="block";}
 
