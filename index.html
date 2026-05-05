@@ -603,59 +603,7 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
         </div>
         <div class="radius-info" id="radiusInfo">&#127968; Notifications from your street only</div>
       </div>
-      <div class="map-svg-wrap">
-        <svg viewBox="0 0 320 290" style="width:100%;display:block;">
-          <rect width="320" height="290" fill="#1a2e1a"/>
-          <rect x="0" y="0" width="38" height="55" fill="#1e3d1e" rx="2"/>
-          <rect x="270" y="0" width="50" height="45" fill="#1e3d1e" rx="2"/>
-          <path d="M155,0 L155,290" stroke="#3a4a3a" stroke-width="10" fill="none"/>
-          <path d="M155,0 L155,290" stroke="#5a6e5a" stroke-width="6" fill="none"/>
-          <path d="M155,0 L155,290" stroke="rgba(255,255,255,0.1)" stroke-width="2" fill="none" stroke-dasharray="12,8"/>
-          <path d="M245,0 L245,290" stroke="#3a4a3a" stroke-width="8" fill="none"/>
-          <path d="M245,0 L245,290" stroke="#4a5e4a" stroke-width="5" fill="none"/>
-          <path d="M0,270 L155,270" stroke="#3a4a3a" stroke-width="8" fill="none"/>
-          <path d="M0,270 L155,270" stroke="#5a6e5a" stroke-width="5" fill="none"/>
-          <path d="M38,65 L155,65" stroke="#2a3a2a" stroke-width="4" fill="none"/>
-          <path d="M38,155 L245,155" stroke="#2a3a2a" stroke-width="4" fill="none"/>
-          <path d="M100,240 L280,240" stroke="#2a3a2a" stroke-width="4" fill="none"/>
-          <rect x="80" y="75" width="26" height="14" rx="2" fill="#2a3e2a" stroke="#3a5a3a" stroke-width="0.5"/>
-          <rect x="80" y="95" width="26" height="14" rx="2" fill="#2a3e2a" stroke="#3a5a3a" stroke-width="0.5"/>
-          <rect x="80" y="115" width="26" height="14" rx="2" fill="#2a3e2a" stroke="#3a5a3a" stroke-width="0.5"/>
-          <rect x="80" y="135" width="26" height="14" rx="2" fill="#2a3e2a" stroke="#3a5a3a" stroke-width="0.5"/>
-          <rect x="165" y="75" width="26" height="14" rx="2" fill="#2a3e2a" stroke="#3a5a3a" stroke-width="0.5"/>
-          <rect x="165" y="95" width="26" height="14" rx="2" fill="#2a3e2a" stroke="#3a5a3a" stroke-width="0.5"/>
-          <rect x="165" y="115" width="26" height="14" rx="2" fill="#2a3e2a" stroke="#3a5a3a" stroke-width="0.5"/>
-          <rect x="165" y="135" width="26" height="14" rx="2" fill="#2a3e2a" stroke="#3a5a3a" stroke-width="0.5"/>
-          <rect x="210" y="165" width="24" height="14" rx="2" fill="#2a3e2a" stroke="#3a5a3a" stroke-width="0.5"/>
-          <rect x="255" y="165" width="24" height="14" rx="2" fill="#2a3e2a" stroke="#3a5a3a" stroke-width="0.5"/>
-          <text x="158" y="145" font-size="6" fill="rgba(255,255,255,0.3)" font-family="sans-serif" transform="rotate(-90,158,145)">Summerstone Blvd</text>
-          <text x="248" y="145" font-size="5" fill="rgba(255,255,255,0.2)" font-family="sans-serif" transform="rotate(-90,248,145)">Bloom Dr</text>
-          <text x="55" y="62" font-size="5" fill="rgba(255,255,255,0.2)" font-family="sans-serif">Freshwater St</text>
-          <polygon id="estateBoundary" points="55,45 215,45 215,265 55,265" fill="rgba(201,168,76,0.05)" stroke="rgba(201,168,76,0.4)" stroke-width="1.5" stroke-dasharray="8,4" display="none"/>
-          <circle id="radiusRing" cx="155" cy="143" r="33" fill="rgba(201,168,76,0.06)" stroke="rgba(201,168,76,0.5)" stroke-width="1.5" stroke-dasharray="6,4"/>
-          <rect id="radiusLabelBg" x="133" y="107" width="44" height="12" rx="4" fill="rgba(201,168,76,0.9)"/>
-          <text id="radiusLabelTxt" x="155" y="116" font-size="7" fill="#1a1a1a" font-family="sans-serif" font-weight="700" text-anchor="middle">500m</text>
-          <g id="incMarker1" onclick="selectInc(1)" style="cursor:pointer;"><circle cx="152" cy="110" r="11" fill="rgba(0,0,0,0.7)" stroke="#fb8c00" stroke-width="1.5"/><text x="152" y="114" font-size="9" text-anchor="middle">&#128663;</text></g>
-          <g id="incMarker2" onclick="selectInc(2)" style="cursor:pointer;"><circle cx="140" cy="88" r="11" fill="rgba(0,0,0,0.7)" stroke="#e53935" stroke-width="1.5"/><text x="140" y="92" font-size="9" text-anchor="middle">&#128230;</text></g>
-          <g id="incMarker3" onclick="selectInc(3)" style="cursor:pointer;"><circle cx="100" cy="55" r="11" fill="rgba(0,0,0,0.7)" stroke="#7b1fa2" stroke-width="1.5"/><text x="100" y="59" font-size="9" text-anchor="middle">&#9998;</text></g>
-          <g id="incMarker4" onclick="selectInc(4)" style="cursor:pointer;"><circle cx="200" cy="175" r="11" fill="rgba(0,0,0,0.7)" stroke="#e53935" stroke-width="1.5"/><text x="200" y="179" font-size="9" text-anchor="middle">&#128690;</text></g>
-          <g id="incMarker5" onclick="selectInc(5)" style="cursor:pointer;"><circle cx="120" cy="40" r="11" fill="rgba(0,0,0,0.7)" stroke="#388e3c" stroke-width="1.5"/><text x="120" y="44" font-size="9" text-anchor="middle">&#128021;</text></g>
-          <g id="incMarker6" onclick="selectInc(6)" style="cursor:pointer;"><circle cx="160" cy="160" r="11" fill="rgba(0,0,0,0.7)" stroke="#fb8c00" stroke-width="1.5"/><text x="160" y="164" font-size="9" text-anchor="middle">&#9888;</text></g>
-          <!-- Street highlight line -->
-          <line id="streetHighlight" x1="155" y1="0" x2="155" y2="290" stroke="rgba(201,168,76,0.8)" stroke-width="5" display="none" stroke-linecap="round"/>
-          <circle cx="155" cy="143" r="6" fill="#4fc3f7" stroke="#fff" stroke-width="2"/>
-          <circle cx="155" cy="143" r="12" fill="rgba(79,195,247,0.2)"/>
-          <text x="164" y="139" font-size="5.5" fill="#4fc3f7" font-family="sans-serif" font-weight="700">You</text>
-        </svg>
-        <div class="map-legend">
-          <div class="legend-row"><div class="legend-dot" style="background:#e53935;"></div>Theft</div>
-          <div class="legend-row"><div class="legend-dot" style="background:#fb8c00;"></div>Suspicious</div>
-          <div class="legend-row"><div class="legend-dot" style="background:#7b1fa2;"></div>Vandalism</div>
-          <div class="legend-row"><div class="legend-dot" style="background:#388e3c;"></div>Safety</div>
-          <div class="legend-row"><div class="legend-dot" style="background:rgba(201,168,76,0.8);border:1px solid #c9a84c;"></div>My Estate</div>
-        </div>
-      </div>
-      <div class="inc-detail" id="incDetail"></div>
+     <div id="googleMapWrap" style="border-radius:12px;overflow:hidden;height:280px;background:#1a2e1a;"></div>
       <div class="sec-title">ALL INCIDENTS &middot; LAST 7 DAYS</div>
       <button class="inc-list-btn" id="incBtn1" onclick="selectInc(1)"><span class="inc-list-em">&#128663;</span><div style="flex:1;text-align:left;"><div class="inc-list-name">Suspicious Vehicle</div><div class="inc-list-sub">Summerstone Blvd &middot; Today &middot; <span style="color:#fb8c00;">Unverified</span></div></div><div class="sev-dot" style="background:#e53935;"></div></button>
       <button class="inc-list-btn" id="incBtn2" onclick="selectInc(2)"><span class="inc-list-em">&#128230;</span><div style="flex:1;text-align:left;"><div class="inc-list-name">Package Theft</div><div class="inc-list-sub">Summerstone Blvd &middot; Yesterday &middot; <span style="color:#2e7d32;">Verified x3</span></div></div><div class="sev-dot" style="background:#fb8c00;"></div></button>
@@ -1025,7 +973,63 @@ var INCS={
   6:{emoji:"&#9888;",title:"Door-to-Door Scam",addr:"Local area",time:"Yesterday",sev:"medium",sc:"#fb8c00",desc:"Men claiming to be from energy company. NOT legitimate.",status:"Scam Aware notified",rep:"Multiple residents",color:"#fb8c00",trust:5}
 };
 
-var currentMapMode = 'street';
+var googleMap=null,radiusCircle=null,estatePolygon=null,streetPolyline=null,userMarker=null,incidentMarkers=[];
+var INCIDENT_LOCATIONS=[
+  {id:1,lat:-27.098,lng:152.961,title:"Suspicious Vehicle",color:"#fb8c00"},
+  {id:2,lat:-27.096,lng:152.960,title:"Package Theft",color:"#e53935"},
+  {id:3,lat:-27.094,lng:152.958,title:"Graffiti",color:"#7b1fa2"},
+  {id:4,lat:-27.102,lng:152.963,title:"Bike Stolen",color:"#e53935"},
+  {id:5,lat:-27.093,lng:152.959,title:"Loose Dog",color:"#388e3c"},
+  {id:6,lat:-27.100,lng:152.962,title:"Door-to-Door Scam",color:"#fb8c00"}
+];
+var ESTATE_POLYGONS={
+  summerstone:[{lat:-27.090,lng:152.955},{lat:-27.090,lng:152.968},{lat:-27.105,lng:152.968},{lat:-27.105,lng:152.955}],
+  montrose:[{lat:-27.088,lng:152.968},{lat:-27.088,lng:152.978},{lat:-27.098,lng:152.978},{lat:-27.098,lng:152.968}]
+};
+function initGoogleMap(){
+  fetch("/api/maps-key").then(function(r){return r.json();}).then(function(d){
+    var s=document.createElement("script");
+    s.src="https://maps.googleapis.com/maps/api/js?key="+d.key+"&libraries=geometry&callback=onMapReady";
+    s.async=true;document.head.appendChild(s);
+  });
+}
+function onMapReady(){
+  var centre={lat:-27.098,lng:152.961};
+  googleMap=new google.maps.Map(document.getElementById("googleMapWrap"),{center:centre,zoom:15,mapTypeId:"hybrid",disableDefaultUI:true,zoomControl:true});
+  userMarker=new google.maps.Marker({position:centre,map:googleMap,icon:{path:google.maps.SymbolPath.CIRCLE,scale:8,fillColor:"#4fc3f7",fillOpacity:1,strokeColor:"#fff",strokeWeight:2},title:"You"});
+  INCIDENT_LOCATIONS.forEach(function(inc){
+    var m=new google.maps.Marker({position:{lat:inc.lat,lng:inc.lng},map:googleMap,title:inc.title,icon:{path:google.maps.SymbolPath.CIRCLE,scale:10,fillColor:inc.color,fillOpacity:0.9,strokeColor:"#fff",strokeWeight:1.5}});
+    m.addListener("click",function(){selectInc(inc.id);});
+    incidentMarkers.push(m);
+  });
+  updateGoogleMapMode("street");
+}
+function updateGoogleMapMode(mode){
+  if(!googleMap)return;
+  var ek=getEstateFromAddress(userAddress);
+  var ac=ek==="montrose"?"#b8c5d6":"#c9a84c";
+  if(radiusCircle){radiusCircle.setMap(null);radiusCircle=null;}
+  if(estatePolygon){estatePolygon.setMap(null);estatePolygon=null;}
+  if(streetPolyline){streetPolyline.setMap(null);streetPolyline=null;}
+  if(mode==="radius"){
+    var rM=parseInt(document.getElementById("radiusSlider").value)||500;
+    radiusCircle=new google.maps.Circle({map:googleMap,center:userMarker.getPosition(),radius:rM,fillColor:ac,fillOpacity:0.1,strokeColor:ac,strokeOpacity:0.8,strokeWeight:2});
+    incidentMarkers.forEach(function(m,i){
+      var dist=google.maps.geometry.spherical.computeDistanceBetween(userMarker.getPosition(),m.getPosition());
+      m.setOpacity(dist<=rM?1:0.3);
+    });
+  } else if(mode==="estate"&&ESTATE_POLYGONS[ek]){
+    estatePolygon=new google.maps.Polygon({paths:ESTATE_POLYGONS[ek],map:googleMap,fillColor:ac,fillOpacity:0.1,strokeColor:ac,strokeOpacity:0.7,strokeWeight:2});
+    var b=new google.maps.LatLngBounds();
+    ESTATE_POLYGONS[ek].forEach(function(p){b.extend(p);});
+    googleMap.fitBounds(b);
+    incidentMarkers.forEach(function(m){m.setOpacity(1);});
+  } else if(mode==="street"){
+    streetPolyline=new google.maps.Polyline({path:[{lat:-27.090,lng:152.961},{lat:-27.106,lng:152.961}],map:googleMap,strokeColor:ac,strokeOpacity:0.9,strokeWeight:6});
+    googleMap.setCenter({lat:-27.098,lng:152.961});googleMap.setZoom(17);
+    incidentMarkers.forEach(function(m){m.setOpacity(1);});
+  }
+}var currentMapMode = 'street';
 
 var ESTATE_SVG_HIGHLIGHTS = {
   summerstone: {
@@ -1100,7 +1104,7 @@ function setMapMode(mode, btn) {
     if(radiusLabelBg) radiusLabelBg.style.display = '';
     if(radiusLabelTxt) radiusLabelTxt.style.display = '';
     updateRadius(document.getElementById('radiusSlider').value);
-  }
+  }updateGoogleMapMode(mode);
 }
 
 function updateRadius(v){
@@ -1561,6 +1565,7 @@ updateNeighbourCount();
 renderLocalTab();
 updateRadius(500);
 updateNotifBadge();
+initGoogleMap();
 
 if(!navigator.onLine){var b=document.getElementById("offlineBanner");if(b)b.style.display="block";}
 
