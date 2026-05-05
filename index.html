@@ -975,7 +975,7 @@ var INCS={
 
 var googleMap=null,radiusCircle=null,estatePolygon=null,streetPolyline=null,userMarker=null,incidentMarkers=[];
 var INCIDENT_LOCATIONS=[
-  {id:1,lat:-27.098,lng:152.961,title:"Suspicious Vehicle",color:"#fb8c00"},
+  {id:1,lat:-27.1307,lng:152.9518,title:"Suspicious Vehicle",color:"#fb8c00"},
   {id:2,lat:-27.096,lng:152.960,title:"Package Theft",color:"#e53935"},
   {id:3,lat:-27.094,lng:152.958,title:"Graffiti",color:"#7b1fa2"},
   {id:4,lat:-27.102,lng:152.963,title:"Bike Stolen",color:"#e53935"},
@@ -983,7 +983,7 @@ var INCIDENT_LOCATIONS=[
   {id:6,lat:-27.100,lng:152.962,title:"Door-to-Door Scam",color:"#fb8c00"}
 ];
 var ESTATE_POLYGONS={
-  summerstone:[{lat:-27.090,lng:152.955},{lat:-27.090,lng:152.968},{lat:-27.105,lng:152.968},{lat:-27.105,lng:152.955}],
+  summerstone:[{lat:-27.125,lng:152.945},{lat:-27.125,lng:152.960},{lat:-27.138,lng:152.960},{lat:-27.138,lng:152.945}],
   montrose:[{lat:-27.088,lng:152.968},{lat:-27.088,lng:152.978},{lat:-27.098,lng:152.978},{lat:-27.098,lng:152.968}]
 };
 function initGoogleMap(){
@@ -994,7 +994,7 @@ function initGoogleMap(){
   });
 }
 function onMapReady(){
-  var centre={lat:-27.098,lng:152.961};
+  var centre={lat:-27.1307,lng:152.9518};
   googleMap=new google.maps.Map(document.getElementById("googleMapWrap"),{center:centre,zoom:15,mapTypeId:"hybrid",disableDefaultUI:true,zoomControl:true});
   userMarker=new google.maps.Marker({position:centre,map:googleMap,icon:{path:google.maps.SymbolPath.CIRCLE,scale:8,fillColor:"#4fc3f7",fillOpacity:1,strokeColor:"#fff",strokeWeight:2},title:"You"});
   INCIDENT_LOCATIONS.forEach(function(inc){
@@ -1025,7 +1025,7 @@ function updateGoogleMapMode(mode){
     googleMap.fitBounds(b);
     incidentMarkers.forEach(function(m){m.setOpacity(1);});
   } else if(mode==="street"){
-    streetPolyline=new google.maps.Polyline({path:[{lat:-27.090,lng:152.961},{lat:-27.106,lng:152.961}],map:googleMap,strokeColor:ac,strokeOpacity:0.9,strokeWeight:6});
+    streetPolyline=new google.maps.Polyline({path:[{lat:-27.128,lng:152.9518},{lat:-27.135,lng:152.9518}],map:googleMap,strokeColor:ac,strokeOpacity:0.9,strokeWeight:6});
     googleMap.setCenter({lat:-27.098,lng:152.961});googleMap.setZoom(17);
     incidentMarkers.forEach(function(m){m.setOpacity(1);});
   }
