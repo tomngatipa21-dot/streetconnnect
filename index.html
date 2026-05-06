@@ -982,7 +982,7 @@ var INCIDENT_LOCATIONS=[
   {id:5,lat:-27.093,lng:152.959,title:"Loose Dog",color:"#388e3c"},
   {id:6,lat:-27.100,lng:152.962,title:"Door-to-Door Scam",color:"#fb8c00"}
 ];
-var ESTATE_POLYGONS={
+var ESTATE_STREETS={   summerstone:[     [{lat:-27.126,lng:152.950},{lat:-27.134,lng:152.950}],     [{lat:-27.128,lng:152.948},{lat:-27.128,lng:152.956}],     [{lat:-27.130,lng:152.947},{lat:-27.130,lng:152.957}],     [{lat:-27.132,lng:152.948},{lat:-27.132,lng:152.956}]   ] }; var ESTATE_POLYGONS={
   summerstone:[{lat:-27.125,lng:152.945},{lat:-27.125,lng:152.960},{lat:-27.138,lng:152.960},{lat:-27.138,lng:152.945}],
   montrose:[{lat:-27.088,lng:152.968},{lat:-27.088,lng:152.978},{lat:-27.098,lng:152.978},{lat:-27.098,lng:152.968}]
 };
@@ -995,7 +995,7 @@ function initGoogleMap(){
 }
 function onMapReady(){   if(userAddress){var geocoder=new google.maps.Geocoder();geocoder.geocode({address:userAddress+", QLD, Australia"},function(results,status){if(status==="OK"){var loc=results[0].geometry.location;googleMap.setCenter(loc);if(userMarker)userMarker.setPosition(loc);}});}
   var centre={lat:-27.1307,lng:152.9518};
-  googleMap=new google.maps.Map(document.getElementById("googleMapWrap"),{center:centre,zoom:15,mapTypeId:"hybrid",disableDefaultUI:true,zoomControl:true});
+  googleMap=new google.maps.Map(document.getElementById("googleMapWrap"),{center:centre,zoom:15,mapTypeId:"satellite",disableDefaultUI:true,zoomControl:true});
   userMarker=new google.maps.Marker({position:centre,map:googleMap,icon:{path:google.maps.SymbolPath.CIRCLE,scale:8,fillColor:"#4fc3f7",fillOpacity:1,strokeColor:"#fff",strokeWeight:2},title:"You"});
   INCIDENT_LOCATIONS.forEach(function(inc){
     var m=new google.maps.Marker({position:{lat:inc.lat,lng:inc.lng},map:googleMap,title:inc.title,icon:{path:google.maps.SymbolPath.CIRCLE,scale:10,fillColor:inc.color,fillOpacity:0.9,strokeColor:"#fff",strokeWeight:1.5}});
@@ -1019,7 +1019,7 @@ function updateGoogleMapMode(mode){
       m.setOpacity(dist<=rM?1:0.3);
     });
   } else if(mode==="estate"&&ESTATE_POLYGONS[ek]){
-    estatePolygon=new google.maps.Polygon({paths:ESTATE_POLYGONS[ek],map:googleMap,fillColor:ac,fillOpacity:0.1,strokeColor:ac,strokeOpacity:0.7,strokeWeight:2});
+    ESTATE_STREETS[ek].forEach(function(coords){var pl=new google.maps.Polyline({path:coords,map:googleMap,strokeColor:ac,strokeOpacity:0.9,strokeWeight:6});incidentMarkers.push(pl);});if(false)estatePolygon=new google.maps.Polygon({paths:ESTATE_POLYGONS[ek],map:googleMap,fillColor:ac,fillOpacity:0.1,strokeColor:ac,strokeOpacity:0.7,strokeWeight:2});
     var b=new google.maps.LatLngBounds();
     ESTATE_POLYGONS[ek].forEach(function(p){b.extend(p);});
     googleMap.fitBounds(b);
@@ -1110,7 +1110,7 @@ function setMapMode(mode, btn) {
 function updateRadius(v){
   var rM=parseInt(v);
   var d=rM>=5000?"Suburb wide":rM>=1000?(rM/1000).toFixed(1)+"km":rM+"m";
- if(document.getElementById("radiusRing"))document.getElementById("radiusRing").setAttribute("r",r);
+ var rv=document.getElementById("radiusVal");if(rv)rv.textContent=d; if(currentMapMode==="radius")updateGoogleMapMode("radius");
   var inRange=0;
   for(var id in INCIDENT_DISTS){
     var inside=INCIDENT_DISTS[id]<=rM;if(inside)inRange++;
