@@ -993,7 +993,7 @@ function initGoogleMap(){
     s.async=true;document.head.appendChild(s);
   });
 }
-function onMapReady(){
+function onMapReady(){   if(userAddress){var geocoder=new google.maps.Geocoder();geocoder.geocode({address:userAddress+", QLD, Australia"},function(results,status){if(status==="OK"){var loc=results[0].geometry.location;googleMap.setCenter(loc);if(userMarker)userMarker.setPosition(loc);}});}
   var centre={lat:-27.1307,lng:152.9518};
   googleMap=new google.maps.Map(document.getElementById("googleMapWrap"),{center:centre,zoom:15,mapTypeId:"hybrid",disableDefaultUI:true,zoomControl:true});
   userMarker=new google.maps.Marker({position:centre,map:googleMap,icon:{path:google.maps.SymbolPath.CIRCLE,scale:8,fillColor:"#4fc3f7",fillOpacity:1,strokeColor:"#fff",strokeWeight:2},title:"You"});
