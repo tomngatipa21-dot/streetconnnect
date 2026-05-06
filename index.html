@@ -1011,24 +1011,27 @@ function updateGoogleMapMode(mode){
   if(radiusCircle){radiusCircle.setMap(null);radiusCircle=null;}
   if(estatePolygon){estatePolygon.setMap(null);estatePolygon=null;}
   if(streetPolyline){streetPolyline.setMap(null);streetPolyline=null;}
+  if(window.estatePolylines){window.estatePolylines.forEach(function(p){p.setMap(null);});window.estatePolylines=[];}
   if(mode==="radius"){
     var rM=parseInt(document.getElementById("radiusSlider").value)||500;
     radiusCircle=new google.maps.Circle({map:googleMap,center:userMarker.getPosition(),radius:rM,fillColor:ac,fillOpacity:0.1,strokeColor:ac,strokeOpacity:0.8,strokeWeight:2});
-    incidentMarkers.forEach(function(m,i){
-      var dist=google.maps.geometry.spherical.computeDistanceBetween(userMarker.getPosition(),m.getPosition());
-      m.setOpacity(dist<=rM?1:0.3);
-    });
-  } else if(mode==="estate"){   var estateStreets={"summerstone":["Amber Street","Summerstone Boulevard","Breeze Street","Festival Street","Tropic Street","Dune Street","Sunrise Street","Island Parade","Sunset Street","Golden Road","Pocketstone Court","Moreton Parade","Bloom Drive","Harvest Street","Essence Street","Freshwater Street","Kingfisher Avenue"],"montrose":["Anderson Road","Baird Road","Batchen Street","Blaven Street","Blewers Road","Carisbrook Street","Earlisland Circuit","Fig Tree Esplanade","Glenmore Street","Grandtown Drive","Hepworth Way","Landings Boulevard","Lindsay Road","Moray Street","Mosset Street","Prosperous Street","Randolph Boulevard","Robbs Road","Roysvale Way","Varis Street","Wellside Street"]};   var streets=estateStreets[ek]||[];   var geocoder=new google.maps.Geocoder();   streets.forEach(function(street){     geocoder.geocode({address:street+", Morayfield QLD 4506, Australia"},function(results,status){       if(status==="OK"){         var loc=results[0].geometry.location;         var pl=new google.maps.Polyline({path:[{lat:loc.lat()-0.003,lng:loc.lng()},{lat:loc.lat()+0.003,lng:loc.lng()}],map:googleMap,strokeColor:ac,strokeOpacity:0.8,strokeWeight:5});         estatePolylines=estatePolylines||[];         ESTATE_STREETS[ek].forEach(function(coords){var pl=new google.maps.Polyline({path:coords,map:googleMap,strokeColor:ac,strokeOpacity:0.9,strokeWeight:6});incidentMarkers.push(pl);});if(false)estatePolygon=new google.maps.Polygon({paths:ESTATE_POLYGONS[ek],map:googleMap,fillColor:ac,fillOpacity:0.1,strokeColor:ac,strokeOpacity:0.7,strokeWeight:2});    googleMap.setCenter({lat:-27.1307,lng:152.9518});     googleMap.setZoom(15);     incidentMarkers.forEach(function(m){m.setOpacity(1);});
-    ESTATE_STREETS[ek].forEach(function(coords){var pl=new google.maps.Polyline({path:coords,map:googleMap,strokeColor:ac,strokeOpacity:0.9,strokeWeight:6});incidentMarkers.push(pl);});if(false)estatePolygon=new google.maps.Polygon({paths:ESTATE_POLYGONS[ek],map:googleMap,fillColor:ac,fillOpacity:0.1,strokeColor:ac,strokeOpacity:0.7,strokeWeight:2});
-   googleMap.setCenter({lat:-27.1307,lng:152.9518});
-    googleMap.setZoom(15);
+    incidentMarkers.forEach(function(m){var dist=google.maps.geometry.spherical.computeDistanceBetween(userMarker.getPosition(),m.getPosition());m.setOpacity(dist<=rM?1:0.3);});
+  } else if(mode==="estate"){
+    window.estatePolylines=[];
+    var estateStreets={"summerstone":["Amber Street","Summerstone Boulevard","Breeze Street","Festival Street","Tropic Street","Dune Street","Sunrise Street","Island Parade","Sunset Street","Golden Road","Pocketstone Court","Moreton Parade","Bloom Drive","Harvest Street","Essence Street","Freshwater Street","Kingfisher Avenue"],"montrose":["Anderson Road","Baird Road","Grandtown Drive","Hepworth Way","Landings Boulevard","Moray Street","Randolph Boulevard","Wellside Street"]};
+    var streets=estateStreets[ek]||[];
+    var geocoder=new google.maps.Geocoder();
+    streets.forEach(function(street){geocoder.geocode({address:street+", Morayfield QLD 4506, Australia"},function(results,status){if(status==="OK"){var loc=results[0].geometry.location;var pl=new google.maps.Polyline({path:[{lat:loc.lat()-0.002,lng:loc.lng()-0.002},{lat:loc.lat()+0.002,lng:loc.lng()+0.002}],map:googleMap,strokeColor:ac,strokeOpacity:0.9,strokeWeight:6});window.estatePolylines.push(pl);}});});
     incidentMarkers.forEach(function(m){m.setOpacity(1);});
+    googleMap.setCenter({lat:-27.1307,lng:152.9518});
+    googleMap.setZoom(15);
   } else if(mode==="street"){
     streetPolyline=new google.maps.Polyline({path:[{lat:-27.128,lng:152.9518},{lat:-27.135,lng:152.9518}],map:googleMap,strokeColor:ac,strokeOpacity:0.9,strokeWeight:6});
-    googleMap.setCenter({lat:-27.098,lng:152.961});googleMap.setZoom(17);
+    googleMap.setCenter({lat:-27.1307,lng:152.9518});googleMap.setZoom(17);
     incidentMarkers.forEach(function(m){m.setOpacity(1);});
   }
-}var currentMapMode = 'street';
+}
+var currentMapMode = 'street';
 
 var ESTATE_SVG_HIGHLIGHTS = {
   summerstone: {
