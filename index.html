@@ -640,10 +640,6 @@ function updateGoogleMapMode(mode){
     streets.forEach(function(street){var dsDir=new google.maps.DirectionsService();dsDir.route({origin:"1 "+street,destination:"99 "+street,travelMode:google.maps.TravelMode.DRIVING},function(result,status){if(status==="OK"&&result.routes.length){var path=result.routes[0].overview_path;var pl=new google.maps.Polyline({path:path,map:googleMap,strokeColor:ac,strokeOpacity:0.9,strokeWeight:5,geodesic:true});window.estatePolylines.push(pl);}});});
     incidentMarkers.forEach(function(m){m.setOpacity(1);});
     googleMap.setCenter({lat:-27.1307,lng:152.9518});googleMap.setZoom(15);
-  } else if(mode==="street"){
-    streetPolyline=new google.maps.Polyline({path:[{lat:-27.128,lng:152.9518},{lat:-27.135,lng:152.9518}],map:googleMap,strokeColor:ac,strokeOpacity:0.9,strokeWeight:6});
-    googleMap.setCenter({lat:-27.1307,lng:152.9518});googleMap.setZoom(17);
-    incidentMarkers.forEach(function(m){m.setOpacity(1);});
   }
 }
 var currentMapMode='street';
