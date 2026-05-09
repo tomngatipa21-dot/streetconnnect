@@ -10,16 +10,10 @@
 body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:16px;}
 .phone{width:100%;max-width:390px;height:calc(100vh - 32px);max-height:840px;background:var(--bg);border-radius:36px;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,0.6);display:flex;flex-direction:column;position:relative;}
 .notch{width:100px;height:28px;background:#111;border-radius:0 0 20px 20px;position:absolute;top:0;left:50%;transform:translateX(-50%);z-index:20;}
-
-/* OFFLINE BANNER */
 .offline-banner{background:#e53935;color:#fff;font-size:11px;text-align:center;padding:6px;display:none;flex-shrink:0;}
-
-/* WELCOME SPLASH */
 .splash-screen{position:absolute;inset:0;background:var(--ec);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:200;border-radius:36px;transition:opacity 0.5s;gap:16px;}
 .splash-logo{max-width:240px;max-height:100px;object-fit:contain;}
 .splash-text{color:rgba(255,255,255,0.6);font-size:13px;letter-spacing:2px;}
-
-/* HEADER */
 .header{background:var(--ec);padding-top:36px;flex-shrink:0;transition:background 0.5s;}
 .estate-hero{display:flex;flex-direction:column;align-items:center;padding:16px 14px 10px;border-bottom:1px solid rgba(255,255,255,0.1);}
 .estate-logo{max-width:220px;max-height:90px;object-fit:contain;display:none;}.estate-logo[src]:not([src=""]){display:block;}
@@ -40,37 +34,25 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
 .alert-banner{background:rgba(201,168,76,0.12);border-top:1px solid rgba(201,168,76,0.2);border-bottom:1px solid rgba(201,168,76,0.2);padding:6px 14px;display:flex;align-items:center;gap:8px;}
 .alert-dot{width:6px;height:6px;border-radius:50%;background:var(--ea);flex-shrink:0;animation:pulse 1.5s infinite;}
 .alert-text{color:var(--ea);font-size:10px;}
-
-/* TABS */
 .tabs{display:flex;border-top:1px solid rgba(255,255,255,0.08);}
 .tab{flex:1;background:transparent;border:none;border-bottom:2px solid transparent;color:rgba(255,255,255,0.4);padding:9px 2px;font-size:9px;cursor:pointer;font-family:inherit;white-space:nowrap;transition:all 0.2s;position:relative;}
 .tab.active{color:#fff;border-bottom-color:var(--ea);}
 .tab-badge{position:absolute;top:4px;right:2px;background:#e53935;color:#fff;font-size:7px;font-weight:700;width:13px;height:13px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
-
-/* CONTENT */
 .content{flex:1;overflow-y:auto;display:flex;flex-direction:column;-webkit-overflow-scrolling:touch;animation:fadeIn 0.2s ease;}
 .messages{flex:1;padding:10px 12px;display:flex;flex-direction:column;gap:10px;}
 .date-div{text-align:center;font-size:10px;color:#bbb;letter-spacing:1px;margin:4px 0;}
-
-/* LOADING */
 .loading-spinner{display:flex;align-items:center;justify-content:center;padding:20px;gap:8px;color:#aaa;font-size:12px;}
 .spinner{width:16px;height:16px;border:2px solid #eee;border-top-color:var(--ec);border-radius:50%;animation:spin 0.8s linear infinite;}
 .new-msgs-banner{background:var(--ec);color:#fff;font-size:11px;font-weight:700;text-align:center;padding:6px;cursor:pointer;display:none;flex-shrink:0;}
 .unread-chat-badge{position:absolute;top:4px;left:4px;background:#e53935;color:#fff;font-size:7px;font-weight:700;width:13px;height:13px;border-radius:50%;display:none;align-items:center;justify-content:center;}
-
-/* PINNED */
 .pinned-notice{background:linear-gradient(135deg,#2a2a2a,#3a3020);border-radius:12px;padding:10px 12px;border-left:3px solid var(--ea);flex-shrink:0;}
 .pinned-top{display:flex;align-items:center;gap:6px;margin-bottom:5px;}
 .pinned-title{font-size:11px;font-weight:700;color:#fff;}
 .pinned-badge{background:var(--ea);color:#1a1a1a;font-size:8px;padding:2px 6px;border-radius:10px;font-weight:700;margin-left:auto;}
 .pinned-body{font-size:11px;color:rgba(255,255,255,0.75);line-height:1.5;}
-
-/* CHAT LEVEL TABS */
 .chat-level-tabs{display:flex;gap:6px;padding:8px 12px 4px;flex-shrink:0;overflow-x:auto;scrollbar-width:none;}
 .clt-btn{background:none;border:1.5px solid #e0dbd0;border-radius:20px;padding:5px 12px;font-size:11px;cursor:pointer;white-space:nowrap;color:#666;font-family:inherit;transition:all 0.2s;}
 .clt-btn.active{background:var(--ec);border-color:var(--ec);color:#fff;}
-
-/* AUTH CARDS */
 .auth-card{border-radius:12px;padding:11px;border-left:4px solid;flex-shrink:0;}
 .auth-top{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
 .auth-av{font-size:20px;}
@@ -80,8 +62,6 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
 .auth-body{font-size:12px;color:#333;line-height:1.55;margin:0 0 8px;}
 .auth-foot{display:flex;justify-content:space-between;align-items:center;}
 .verified{font-size:10px;color:#4caf50;}
-
-/* MESSAGES */
 .msg-row{display:flex;align-items:flex-end;gap:7px;animation:fadeIn 0.2s ease;}
 .msg-row.me{flex-direction:row-reverse;}
 .msg-av{font-size:18px;flex-shrink:0;margin-bottom:22px;cursor:pointer;}
@@ -97,16 +77,10 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
 .del-btn{background:none;border:none;color:rgba(255,255,255,0.35);font-size:9px;cursor:pointer;text-align:right;display:block;width:100%;padding:2px 0;font-family:inherit;}
 .like-btn{background:none;border:1px solid #eee;border-radius:12px;padding:2px 8px;font-size:12px;cursor:pointer;color:#888;font-family:inherit;}
 .like-btn.liked{background:#e8f5e9;border-color:#a5d6a7;color:#2e7d32;}
-.msg-reactions{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap;}
-.reaction-chip{background:#f5f0e8;border-radius:20px;padding:2px 8px;font-size:12px;cursor:pointer;border:1px solid #e0dbd0;}
 .typing-indicator{display:none;padding:4px 12px;font-size:11px;color:#aaa;font-style:italic;}
-
-/* FILTER */
 .filter-row{display:flex;gap:6px;padding:8px 12px 4px;overflow-x:auto;flex-shrink:0;scrollbar-width:none;}
 .filter-btn{background:none;border:1px solid #ddd;border-radius:20px;padding:5px 11px;font-size:11px;cursor:pointer;white-space:nowrap;color:#666;font-family:inherit;}
 .filter-btn.active{background:var(--ec);border-color:var(--ec);color:#fff;}
-
-/* COMPOSE */
 .compose{border-top:1px solid #ede8e0;padding:10px 12px 14px;flex-shrink:0;}
 .compose-row{display:flex;gap:8px;align-items:center;}
 .compose-input{flex:1;border:1.5px solid #e0dbd0;border-radius:22px;padding:10px 13px;font-size:13px;background:#f9f6f0;outline:none;font-family:inherit;color:#333;transition:border-color 0.2s;}
@@ -114,8 +88,6 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
 .send-btn{width:38px;height:38px;border-radius:50%;border:none;color:#fff;font-size:18px;cursor:pointer;flex-shrink:0;background:#ccc;transition:background 0.2s;}
 .compose-foot{font-size:10px;color:#bbb;text-align:center;margin-top:5px;}
 .ai-note{background:#e8f5e9;border-left:3px solid #4caf50;padding:7px 12px;font-size:11px;color:#2e7d32;flex-shrink:0;display:none;}
-
-/* LOCAL */
 .local-card{background:#fff;border:1.5px solid #ede8e0;border-radius:14px;padding:12px;box-shadow:0 1px 4px rgba(0,0,0,0.05);flex-shrink:0;}
 .local-top{display:flex;align-items:flex-start;gap:10px;margin-bottom:7px;}
 .local-emoji{font-size:24px;flex-shrink:0;}
@@ -126,8 +98,6 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
 .tags{display:flex;gap:6px;flex-wrap:wrap;}
 .tag{background:#f5f0e8;color:#666;font-size:10px;padding:3px 9px;border-radius:12px;}
 .add-btn{background:var(--ec);color:#fff;border:none;border-radius:22px;padding:11px 22px;font-size:13px;cursor:pointer;font-weight:700;font-family:inherit;}
-
-/* MAP */
 .map-wrap{padding:12px;display:flex;flex-direction:column;gap:10px;overflow-y:auto;}
 .map-controls{background:var(--ec);border-radius:12px;padding:12px 13px;}
 .map-ctrl-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
@@ -164,8 +134,6 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
 .inc-list-sub{font-size:10px;color:#888;margin-top:1px;}
 .sev-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
 .sec-title{font-size:11px;color:#aaa;letter-spacing:1px;flex-shrink:0;}
-
-/* INCIDENT VERIFICATION */
 .inc-verify{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
 .verify-btn{flex:1;border:none;border-radius:10px;padding:7px 4px;font-size:10px;cursor:pointer;font-weight:700;font-family:inherit;min-width:60px;}
 .vb-confirm{background:#e8f5e9;color:#2e7d32;}
@@ -174,8 +142,6 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
 .vb-notthere{background:#fff0f0;color:#c62828;}
 .trust-bar{height:4px;background:#eee;border-radius:2px;overflow:hidden;flex:1;}
 .trust-fill{height:100%;background:var(--ea);border-radius:2px;transition:width 0.3s;}
-
-/* NOTIFICATIONS */
 .notif-card{border-radius:13px;padding:12px 13px;border:1.5px solid;cursor:pointer;transition:opacity 0.3s;}
 .notif-card.read{opacity:0.5;}
 .notif-top{display:flex;align-items:flex-start;gap:10px;}
@@ -185,8 +151,6 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
 .notif-time{font-size:10px;color:#aaa;margin-top:4px;}
 .unread-dot{width:7px;height:7px;border-radius:50%;background:#e53935;flex-shrink:0;margin-top:3px;}
 .mark-all-btn{background:none;border:1px solid #ddd;border-radius:20px;padding:5px 12px;font-size:11px;cursor:pointer;color:#888;font-family:inherit;align-self:flex-end;margin-bottom:4px;}
-
-/* MODALS */
 .modal-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:flex-end;z-index:100;border-radius:36px;overflow:hidden;}
 .modal-sheet{background:var(--bg);border-radius:20px 20px 0 0;padding:20px 18px 28px;width:100%;display:flex;flex-direction:column;gap:12px;max-height:90%;overflow-y:auto;}
 .modal-hdr{display:flex;justify-content:space-between;align-items:center;}
@@ -201,8 +165,6 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
 .form-textarea{width:100%;border:1.5px solid #e0dbd0;border-radius:12px;padding:12px;font-size:13px;font-family:inherit;color:#333;outline:none;resize:none;background:#f9f6f0;}
 .warn-box{background:#fff8e1;border:1px solid #ffe082;border-radius:10px;padding:10px 12px;font-size:11px;color:#7f6000;line-height:1.5;}
 .submit-btn{background:var(--ec);color:#fff;border:none;border-radius:14px;padding:14px;font-size:14px;cursor:pointer;font-weight:700;font-family:inherit;}
-
-/* PROFILE */
 .profile-hero{background:var(--ec);border-radius:16px;padding:20px;text-align:center;}
 .profile-avatar{width:64px;height:64px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--ea);margin:0 auto 12px;border:2px solid var(--ea);cursor:pointer;font-family:inherit;}
 .profile-name{font-size:18px;font-weight:900;color:#fff;margin-bottom:3px;}
@@ -212,22 +174,17 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
 .profile-detail-label{font-size:10px;color:#aaa;margin-bottom:1px;}
 .profile-detail-value{font-size:13px;font-weight:600;color:#222;}
 .profile-interests{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;}
-.interest-tag{background:#f5f0e8;border:1.5px solid #e0dbd0;border-radius:20px;padding:5px 12px;font-size:11px;cursor:pointer;color:#666;font-family:inherit;transition:all 0.15s;}
-.interest-tag.selected{background:var(--ec);color:#fff;border-color:var(--ec);}
-.logout-btn{width:100%;background:#fff0f0;color:#e53935;border:1.5px solid #ffcdd2;border-radius:12px;padding:12px;font-size:14px;cursor:pointer;font-weight:700;font-family:inherit;}
 .interest-tag{background:#f5f0e8;border:1.5px solid #e0dbd0;border-radius:20px;padding:5px 10px;font-size:11px;cursor:pointer;color:#666;font-family:inherit;transition:all 0.2s;}
 .interest-tag.selected{background:var(--ec);color:#fff;border-color:var(--ec);}
+.logout-btn{width:100%;background:#fff0f0;color:#e53935;border:1.5px solid #ffcdd2;border-radius:12px;padding:12px;font-size:14px;cursor:pointer;font-weight:700;font-family:inherit;}
 .edit-btn{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:20px;padding:4px 12px;font-size:11px;color:#fff;cursor:pointer;font-family:inherit;margin-top:6px;}
-
-/* DM */
-.dm-item{display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid #ede8e0;border-radius:12px;padding:12px;cursor:pointer;transition:all 0.15s;}
-.dm-item:hover{border-color:var(--ec);}
-.dm-avatar{width:38px;height:38px;background:var(--ec);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--ea);font-size:15px;font-weight:700;flex-shrink:0;}
+.dm-list{display:flex;flex-direction:column;gap:8px;}
+.dm-item{display:flex;align-items:center;gap:12px;background:#fff;border:1.5px solid #ede8e0;border-radius:14px;padding:12px 14px;cursor:pointer;transition:all 0.15s;}
+.dm-item:hover{border-color:var(--ec);background:#faf7f0;}
+.dm-avatar{width:40px;height:40px;background:var(--ec);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--ea);font-size:16px;font-weight:700;flex-shrink:0;}
 .dm-name{font-size:13px;font-weight:700;color:#222;}
 .dm-preview{font-size:11px;color:#aaa;margin-top:2px;}
-.dm-time{font-size:10px;color:#bbb;margin-left:auto;flex-shrink:0;}
-
-/* SETTINGS */
+.dm-time{font-size:10px;color:#bbb;flex-shrink:0;}
 .settings-section{margin-bottom:4px;}
 .settings-title{font-size:10px;color:#aaa;letter-spacing:1px;padding:8px 0 4px;font-weight:700;}
 .settings-row{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid #ede8e0;border-radius:10px;padding:12px 14px;margin-bottom:6px;}
@@ -237,95 +194,29 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
 .toggle.on{background:var(--ec);}
 .toggle-thumb{width:18px;height:18px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:left 0.2s;box-shadow:0 1px 3px rgba(0,0,0,0.2);}
 .toggle.on .toggle-thumb{left:20px;}
-
-/* PUSH */
 .push-banner{position:absolute;top:0;left:0;right:0;z-index:50;padding:10px 14px;display:none;align-items:center;gap:10px;box-shadow:0 4px 20px rgba(0,0,0,0.4);animation:slideDown 0.3s ease;border-radius:36px 36px 0 0;}
 .push-icon{font-size:22px;flex-shrink:0;}
 .push-text{flex:1;}
 .push-title{font-size:12px;font-weight:700;color:#fff;}
 .push-body-text{font-size:11px;color:rgba(255,255,255,0.85);line-height:1.3;}
 .push-close{background:rgba(255,255,255,0.2);border:none;color:#fff;border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:12px;flex-shrink:0;font-family:inherit;}
-
 .home-bar{height:20px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:var(--bg);}
 .home-ind{width:120px;height:5px;background:#ddd;border-radius:3px;}
 .disclaimer{background:#f5f0e8;border-top:1px solid #e0dbd0;padding:6px 14px;font-size:8px;color:#bbb;text-align:center;line-height:1.5;flex-shrink:0;}
 .empty-state{text-align:center;padding:32px 16px;color:#aaa;font-size:13px;line-height:1.8;}
-
+.welcome-splash{position:absolute;inset:0;background:var(--ec);z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:36px;animation:welcomeIn 0.5s ease;}
+.welcome-logo{max-width:240px;max-height:100px;object-fit:contain;margin-bottom:20px;}
+.welcome-text{color:rgba(255,255,255,0.7);font-size:13px;letter-spacing:2px;}
+.welcome-estate{font-size:18px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:1px;}
+.chat-unread{position:absolute;top:4px;right:2px;background:#e53935;color:#fff;font-size:7px;font-weight:700;min-width:13px;height:13px;border-radius:7px;display:none;align-items:center;justify-content:center;padding:0 2px;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
 @keyframes fadeInUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 @keyframes tabFade{from{opacity:0}to{opacity:1}}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 @keyframes welcomeIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
-
-/* WELCOME SPLASH */
-.welcome-splash{position:absolute;inset:0;background:var(--ec);z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:36px;animation:welcomeIn 0.5s ease;}
-.welcome-logo{max-width:240px;max-height:100px;object-fit:contain;margin-bottom:20px;}
-.welcome-text{color:rgba(255,255,255,0.7);font-size:13px;letter-spacing:2px;}
-.welcome-estate{font-size:18px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:1px;}
-
-/* LOADING SPINNER */
-.loading-spinner{display:flex;align-items:center;justify-content:center;padding:20px;gap:8px;color:#aaa;font-size:12px;}
-.spinner{width:18px;height:18px;border:2px solid #eee;border-top-color:var(--ec);border-radius:50%;animation:spin 0.8s linear infinite;}
-
-/* NEW MESSAGES BANNER */
-.new-msg-banner{position:sticky;bottom:60px;left:0;right:0;display:none;justify-content:center;z-index:10;padding:4px 0;}
-.new-msg-btn{background:var(--ec);color:#fff;border:none;border-radius:20px;padding:6px 16px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 12px rgba(0,0,0,0.2);}
-
-/* TYPING INDICATOR */
-.typing-indicator{display:none;align-items:center;gap:6px;padding:4px 12px;}
-.typing-text{font-size:10px;color:#aaa;font-style:italic;}
-.typing-dots{display:flex;gap:3px;}
-.typing-dot{width:5px;height:5px;border-radius:50%;background:#ccc;animation:bounce 0.8s infinite;}
-.typing-dot:nth-child(2){animation-delay:0.15s;}
-.typing-dot:nth-child(3){animation-delay:0.3s;}
-
-/* SETTINGS SCREEN */
-.settings-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid #f0ece3;}
-.settings-row:last-child{border-bottom:none;}
-.settings-label{font-size:13px;color:#333;font-weight:600;}
-.settings-sub{font-size:11px;color:#aaa;margin-top:2px;}
-.toggle-switch{width:44px;height:24px;background:#ddd;border-radius:12px;position:relative;cursor:pointer;transition:background 0.3s;border:none;flex-shrink:0;}
-.toggle-switch.on{background:var(--ec);}
-.toggle-knob{width:20px;height:20px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:left 0.3s;box-shadow:0 1px 3px rgba(0,0,0,0.2);}
-.toggle-switch.on .toggle-knob{left:22px;}
-
-/* DM SCREEN */
-.dm-list{display:flex;flex-direction:column;gap:8px;}
-.dm-item{display:flex;align-items:center;gap:12px;background:#fff;border:1.5px solid #ede8e0;border-radius:14px;padding:12px 14px;cursor:pointer;transition:all 0.15s;}
-.dm-item:hover{border-color:var(--ec);background:#faf7f0;}
-.dm-avatar{width:40px;height:40px;background:var(--ec);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--ea);font-size:16px;font-weight:700;flex-shrink:0;}
-.dm-name{font-size:13px;font-weight:700;color:#222;}
-.dm-preview{font-size:11px;color:#aaa;margin-top:2px;}
-.dm-time{font-size:10px;color:#bbb;flex-shrink:0;}
-.dm-unread{width:8px;height:8px;border-radius:50%;background:var(--ec);flex-shrink:0;}
-
-/* REACTION TOOLTIP */
-.reactions{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap;}
-.reaction{background:#f5f0e8;border:1px solid #e0dbd0;border-radius:12px;padding:2px 7px;font-size:11px;cursor:pointer;transition:all 0.15s;}
-.reaction:hover{background:#e8f5e9;border-color:#a5d6a7;}
-.reaction.mine{background:#e8f5e9;border-color:#a5d6a7;}
-
-/* ONLINE DOT */
-.online-dot{width:8px;height:8px;border-radius:50%;background:#4caf50;display:inline-block;margin-left:4px;}
-
-/* OFFLINE BANNER */
-.offline-banner{background:#e53935;color:#fff;font-size:11px;text-align:center;padding:6px;display:none;flex-shrink:0;}
-
-/* REPORT MESSAGE */
-.msg-actions-popup{position:absolute;background:#fff;border:1.5px solid #ede8e0;border-radius:12px;padding:8px;box-shadow:0 8px 24px rgba(0,0,0,0.15);display:none;z-index:50;min-width:140px;}
-.msg-action-btn{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;cursor:pointer;font-size:12px;color:#333;transition:background 0.15s;}
-.msg-action-btn:hover{background:#f5f0e8;}
-
-/* UNREAD CHAT BADGE */
-.chat-unread{position:absolute;top:4px;right:2px;background:#e53935;color:#fff;font-size:7px;font-weight:700;min-width:13px;height:13px;border-radius:7px;display:none;align-items:center;justify-content:center;padding:0 2px;}
-
-/* CONTENT ANIMATION */
-.content{animation:tabFade 0.2s ease;}
-
 @keyframes slideDown{from{transform:translateY(-100%);opacity:0}to{transform:translateY(0);opacity:1}}
 @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
-@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
@@ -337,18 +228,11 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
     <div class="welcome-estate" id="welcomeEstateName"></div>
     <div class="welcome-text">STREET CONNECT</div>
   </div>
-  <div class="offline-banner" id="offlineBanner">&#128262; You are offline &mdash; showing cached content</div>
-
-  <!-- SPLASH SCREEN -->
-  <div class="splash-screen" id="splashScreen">
+  <div class="splash-screen" id="splashScreen" style="display:none;">
     <img class="splash-logo" id="splashLogo" src="" alt=""/>
     <div class="splash-text" id="splashText">STREET CONNECT</div>
   </div>
-
-  <!-- OFFLINE BANNER -->
   <div class="offline-banner" id="offlineBanner">&#128683; You're offline — showing cached content</div>
-
-  <!-- PUSH BANNER -->
   <div class="push-banner" id="pushBanner">
     <span class="push-icon" id="pushIcon">&#128680;</span>
     <div class="push-text"><div class="push-title" id="pushTitle"></div><div class="push-body-text" id="pushBodyText"></div></div>
@@ -403,14 +287,14 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
       <div>
         <label class="form-label">My interests</label>
         <div class="profile-interests" id="profileInterests">
-          <button class="interest-tag" onclick="toggleInterest(this)">&#127793; Gardens</button>
-          <button class="interest-tag" onclick="toggleInterest(this)">&#128104;&#8205;&#128105;&#8205;&#128103; Kids</button>
-          <button class="interest-tag" onclick="toggleInterest(this)">&#127936; Sport</button>
-          <button class="interest-tag" onclick="toggleInterest(this)">&#128021; Pets</button>
-          <button class="interest-tag" onclick="toggleInterest(this)">&#128187; Tech</button>
-          <button class="interest-tag" onclick="toggleInterest(this)">&#127969; DIY</button>
-          <button class="interest-tag" onclick="toggleInterest(this)">&#127859; Food</button>
-          <button class="interest-tag" onclick="toggleInterest(this)">&#127926; Music</button>
+          <button class="interest-tag" onclick="toggleInterest(this,'Gardens')">&#127793; Gardens</button>
+          <button class="interest-tag" onclick="toggleInterest(this,'Kids')">&#128106; Kids</button>
+          <button class="interest-tag" onclick="toggleInterest(this,'Sport')">&#127936; Sport</button>
+          <button class="interest-tag" onclick="toggleInterest(this,'Pets')">&#128021; Pets</button>
+          <button class="interest-tag" onclick="toggleInterest(this,'Tech')">&#128187; Tech</button>
+          <button class="interest-tag" onclick="toggleInterest(this,'DIY')">&#127969; DIY</button>
+          <button class="interest-tag" onclick="toggleInterest(this,'Food')">&#127859; Food</button>
+          <button class="interest-tag" onclick="toggleInterest(this,'Music')">&#127926; Music</button>
         </div>
       </div>
       <div style="background:#f9f6f0;border-radius:12px;padding:14px;">
@@ -423,32 +307,20 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
           <label style="font-size:10px;color:#aaa;display:block;margin-bottom:4px;">Bio (optional)</label>
           <input id="editBio" style="width:100%;border:1.5px solid #e0dbd0;border-radius:8px;padding:8px 10px;font-size:13px;font-family:inherit;outline:none;background:#fff;" placeholder="e.g. Dad of 2, been here 3 years"/>
         </div>
-        <div style="margin-bottom:10px;">
-          <label style="font-size:10px;color:#aaa;display:block;margin-bottom:6px;">Interests</label>
-          <div style="display:flex;flex-wrap:wrap;gap:6px;" id="interestTags">
-            <button class="interest-tag" onclick="toggleInterest(this,'Gardens')">&#127807; Gardens</button>
-            <button class="interest-tag" onclick="toggleInterest(this,'Kids')">&#128106; Kids</button>
-            <button class="interest-tag" onclick="toggleInterest(this,'Sport')">&#9917; Sport</button>
-            <button class="interest-tag" onclick="toggleInterest(this,'Pets')">&#128054; Pets</button>
-            <button class="interest-tag" onclick="toggleInterest(this,'Business')">&#128188; Business</button>
-            <button class="interest-tag" onclick="toggleInterest(this,'Music')">&#127925; Music</button>
-            <button class="interest-tag" onclick="toggleInterest(this,'Food')">&#127859; Food</button>
-          </div>
-        </div>
         <button onclick="saveProfile()" style="width:100%;background:var(--ec);color:#fff;border:none;border-radius:10px;padding:11px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">Save Changes</button>
       </div>
       <button class="logout-btn" onclick="logout()">&#128682; Logout</button>
     </div>
   </div>
 
-  <!-- DM MODAL -->
+  <!-- DM MODAL (legacy) -->
   <div class="modal-overlay" id="dmModal">
     <div class="modal-sheet">
-      <div class="modal-hdr"><div class="modal-title" id="dmTitle">Direct Message</div><button class="modal-close" onclick="closeDM()">&#10005;</button></div>
-      <div id="dmMessages" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:8px;min-height:200px;max-height:300px;padding:4px 0;"></div>
+      <div class="modal-hdr"><div class="modal-title" id="dmTitle">Direct Message</div><button class="modal-close" onclick="document.getElementById('dmModal').style.display='none'">&#10005;</button></div>
+      <div id="dmMessagesModal" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:8px;min-height:200px;max-height:300px;padding:4px 0;"></div>
       <div style="display:flex;gap:8px;">
-        <input class="form-input" id="dmInput" placeholder="Send a private message..." style="margin-bottom:0;" onkeydown="if(event.key==='Enter')sendDM()"/>
-        <button class="send-btn" style="background:var(--ec);" onclick="sendDM()">&#8593;</button>
+        <input class="form-input" id="dmInputModal" placeholder="Send a private message..." style="margin-bottom:0;" onkeydown="if(event.key==='Enter')sendDMModal()"/>
+        <button class="send-btn" style="background:var(--ec);" onclick="sendDMModal()">&#8593;</button>
       </div>
     </div>
   </div>
@@ -519,8 +391,8 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
     </div>
     <div class="alert-banner"><span class="alert-dot"></span><span class="alert-text" id="alertText">&#127881; Street Connect is live &mdash; invite your neighbours!</span></div>
     <div class="tabs">
-      <button class="tab active" onclick="switchTab('chat',this)" style="position:relative;">&#128172; Chat<span class="unread-chat-badge" id="unreadChatBadge"></span></button>
-      <button class="tab" onclick="switchTab('map',this);setTimeout(function(){if(googleMap)google.maps.event.trigger(googleMap,'resize');},100)">&#128506; Map</button>
+      <button class="tab active" onclick="switchTab('chat',this)" style="position:relative;">&#128172; Chat<span class="chat-unread" id="unreadChatBadge"></span></button>
+      <button class="tab" onclick="switchTab('map',this)">&#128506; Map</button>
       <button class="tab" onclick="switchTab('official',this)">&#127963; Official</button>
       <button class="tab" onclick="switchTab('local',this);renderLocalTab()">&#127960; Local</button>
       <button class="tab" onclick="switchTab('notifs',this);markNotifsRead()">&#128276; Alerts<span class="tab-badge" id="tabNotifBadge" style="display:none;"></span></button>
@@ -586,7 +458,7 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
           <button class="map-mode-btn" id="modeRadius" onclick="setMapMode('radius',this)">&#128225; Radius</button>
         </div>
         <div id="modeStreetInfo" class="mode-info">Showing incidents on your street only. Notifications limited to your street.</div>
-        <div id="modeEstateInfo" class="mode-info" style="display:none;">Showing all incidents within your estate boundary. Your estate is highlighted on the map.</div>
+        <div id="modeEstateInfo" class="mode-info" style="display:none;">Showing all incidents within your estate. Streets highlighted in your estate colour.</div>
         <div id="modeRadiusControls" style="display:none;">
           <div class="map-ctrl-top">
             <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:14px;">&#128225;</span><div><div class="map-ctrl-title">Custom Radius</div><div class="map-ctrl-sub">Drag to expand your alert zone</div></div></div>
@@ -603,14 +475,164 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
         </div>
         <div class="radius-info" id="radiusInfo">&#127968; Notifications from your street only</div>
       </div>
-     <div id="googleMapWrap" style="border-radius:12px;overflow:hidden;height:280px;background:#1a2e1a;min-height:280px;" style="border-radius:12px;overflow:hidden;height:280px;background:#1a2e1a;min-height:280px;" style="border-radius:12px;overflow:hidden;height:280px;background:#1a2e1a;"></div>
-      <div class="inc-detail" id="incDetail"></div> <div class="sec-title">ALL INCIDENTS &middot; LAST 7 DAYS</div>
+
+      <!-- MAP SVG: viewBox 0 0 360 300
+           Summerstone Estate occupies left/centre zone.
+           Main spine: Summerstone Blvd runs N-S at x=130.
+           Cross streets run E-W off the spine.
+           Montrose Estate occupies right zone, centred on Grandtown Dr (x=270 N-S) and Robbs Rd (y=60 E-W). -->
+      <div class="map-svg-wrap">
+        <svg id="mainMap" viewBox="0 0 360 300" style="width:100%;display:block;">
+          <!-- Background -->
+          <rect width="360" height="300" fill="#1a2e1a"/>
+
+          <!-- ══ BASE ROAD NETWORK (grey, low opacity) ══ -->
+          <!-- Summerstone Blvd - main N-S spine -->
+          <path d="M130,0 L130,300" stroke="#3a4a3a" stroke-width="9" fill="none"/>
+          <path d="M130,0 L130,300" stroke="#5a6e5a" stroke-width="5" fill="none"/>
+          <path d="M130,0 L130,300" stroke="rgba(255,255,255,0.08)" stroke-width="2" fill="none" stroke-dasharray="12,8"/>
+
+          <!-- Cross streets off Summerstone Blvd (W-E) -->
+          <path d="M40,55 L130,55" stroke="#2a3a2a" stroke-width="4" fill="none"/>   <!-- Festival St -->
+          <path d="M40,85 L130,85" stroke="#2a3a2a" stroke-width="4" fill="none"/>   <!-- Breeze St -->
+          <path d="M40,115 L130,115" stroke="#2a3a2a" stroke-width="4" fill="none"/>  <!-- Tropic St -->
+          <path d="M40,145 L130,145" stroke="#2a3a2a" stroke-width="4" fill="none"/>  <!-- Dune St -->
+          <path d="M40,175 L130,175" stroke="#2a3a2a" stroke-width="4" fill="none"/>  <!-- Sunrise St -->
+          <path d="M40,205 L130,205" stroke="#2a3a2a" stroke-width="4" fill="none"/>  <!-- Freshwater St -->
+          <path d="M40,235 L130,235" stroke="#2a3a2a" stroke-width="4" fill="none"/>  <!-- Amber St / Bloom Dr -->
+          <path d="M40,265 L130,265" stroke="#2a3a2a" stroke-width="4" fill="none"/>  <!-- Harvest / Essence St -->
+
+          <!-- Streets east of Summerstone Blvd -->
+          <path d="M130,85 L210,85" stroke="#2a3a2a" stroke-width="3" fill="none"/>   <!-- Bloom Dr east -->
+          <path d="M130,145 L210,145" stroke="#2a3a2a" stroke-width="3" fill="none"/>  <!-- Island Parade -->
+
+          <!-- Connector road on west edge -->
+          <path d="M40,0 L40,300" stroke="#2e3e2e" stroke-width="5" fill="none"/>
+
+          <!-- ══ MONTROSE roads ══ -->
+          <!-- Robbs Rd - main E-W arterial -->
+          <path d="M220,60 L360,60" stroke="#303a30" stroke-width="7" fill="none"/>
+          <path d="M220,60 L360,60" stroke="#4a5a4a" stroke-width="4" fill="none"/>
+          <!-- Grandtown Dr - main N-S in Montrose -->
+          <path d="M275,60 L275,300" stroke="#303a30" stroke-width="7" fill="none"/>
+          <path d="M275,60 L275,300" stroke="#4a5a4a" stroke-width="4" fill="none"/>
+          <!-- Montrose internal streets -->
+          <path d="M220,100 L310,100" stroke="#2a3a2a" stroke-width="3" fill="none"/>  <!-- Mosset St -->
+          <path d="M220,140 L310,140" stroke="#2a3a2a" stroke-width="3" fill="none"/>  <!-- Thornhill Rd -->
+          <path d="M220,180 L310,180" stroke="#2a3a2a" stroke-width="3" fill="none"/>  <!-- Roysvale Way -->
+          <path d="M220,220 L310,220" stroke="#2a3a2a" stroke-width="3" fill="none"/>  <!-- Blewers Rd -->
+          <path d="M220,260 L310,260" stroke="#2a3a2a" stroke-width="3" fill="none"/>  <!-- Lindsay Rd -->
+          <path d="M235,60 L235,220" stroke="#2a3a2a" stroke-width="3" fill="none"/>   <!-- N-S internal -->
+          <path d="M310,60 L310,260" stroke="#2a3a2a" stroke-width="3" fill="none"/>   <!-- East boundary -->
+
+          <!-- ══ ESTATE HIGHLIGHT LAYERS (hidden by default, shown by JS) ══ -->
+          <!-- Summerstone: all its streets get highlighted gold -->
+          <g id="highlight-summerstone" display="none">
+            <path d="M130,0 L130,300" stroke="#c9a84c" stroke-width="6" fill="none" stroke-linecap="round" opacity="0.85"/>
+            <path d="M40,55 L130,55" stroke="#c9a84c" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.7"/>
+            <path d="M40,85 L130,85" stroke="#c9a84c" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.7"/>
+            <path d="M40,115 L130,115" stroke="#c9a84c" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.7"/>
+            <path d="M40,145 L130,145" stroke="#c9a84c" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.7"/>
+            <path d="M40,175 L130,175" stroke="#c9a84c" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.7"/>
+            <path d="M40,205 L130,205" stroke="#c9a84c" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.7"/>
+            <path d="M40,235 L130,235" stroke="#c9a84c" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.7"/>
+            <path d="M40,265 L130,265" stroke="#c9a84c" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.7"/>
+            <path d="M130,85 L210,85" stroke="#c9a84c" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.6"/>
+            <path d="M130,145 L210,145" stroke="#c9a84c" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.6"/>
+          </g>
+
+          <!-- Montrose: all its streets get highlighted blue-grey -->
+          <g id="highlight-montrose" display="none">
+            <path d="M220,60 L360,60" stroke="#b8c5d6" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.85"/>
+            <path d="M275,60 L275,300" stroke="#b8c5d6" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.85"/>
+            <path d="M220,100 L310,100" stroke="#b8c5d6" stroke-width="3.5" fill="none" stroke-linecap="round" opacity="0.7"/>
+            <path d="M220,140 L310,140" stroke="#b8c5d6" stroke-width="3.5" fill="none" stroke-linecap="round" opacity="0.7"/>
+            <path d="M220,180 L310,180" stroke="#b8c5d6" stroke-width="3.5" fill="none" stroke-linecap="round" opacity="0.7"/>
+            <path d="M220,220 L310,220" stroke="#b8c5d6" stroke-width="3.5" fill="none" stroke-linecap="round" opacity="0.7"/>
+            <path d="M220,260 L310,260" stroke="#b8c5d6" stroke-width="3.5" fill="none" stroke-linecap="round" opacity="0.7"/>
+            <path d="M235,60 L235,220" stroke="#b8c5d6" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.6"/>
+            <path d="M310,60 L310,260" stroke="#b8c5d6" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.6"/>
+          </g>
+
+          <!-- ══ STREET HIGHLIGHT (single street, shown in street mode) ══ -->
+          <line id="streetHighlight" x1="130" y1="0" x2="130" y2="300" stroke="rgba(201,168,76,0.9)" stroke-width="6" display="none" stroke-linecap="round"/>
+
+          <!-- ══ RADIUS RING ══ -->
+          <circle id="radiusRing" cx="130" cy="150" r="40" fill="rgba(201,168,76,0.06)" stroke="rgba(201,168,76,0.5)" stroke-width="1.5" stroke-dasharray="6,4" style="display:none;"/>
+          <rect id="radiusLabelBg" x="108" y="104" width="44" height="12" rx="4" fill="rgba(201,168,76,0.9)" style="display:none;"/>
+          <text id="radiusLabelTxt" x="130" y="113" font-size="7" fill="#1a1a1a" font-family="sans-serif" font-weight="700" text-anchor="middle" style="display:none;">500m</text>
+
+          <!-- ══ STREET LABELS ══ -->
+          <text x="133" y="150" font-size="5.5" fill="rgba(255,255,255,0.35)" font-family="sans-serif" font-weight="600" transform="rotate(-90,133,150)">Summerstone Blvd</text>
+          <text x="42" y="52" font-size="5" fill="rgba(255,255,255,0.2)" font-family="sans-serif">Festival St</text>
+          <text x="42" y="82" font-size="5" fill="rgba(255,255,255,0.2)" font-family="sans-serif">Breeze St</text>
+          <text x="42" y="112" font-size="5" fill="rgba(255,255,255,0.2)" font-family="sans-serif">Tropic St</text>
+          <text x="42" y="142" font-size="5" fill="rgba(255,255,255,0.2)" font-family="sans-serif">Dune St</text>
+          <text x="42" y="172" font-size="5" fill="rgba(255,255,255,0.2)" font-family="sans-serif">Sunrise St</text>
+          <text x="42" y="202" font-size="5" fill="rgba(255,255,255,0.2)" font-family="sans-serif">Freshwater St</text>
+          <text x="42" y="232" font-size="5" fill="rgba(255,255,255,0.2)" font-family="sans-serif">Amber St</text>
+          <text x="278" y="110" font-size="5" fill="rgba(255,255,255,0.2)" font-family="sans-serif" transform="rotate(-90,278,110)">Grandtown Dr</text>
+          <text x="224" y="57" font-size="5" fill="rgba(255,255,255,0.2)" font-family="sans-serif">Robbs Rd</text>
+          <text x="224" y="97" font-size="5" fill="rgba(255,255,255,0.2)" font-family="sans-serif">Mosset St</text>
+          <text x="224" y="137" font-size="5" fill="rgba(255,255,255,0.2)" font-family="sans-serif">Thornhill Rd</text>
+          <text x="224" y="177" font-size="5" fill="rgba(255,255,255,0.2)" font-family="sans-serif">Roysvale Way</text>
+          <text x="224" y="217" font-size="5" fill="rgba(255,255,255,0.2)" font-family="sans-serif">Blewers Rd</text>
+
+          <!-- ══ INCIDENT MARKERS ══ -->
+          <!-- inc1: Suspicious Vehicle - Summerstone Blvd -->
+          <g id="incMarker1" onclick="selectInc(1)" style="cursor:pointer;">
+            <circle cx="130" cy="110" r="11" fill="rgba(0,0,0,0.75)" stroke="#fb8c00" stroke-width="1.5"/>
+            <text x="130" y="114" font-size="9" text-anchor="middle">&#128663;</text>
+          </g>
+          <!-- inc2: Package Theft - Summerstone Blvd -->
+          <g id="incMarker2" onclick="selectInc(2)" style="cursor:pointer;">
+            <circle cx="130" cy="75" r="11" fill="rgba(0,0,0,0.75)" stroke="#e53935" stroke-width="1.5"/>
+            <text x="130" y="79" font-size="9" text-anchor="middle">&#128230;</text>
+          </g>
+          <!-- inc3: Graffiti - Freshwater St -->
+          <g id="incMarker3" onclick="selectInc(3)" style="cursor:pointer;">
+            <circle cx="80" cy="205" r="11" fill="rgba(0,0,0,0.75)" stroke="#7b1fa2" stroke-width="1.5"/>
+            <text x="80" y="209" font-size="9" text-anchor="middle">&#9998;</text>
+          </g>
+          <!-- inc4: Bike Stolen - Grandtown Dr (Montrose) -->
+          <g id="incMarker4" onclick="selectInc(4)" style="cursor:pointer;">
+            <circle cx="275" cy="160" r="11" fill="rgba(0,0,0,0.75)" stroke="#e53935" stroke-width="1.5"/>
+            <text x="275" y="164" font-size="9" text-anchor="middle">&#128690;</text>
+          </g>
+          <!-- inc5: Loose Dog - Amber St -->
+          <g id="incMarker5" onclick="selectInc(5)" style="cursor:pointer;">
+            <circle cx="80" cy="235" r="11" fill="rgba(0,0,0,0.75)" stroke="#388e3c" stroke-width="1.5"/>
+            <text x="80" y="239" font-size="9" text-anchor="middle">&#128021;</text>
+          </g>
+          <!-- inc6: Door-to-Door Scam - Dune St -->
+          <g id="incMarker6" onclick="selectInc(6)" style="cursor:pointer;">
+            <circle cx="80" cy="145" r="11" fill="rgba(0,0,0,0.75)" stroke="#fb8c00" stroke-width="1.5"/>
+            <text x="80" y="149" font-size="9" text-anchor="middle">&#9888;</text>
+          </g>
+
+          <!-- ══ YOU DOT ══ -->
+          <circle cx="130" cy="150" r="6" fill="#4fc3f7" stroke="#fff" stroke-width="2"/>
+          <circle cx="130" cy="150" r="13" fill="rgba(79,195,247,0.18)"/>
+          <text x="140" y="146" font-size="5.5" fill="#4fc3f7" font-family="sans-serif" font-weight="700">You</text>
+        </svg>
+        <div class="map-legend">
+          <div class="legend-row"><div class="legend-dot" style="background:#e53935;"></div>Theft</div>
+          <div class="legend-row"><div class="legend-dot" style="background:#fb8c00;"></div>Suspicious</div>
+          <div class="legend-row"><div class="legend-dot" style="background:#7b1fa2;"></div>Vandalism</div>
+          <div class="legend-row"><div class="legend-dot" style="background:#388e3c;"></div>Safety</div>
+          <div class="legend-row"><div class="legend-dot" style="background:#c9a84c;"></div>Summerstone</div>
+          <div class="legend-row"><div class="legend-dot" style="background:#b8c5d6;"></div>Montrose</div>
+        </div>
+      </div>
+
+      <div class="inc-detail" id="incDetail"></div>
+      <div class="sec-title">ALL INCIDENTS &middot; LAST 7 DAYS</div>
       <button class="inc-list-btn" id="incBtn1" onclick="selectInc(1)"><span class="inc-list-em">&#128663;</span><div style="flex:1;text-align:left;"><div class="inc-list-name">Suspicious Vehicle</div><div class="inc-list-sub">Summerstone Blvd &middot; Today &middot; <span style="color:#fb8c00;">Unverified</span></div></div><div class="sev-dot" style="background:#e53935;"></div></button>
       <button class="inc-list-btn" id="incBtn2" onclick="selectInc(2)"><span class="inc-list-em">&#128230;</span><div style="flex:1;text-align:left;"><div class="inc-list-name">Package Theft</div><div class="inc-list-sub">Summerstone Blvd &middot; Yesterday &middot; <span style="color:#2e7d32;">Verified x3</span></div></div><div class="sev-dot" style="background:#fb8c00;"></div></button>
       <button class="inc-list-btn" id="incBtn3" onclick="selectInc(3)"><span class="inc-list-em">&#9998;</span><div style="flex:1;text-align:left;"><div class="inc-list-name">Graffiti</div><div class="inc-list-sub">Freshwater St &middot; 2 days ago &middot; <span style="color:#1565c0;">Resolved</span></div></div><div class="sev-dot" style="background:#43a047;"></div></button>
-      <button class="inc-list-btn" id="incBtn4" onclick="selectInc(4)"><span class="inc-list-em">&#128690;</span><div style="flex:1;text-align:left;"><div class="inc-list-name">Bike Stolen</div><div class="inc-list-sub">Local street &middot; 3 days ago &middot; <span style="color:#fb8c00;">Reported x2</span></div></div><div class="sev-dot" style="background:#fb8c00;"></div></button>
-      <button class="inc-list-btn" id="incBtn5" onclick="selectInc(5)"><span class="inc-list-em">&#128021;</span><div style="flex:1;text-align:left;"><div class="inc-list-name">Loose Dog</div><div class="inc-list-sub">Local street &middot; Today &middot; <span style="color:#e53935;">High Priority</span></div></div><div class="sev-dot" style="background:#e53935;"></div></button>
-      <button class="inc-list-btn" id="incBtn6" onclick="selectInc(6)"><span class="inc-list-em">&#9888;</span><div style="flex:1;text-align:left;"><div class="inc-list-name">Door-to-Door Scam</div><div class="inc-list-sub">Local area &middot; Yesterday &middot; <span style="color:#2e7d32;">Verified x5</span></div></div><div class="sev-dot" style="background:#fb8c00;"></div></button>
+      <button class="inc-list-btn" id="incBtn4" onclick="selectInc(4)"><span class="inc-list-em">&#128690;</span><div style="flex:1;text-align:left;"><div class="inc-list-name">Bike Stolen</div><div class="inc-list-sub">Grandtown Dr (Montrose) &middot; 3 days ago &middot; <span style="color:#fb8c00;">Reported x2</span></div></div><div class="sev-dot" style="background:#fb8c00;"></div></button>
+      <button class="inc-list-btn" id="incBtn5" onclick="selectInc(5)"><span class="inc-list-em">&#128021;</span><div style="flex:1;text-align:left;"><div class="inc-list-name">Loose Dog</div><div class="inc-list-sub">Amber St &middot; Today &middot; <span style="color:#e53935;">High Priority</span></div></div><div class="sev-dot" style="background:#e53935;"></div></button>
+      <button class="inc-list-btn" id="incBtn6" onclick="selectInc(6)"><span class="inc-list-em">&#9888;</span><div style="flex:1;text-align:left;"><div class="inc-list-name">Door-to-Door Scam</div><div class="inc-list-sub">Dune St &middot; Yesterday &middot; <span style="color:#2e7d32;">Verified x5</span></div></div><div class="sev-dot" style="background:#fb8c00;"></div></button>
     </div>
   </div>
 
@@ -697,8 +719,8 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
   <div class="disclaimer">Street Connect is an independent community platform. Authority notices are examples only. Not affiliated with any government body.</div>
   <div class="home-bar"><div class="home-ind"></div></div>
 </div>
-<script>
 
+<script>
 var ESTATE_LOOKUP = {
   "Amber Street":"summerstone","Amber St":"summerstone",
   "Summerstone Boulevard":"summerstone","Summerstone Blvd":"summerstone",
@@ -724,9 +746,9 @@ var ESTATE_LOOKUP = {
 };
 
 var ESTATES = {
-  summerstone:{name:"Summerstone Estate",suburb:"Morayfield",council:"Moreton Bay City",color:"#313131",accent:"#c9a84c",logo:"/summerstone.png",boundary:"55,45 215,45 215,265 55,265",binDay:"&#128721; General waste: Wednesday &middot; Recycling: alternating Wednesday &middot; Green waste: Monday &middot; Put out: Tuesday night"},
-  montrose:{name:"Montrose",suburb:"Morayfield",council:"Moreton Bay City",color:"#1a2a6b",accent:"#b8c5d6",logo:null,seriesM:true,boundary:"160,45 310,45 310,200 160,200",binDay:"&#128721; General waste: Wednesday &middot; Recycling: alternating Wednesday &middot; Put out: Tuesday night"},
-  default:{name:null,suburb:null,council:"Greater Brisbane",color:"#1a3020",accent:"#69f0ae",logo:null,boundary:null,binDay:"&#128721; Check moretonbay.qld.gov.au for your bin day schedule"}
+  summerstone:{name:"Summerstone Estate",suburb:"Morayfield",council:"Moreton Bay City",color:"#313131",accent:"#c9a84c",logo:"/summerstone.png",binDay:"&#128721; General waste: Wednesday &middot; Recycling: alternating Wednesday &middot; Green waste: Monday &middot; Put out: Tuesday night"},
+  montrose:{name:"Montrose",suburb:"Morayfield",council:"Moreton Bay City",color:"#1a2a6b",accent:"#b8c5d6",logo:null,seriesM:true,binDay:"&#128721; General waste: Wednesday &middot; Recycling: alternating Wednesday &middot; Put out: Tuesday night"},
+  default:{name:null,suburb:null,council:"Greater Brisbane",color:"#1a3020",accent:"#69f0ae",logo:null,binDay:"&#128721; Check moretonbay.qld.gov.au for your bin day schedule"}
 };
 
 var BIN_SCHEDULES = {
@@ -744,10 +766,11 @@ var userAddress=localStorage.getItem("sc_address")||"";
 var userPhone=localStorage.getItem("sc_phone")||"";
 var userSuburb=localStorage.getItem("sc_suburb")||"";
 var userDisplay=localStorage.getItem("sc_display")||"Neighbour";
+var userPhoto=localStorage.getItem("sc_photo")||"";
 var isLoggedIn=userPhone!=="";
 var currentChatLevel="street";
-var lastMsgCount=0;
-var isScrolledToBottom=true;
+var currentDM=null;
+var dmMessages={};
 var dmRecipient=null;
 var dmConversations={};
 
@@ -784,8 +807,8 @@ function toggleLike(b,c){
 }
 
 function scrollToBottom(){
-  document.getElementById("chatBottom").scrollIntoView({behavior:"smooth"});
-  document.getElementById("newMsgsBanner").style.display="none";
+  var cb=document.getElementById("chatBottom");if(cb)cb.scrollIntoView({behavior:"smooth"});
+  var banner=document.getElementById("newMsgsBanner");if(banner)banner.style.display="none";
 }
 
 function sendMsg(){
@@ -806,8 +829,7 @@ async function loadMessages(){
     if(!res.ok)return;
     var data=await res.json();
     var msgs=data.messages||[];
-
-        if(currentChatLevel==="street"&&userAddress){
+    if(currentChatLevel==="street"&&userAddress){
       var myStreet=userAddress.split(",")[0].trim().replace(/^[0-9]+[a-zA-Z]?\s+/,"").toLowerCase();
       if(myStreet)msgs=msgs.filter(function(m){
         var mStreet=(m.address||"").split(",")[0].trim().replace(/^[0-9]+[a-zA-Z]?\s+/,"").toLowerCase();
@@ -819,25 +841,21 @@ async function loadMessages(){
         return getEstateFromAddress(m.address||"")===myEstate||m.suburb==="ADMIN_MSG";
       });
     }
-
     var container=document.getElementById("myMessages");
     container.innerHTML="";
-
     msgs.forEach(function(msg){
       var isMe=msg.phone===userPhone;
       var n=new Date(msg.created_at).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
-            var displayName=msg.display_name||"Neighbour";
-            var rawStreet=(msg.address||"").split(",")[0].trim();
+      var displayName=msg.display_name||"Neighbour";
+      var rawStreet=(msg.address||"").split(",")[0].trim();
       var streetName=rawStreet.replace(/^[0-9]+[a-zA-Z]?\s+/,"");
       if(!streetName&&msg.suburb&&msg.suburb!=="ADMIN_MSG")streetName=msg.suburb;
-
       var d=document.createElement("div");
       d.className="msg-row"+(isMe?" me":"");
       d.dataset.type=isMe?"me":"neighbour";
-
       if(isMe){
         d.innerHTML="<div style='max-width:75%'>"+
-          "<div class='msg-meta' style='text-align:right;'><span style='color:#888;font-size:10px;'>"+displayName+"</strong><span style='color:#bbb;font-size:9px;'> · "+n+"</span></div>"+
+          "<div class='msg-meta' style='text-align:right;'><span style='color:#aaa;font-size:9px;'>"+n+"</span></div>"+
           "<div class='bubble me'><p>"+msg.content+"</p></div>"+
           "<button onclick='deleteMsg("+JSON.stringify(msg.id)+")' class='del-btn'>&#128465; delete</button>"+
           "</div><div class='msg-av' style='margin-bottom:22px;'>"+(userPhoto?"<img src='"+userPhoto+"' style='width:32px;height:32px;border-radius:50%;object-fit:cover;border:1.5px solid var(--ea);'/>":"&#127968;")+"</div>";
@@ -852,273 +870,131 @@ async function loadMessages(){
       }
       container.appendChild(d);
     });
-
     var bottom=document.getElementById("chatBottom");
     if(bottom)bottom.scrollIntoView({behavior:"smooth"});
   } catch(e){console.log("msg error:",e);}
-}
-
-async function deleteMessage(id){
-  if(!confirm("Delete this message?"))return;
-  try{await fetch("/api/messages",{method:"DELETE",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:id,phone:userPhone})});loadMessages();}catch(e){}
 }
 
 async function deleteMsg(id){if(!confirm("Delete this message?"))return;try{await fetch("/api/messages",{method:"DELETE",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:id,phone:userPhone})});loadMessages();}catch(e){}}
 loadMessages();
 setInterval(loadMessages,10000);
 
-// ── PROFILE PHOTO ────────────────────────────────────────────────────────────
-var userPhoto = localStorage.getItem("sc_photo") || "";
-
+// ── PHOTO ──
 function handlePhotoUpload(event){
-  var file = event.target.files[0];
-  if(!file) return;
-  var reader = new FileReader();
-  reader.onload = function(e){
-    var img = new Image();
-    img.onload = function(){
-      var canvas = document.createElement('canvas');
-      var maxSize = 150;
-      var w = img.width, h = img.height;
-      if(w > h){ h = Math.round(h*(maxSize/w)); w = maxSize; } else { w = Math.round(w*(maxSize/h)); h = maxSize; }
-      canvas.width = w; canvas.height = h;
-      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-      var compressed = canvas.toDataURL('image/jpeg', 0.8);
-      userPhoto = compressed;
-      localStorage.setItem("sc_photo", compressed);
+  var file=event.target.files[0];if(!file)return;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var img=new Image();
+    img.onload=function(){
+      var canvas=document.createElement('canvas');
+      var maxSize=150,w=img.width,h=img.height;
+      if(w>h){h=Math.round(h*(maxSize/w));w=maxSize;}else{w=Math.round(w*(maxSize/h));h=maxSize;}
+      canvas.width=w;canvas.height=h;
+      canvas.getContext('2d').drawImage(img,0,0,w,h);
+      var compressed=canvas.toDataURL('image/jpeg',0.8);
+      userPhoto=compressed;localStorage.setItem("sc_photo",compressed);
       updatePhotoDisplay();
       showPush({icon:"&#128247;",title:"Photo updated!",body:"Your profile photo has been saved.",color:"var(--ec)"});
     };
-    img.src = e.target.result;
+    img.src=e.target.result;
   };
   reader.readAsDataURL(file);
 }
 
 function updatePhotoDisplay(){
-  var avatarImg = document.getElementById("profileAvatarImg");
-  var avatarText = document.getElementById("profileAvatarText");
-  if(userPhoto && avatarImg){
-    avatarImg.src = userPhoto;
-    avatarImg.style.display = "block";
-    if(avatarText) avatarText.style.display = "none";
-  } else if(avatarImg){
-    avatarImg.style.display = "none";
-    if(avatarText) avatarText.style.display = "block";
-  }
-  var headerImg = document.getElementById("headerAvatarImg");
-  var headerText = document.getElementById("headerAvatarText");
-  if(userPhoto && headerImg){
-    headerImg.src = userPhoto;
-    headerImg.style.display = "inline-block";
-    if(headerText) headerText.style.display = "none";
-  } else if(headerImg){
-    headerImg.style.display = "none";
-    if(headerText) headerText.style.display = "inline";
-  }
+  var ai=document.getElementById("profileAvatarImg"),at=document.getElementById("profileAvatarText");
+  if(userPhoto&&ai){ai.src=userPhoto;ai.style.display="block";if(at)at.style.display="none";}
+  else if(ai){ai.style.display="none";if(at)at.style.display="block";}
+  var hi=document.getElementById("headerAvatarImg"),ht=document.getElementById("headerAvatarText");
+  if(userPhoto&&hi){hi.src=userPhoto;hi.style.display="inline-block";if(ht)ht.style.display="none";}
+  else if(hi){hi.style.display="none";if(ht)ht.style.display="inline";}
 }
 
-function openDMWith(name,phone){
-  if(!isLoggedIn){alert("Please sign up to send direct messages.");return;}
-  if(phone===userPhone)return;
-  dmRecipient={name:name,phone:phone};
-  document.getElementById("dmTitle").textContent="&#128172; "+name;
-  if(!dmConversations[phone])dmConversations[phone]=[];
-  renderDMs();
-  document.getElementById("dmModal").style.display="flex";
-}
-
-function closeDM(){document.getElementById("dmModal").style.display="none";}
-
-function renderDMs(){
-  if(!dmRecipient)return;
-  var msgs=dmConversations[dmRecipient.phone]||[];
-  var container=document.getElementById("dmMessages");
-  container.innerHTML="";
-  if(msgs.length===0){
-    container.innerHTML="<div class='empty-state' style='padding:16px;'>Start a private conversation with "+dmRecipient.name+"</div>";
-    return;
-  }
-  msgs.forEach(function(m){
-    var isMe=m.from===userPhone;
-    var d=document.createElement("div");
-    d.className="msg-row"+(isMe?" me":"");
-    if(isMe){
-      d.innerHTML="<div style='max-width:75%'><div class='bubble me'><p>"+m.text+"</p></div></div><div class='msg-av'>&#127968;</div>";
-    } else {
-      d.innerHTML="<div class='msg-av'>&#127968;</div><div style='max-width:75%'><div class='bubble them'><p>"+m.text+"</p></div></div>";
-    }
-    container.appendChild(d);
-  });
-  container.scrollTop=container.scrollHeight;
-}
-
-function sendDM(){
-  var input=document.getElementById("dmInput");
-  if(!input.value.trim()||!dmRecipient)return;
-  var msg={from:userPhone,to:dmRecipient.phone,text:input.value.trim(),time:new Date()};
-  if(!dmConversations[dmRecipient.phone])dmConversations[dmRecipient.phone]=[];
-  dmConversations[dmRecipient.phone].push(msg);
-  input.value="";
-  renderDMs();
-  showPush({icon:"&#128172;",title:"DM sent to "+dmRecipient.name,body:msg.text.substring(0,50),color:"#313131"});
-}
-
-var INCIDENT_DISTS={1:120,2:80,3:350,4:600,5:420,6:180};
+// ── MAP MODE ──
+var currentMapMode='street';
+var INCIDENT_DISTS={1:120,2:80,3:200,4:550,5:240,6:160};
 var INCS={
   1:{emoji:"&#128663;",title:"Suspicious Vehicle",addr:"Summerstone Blvd",time:"Today",sev:"high",sc:"#e53935",desc:"White sedan parked for 3+ hours. Police alerted.",status:"Patrols active",rep:"Local resident",color:"#fb8c00",trust:1},
   2:{emoji:"&#128230;",title:"Package Theft",addr:"Summerstone Blvd",time:"Yesterday",sev:"medium",sc:"#fb8c00",desc:"Parcel stolen from front porch. Reported to police.",status:"Police notified",rep:"Local resident",color:"#e53935",trust:3},
   3:{emoji:"&#9998;",title:"Graffiti",addr:"Freshwater St",time:"2 days ago",sev:"low",sc:"#43a047",desc:"Graffiti on bus shelter. Council notified.",status:"Resolved",rep:"Local resident",color:"#7b1fa2",trust:5},
-  4:{emoji:"&#128690;",title:"Bike Stolen",addr:"Local street",time:"3 days ago",sev:"medium",sc:"#fb8c00",desc:"Mountain bike stolen overnight.",status:"Police report filed",rep:"Local resident",color:"#e53935",trust:2},
-  5:{emoji:"&#128021;",title:"Loose Dog",addr:"Local street",time:"Today",sev:"high",sc:"#e53935",desc:"Large staffy running loose. Rangers called.",status:"Rangers called",rep:"Local resident",color:"#388e3c",trust:4},
-  6:{emoji:"&#9888;",title:"Door-to-Door Scam",addr:"Local area",time:"Yesterday",sev:"medium",sc:"#fb8c00",desc:"Men claiming to be from energy company. NOT legitimate.",status:"Scam Aware notified",rep:"Multiple residents",color:"#fb8c00",trust:5}
-};
-
-var googleMap=null,radiusCircle=null,estatePolygon=null,streetPolyline=null,userMarker=null,incidentMarkers=[];
-var INCIDENT_LOCATIONS=[
-  {id:1,lat:-27.1307,lng:152.9518,title:"Suspicious Vehicle",color:"#fb8c00"},
-  {id:2,lat:-27.096,lng:152.960,title:"Package Theft",color:"#e53935"},
-  {id:3,lat:-27.094,lng:152.958,title:"Graffiti",color:"#7b1fa2"},
-  {id:4,lat:-27.102,lng:152.963,title:"Bike Stolen",color:"#e53935"},
-  {id:5,lat:-27.093,lng:152.959,title:"Loose Dog",color:"#388e3c"},
-  {id:6,lat:-27.100,lng:152.962,title:"Door-to-Door Scam",color:"#fb8c00"}
-];
-var ESTATE_STREETS={   summerstone:[     [{lat:-27.1268,lng:152.9495},{lat:-27.1358,lng:152.9495}],     [{lat:-27.1268,lng:152.9518},{lat:-27.1358,lng:152.9518}],     [{lat:-27.1268,lng:152.9505},{lat:-27.1358,lng:152.9505}],     [{lat:-27.1268,lng:152.9510},{lat:-27.1358,lng:152.9510}],     [{lat:-27.1290,lng:152.9490},{lat:-27.1290,lng:152.9525}],     [{lat:-27.1310,lng:152.9490},{lat:-27.1310,lng:152.9525}],     [{lat:-27.1330,lng:152.9490},{lat:-27.1330,lng:152.9525}]   ],   montrose:[     [{lat:-27.1200,lng:152.9550},{lat:-27.1280,lng:152.9550}],     [{lat:-27.1200,lng:152.9565},{lat:-27.1280,lng:152.9565}],     [{lat:-27.1240,lng:152.9545},{lat:-27.1240,lng:152.9575}]   ] }; var ESTATE_STREETS_OLD={   summerstone:[     [{lat:-27.1268,lng:152.9495},{lat:-27.1358,lng:152.9495}],     [{lat:-27.1268,lng:152.9518},{lat:-27.1358,lng:152.9518}],     [{lat:-27.1268,lng:152.9505},{lat:-27.1358,lng:152.9505}],     [{lat:-27.1268,lng:152.9510},{lat:-27.1358,lng:152.9510}],     [{lat:-27.1290,lng:152.9490},{lat:-27.1290,lng:152.9525}],     [{lat:-27.1310,lng:152.9490},{lat:-27.1310,lng:152.9525}],     [{lat:-27.1330,lng:152.9490},{lat:-27.1330,lng:152.9525}]   ],   montrose:[     [{lat:-27.1200,lng:152.9550},{lat:-27.1280,lng:152.9550}],     [{lat:-27.1200,lng:152.9565},{lat:-27.1280,lng:152.9565}],     [{lat:-27.1240,lng:152.9545},{lat:-27.1240,lng:152.9575}]   ] }; var ESTATE_STREETS_OLD={   summerstone:[     [{lat:-27.1268,lng:152.9495},{lat:-27.1358,lng:152.9495}],     [{lat:-27.1268,lng:152.9518},{lat:-27.1358,lng:152.9518}],     [{lat:-27.1268,lng:152.9505},{lat:-27.1358,lng:152.9505}],     [{lat:-27.1268,lng:152.9510},{lat:-27.1358,lng:152.9510}],     [{lat:-27.1290,lng:152.9490},{lat:-27.1290,lng:152.9525}],     [{lat:-27.1310,lng:152.9490},{lat:-27.1310,lng:152.9525}],     [{lat:-27.1330,lng:152.9490},{lat:-27.1330,lng:152.9525}]   ],   montrose:[     [{lat:-27.1200,lng:152.9550},{lat:-27.1280,lng:152.9550}],     [{lat:-27.1200,lng:152.9565},{lat:-27.1280,lng:152.9565}],     [{lat:-27.1240,lng:152.9545},{lat:-27.1240,lng:152.9575}]   ] }; var ESTATE_STREETS_OLD={   summerstone:[     [{lat:-27.126,lng:152.950},{lat:-27.134,lng:152.950}],     [{lat:-27.128,lng:152.948},{lat:-27.128,lng:152.956}],     [{lat:-27.130,lng:152.947},{lat:-27.130,lng:152.957}],     [{lat:-27.132,lng:152.948},{lat:-27.132,lng:152.956}]   ] }; var ESTATE_POLYGONS={
-  summerstone:[{lat:-27.125,lng:152.945},{lat:-27.125,lng:152.960},{lat:-27.138,lng:152.960},{lat:-27.138,lng:152.945}],
-  montrose:[{lat:-27.088,lng:152.968},{lat:-27.088,lng:152.978},{lat:-27.098,lng:152.978},{lat:-27.098,lng:152.968}]
-};
-function initGoogleMap(){
-  fetch("/api/maps-key").then(function(r){return r.json();}).then(function(d){
-    var s=document.createElement("script");
-    s.src="https://maps.googleapis.com/maps/api/js?key="+d.key+"&libraries=geometry&callback=onMapReady";
-    s.async=true;document.head.appendChild(s);
-  });
-}
-function onMapReady(){   if(userAddress){var geocoder=new google.maps.Geocoder();geocoder.geocode({address:userAddress+", QLD, Australia"},function(results,status){if(status==="OK"){var loc=results[0].geometry.location;googleMap.setCenter(loc);if(userMarker)userMarker.setPosition(loc);}});}
-  var centre={lat:-27.1307,lng:152.9518};
-  googleMap=new google.maps.Map(document.getElementById("googleMapWrap"),{center:centre,zoom:15,mapTypeId:"roadmap",disableDefaultUI:true,zoomControl:true});
-  userMarker=new google.maps.Marker({position:centre,map:googleMap,icon:{path:google.maps.SymbolPath.CIRCLE,scale:8,fillColor:"#4fc3f7",fillOpacity:1,strokeColor:"#fff",strokeWeight:2},title:"You"});
-  INCIDENT_LOCATIONS.forEach(function(inc){
-    var m=new google.maps.Marker({position:{lat:inc.lat,lng:inc.lng},map:googleMap,title:inc.title,icon:{path:google.maps.SymbolPath.CIRCLE,scale:10,fillColor:inc.color,fillOpacity:0.9,strokeColor:"#fff",strokeWeight:1.5}});
-    m.addListener("click",function(){selectInc(inc.id);});
-    incidentMarkers.push(m);
-  });
-  updateGoogleMapMode("street");
-}
-function updateGoogleMapMode(mode){
-  if(!googleMap)return;
-  var ek=getEstateFromAddress(userAddress);
-  var ac=ek==="montrose"?"#b8c5d6":"#c9a84c";
-  if(radiusCircle){radiusCircle.setMap(null);radiusCircle=null;}
-  if(estatePolygon){estatePolygon.setMap(null);estatePolygon=null;}
-  if(streetPolyline){streetPolyline.setMap(null);streetPolyline=null;}
-  if(window.estatePolylines){window.estatePolylines.forEach(function(p){p.setMap(null);});window.estatePolylines=[];}
-  if(mode==="radius"){
-    var rM=parseInt(document.getElementById("radiusSlider").value)||500;
-    radiusCircle=new google.maps.Circle({map:googleMap,center:userMarker.getPosition(),radius:rM,fillColor:ac,fillOpacity:0.1,strokeColor:ac,strokeOpacity:0.8,strokeWeight:2});
-    incidentMarkers.forEach(function(m){var dist=google.maps.geometry.spherical.computeDistanceBetween(userMarker.getPosition(),m.getPosition());m.setOpacity(dist<=rM?1:0.3);});
-  } else if(mode==="estate"){     window.estatePolylines=window.estatePolylines||[];     window.estatePolylines.forEach(function(p){p.setMap(null);});     window.estatePolylines=[];     var estateStreetNames={"summerstone":["Amber Street Morayfield","Summerstone Boulevard Morayfield","Breeze Street Morayfield","Festival Street Morayfield","Tropic Street Morayfield","Dune Street Morayfield","Sunrise Street Morayfield","Island Parade Morayfield","Sunset Street Morayfield","Golden Road Morayfield","Bloom Drive Morayfield","Harvest Street Morayfield","Freshwater Street Morayfield","Kingfisher Avenue Morayfield"],"montrose":["Grandtown Drive Morayfield","Hepworth Way Morayfield","Landings Boulevard Morayfield","Moray Street Morayfield","Randolph Boulevard Morayfield","Wellside Street Morayfield","Anderson Road Morayfield"]};     var streets=estateStreetNames[ek]||[];     var geocoder=new google.maps.Geocoder();     streets.forEach(function(street){       geocoder.geocode({address:street+", QLD 4506, Australia"},function(results,status){         if(status==="OK"&&results[0].geometry.viewport){           var vp=results[0].geometry.viewport;           var ne=vp.getNorthEast();           var sw=vp.getSouthWest();           var path=[             {lat:ne.lat(),lng:sw.lng()},             {lat:ne.lat(),lng:ne.lng()},             {lat:sw.lat(),lng:ne.lng()},             {lat:sw.lat(),lng:sw.lng()}           ];           var midLat=(ne.lat()+sw.lat())/2;var midLng=(ne.lng()+sw.lng())/2;var ePath=((ne.lng()-sw.lng())>(ne.lat()-sw.lat()))?[{lat:midLat,lng:sw.lng()},{lat:midLat,lng:ne.lng()}]:[{lat:sw.lat(),lng:midLng},{lat:ne.lat(),lng:midLng}];var pl=new google.maps.Polyline({path:ePath,map:googleMap,strokeColor:ac,strokeOpacity:0.9,strokeWeight:5,geodesic:true});           window.estatePolylines.push(pl);         }       });     });     incidentMarkers.forEach(function(m){m.setOpacity(1);});     googleMap.setCenter({lat:-27.1307,lng:152.9518});     googleMap.setZoom(15);
-    window.estatePolylines=[];
-    
-  } else if(mode==="street"){
-    streetPolyline=new google.maps.Polyline({path:[{lat:-27.128,lng:152.9518},{lat:-27.135,lng:152.9518}],map:googleMap,strokeColor:ac,strokeOpacity:0.9,strokeWeight:6});
-    googleMap.setCenter({lat:-27.1307,lng:152.9518});googleMap.setZoom(17);
-    incidentMarkers.forEach(function(m){m.setOpacity(1);});
-  }
-}
-var currentMapMode = 'street';
-
-var ESTATE_SVG_HIGHLIGHTS = {
-  summerstone: {
-    boundary: '55,45 215,45 215,265 55,265',
-    streets: [
-      {d:'M155,0 L155,290', label:'Summerstone Blvd', color:'rgba(201,168,76,0.6)', width:4},
-      {d:'M38,65 L155,65', label:'Freshwater St', color:'rgba(201,168,76,0.4)', width:3},
-      {d:'M38,155 L245,155', label:'Tide St', color:'rgba(201,168,76,0.4)', width:3},
-      {d:'M100,240 L280,240', label:'Amber St area', color:'rgba(201,168,76,0.4)', width:3}
-    ]
-  },
-  montrose: {
-    boundary: '160,45 310,45 310,200 160,200',
-    streets: [
-      {d:'M245,0 L245,290', label:'Grandtown Dr', color:'rgba(184,197,214,0.6)', width:4},
-      {d:'M195,155 L320,155', label:'Montrose streets', color:'rgba(184,197,214,0.4)', width:3}
-    ]
-  }
+  4:{emoji:"&#128690;",title:"Bike Stolen",addr:"Grandtown Dr (Montrose)",time:"3 days ago",sev:"medium",sc:"#fb8c00",desc:"Mountain bike stolen overnight.",status:"Police report filed",rep:"Local resident",color:"#e53935",trust:2},
+  5:{emoji:"&#128021;",title:"Loose Dog",addr:"Amber St",time:"Today",sev:"high",sc:"#e53935",desc:"Large staffy running loose. Rangers called.",status:"Rangers called",rep:"Local resident",color:"#388e3c",trust:4},
+  6:{emoji:"&#9888;",title:"Door-to-Door Scam",addr:"Dune St",time:"Yesterday",sev:"medium",sc:"#fb8c00",desc:"Men claiming to be from energy company. NOT legitimate.",status:"Scam Aware notified",rep:"Multiple residents",color:"#fb8c00",trust:5}
 };
 
 function setMapMode(mode, btn) {
-  currentMapMode = mode;
+  currentMapMode=mode;
   document.querySelectorAll('.map-mode-btn').forEach(function(b){b.classList.remove('active');});
   btn.classList.add('active');
 
-  var streetInfo = document.getElementById('modeStreetInfo');
-  var estateInfo = document.getElementById('modeEstateInfo');
-  var radiusControls = document.getElementById('modeRadiusControls');
-  var radiusInfo = document.getElementById('radiusInfo');
-  var radiusRing = document.getElementById('radiusRing');
-  var radiusLabelBg = document.getElementById('radiusLabelBg');
-  var radiusLabelTxt = document.getElementById('radiusLabelTxt');
-  var boundary = document.getElementById('estateBoundary');
-  var streetHighlight = document.getElementById('streetHighlight');
+  // Hide all overlays
+  document.getElementById('modeStreetInfo').style.display='none';
+  document.getElementById('modeEstateInfo').style.display='none';
+  document.getElementById('modeRadiusControls').style.display='none';
+  document.getElementById('radiusRing').style.display='none';
+  document.getElementById('radiusLabelBg').style.display='none';
+  document.getElementById('radiusLabelTxt').style.display='none';
+  document.getElementById('streetHighlight').setAttribute('display','none');
+  document.getElementById('highlight-summerstone').setAttribute('display','none');
+  document.getElementById('highlight-montrose').setAttribute('display','none');
 
-    if(streetInfo) streetInfo.style.display = 'none';
-  if(estateInfo) estateInfo.style.display = 'none';
-  if(radiusControls) radiusControls.style.display = 'none';
-  if(radiusRing) radiusRing.style.display = 'none';
-  if(radiusLabelBg) radiusLabelBg.style.display = 'none';
-  if(radiusLabelTxt) radiusLabelTxt.style.display = 'none';
-  if(boundary) boundary.setAttribute('display', 'none');
-  if(streetHighlight) streetHighlight.setAttribute('display', 'none');
+  var ek=getEstateFromAddress(userAddress);
+  var estate=ESTATES[ek]||ESTATES.default;
+  var accentColor=estate.accent||'#c9a84c';
 
-  var ek = getEstateFromAddress(userAddress);
-  var estate = ESTATES[ek] || ESTATES.default;
-  var highlights = ESTATE_SVG_HIGHLIGHTS[ek];
-
-  if(mode === 'street') {
-    if(streetInfo) streetInfo.style.display = 'block';
-    if(radiusInfo) radiusInfo.textContent = '&#127968; Notifications from ' + (userAddress ? userAddress.split(',')[0].replace(/^\d+\s+/,'') : 'your street') + ' only';
-        if(streetHighlight) {
-      streetHighlight.setAttribute('display', '');
-            var myStreet = userAddress ? userAddress.split(',')[0].replace(/^\d+\s+/,'').toLowerCase() : '';
-      var strokeColor = ek === 'montrose' ? 'rgba(184,197,214,0.8)' : 'rgba(201,168,76,0.8)';
-      streetHighlight.setAttribute('stroke', strokeColor);
+  if(mode==='street'){
+    document.getElementById('modeStreetInfo').style.display='block';
+    document.getElementById('radiusInfo').textContent='🏠 Notifications from '+(userAddress?userAddress.split(',')[0].replace(/^\d+\s+/,''):'your street')+' only';
+    var sh=document.getElementById('streetHighlight');
+    sh.setAttribute('display','');
+    sh.setAttribute('stroke',accentColor);
+    // Position highlight on correct street based on estate
+    if(ek==='montrose'){
+      sh.setAttribute('x1','275');sh.setAttribute('y1','60');
+      sh.setAttribute('x2','275');sh.setAttribute('y2','300');
+    } else {
+      sh.setAttribute('x1','130');sh.setAttribute('y1','0');
+      sh.setAttribute('x2','130');sh.setAttribute('y2','300');
     }
-  } else if(mode === 'estate') {
-    if(estateInfo) estateInfo.style.display = 'block';
-    if(radiusInfo) radiusInfo.innerHTML = '&#127960; Notifications from ' + (estate.name || 'your estate') + ' only';
-        if(boundary && highlights) {
-      boundary.setAttribute('points', highlights.boundary);
-      var strokeColor = ek === 'montrose' ? 'rgba(184,197,214,0.5)' : 'rgba(201,168,76,0.5)';
-      var fillColor = ek === 'montrose' ? 'rgba(184,197,214,0.08)' : 'rgba(201,168,76,0.08)';
-      boundary.setAttribute('stroke', strokeColor);
-      boundary.setAttribute('fill', fillColor);
-      boundary.setAttribute('display', '');
+  } else if(mode==='estate'){
+    document.getElementById('modeEstateInfo').style.display='block';
+    document.getElementById('radiusInfo').innerHTML='🏘 Notifications from '+(estate.name||'your estate')+' only';
+    if(ek==='summerstone'){
+      document.getElementById('highlight-summerstone').setAttribute('display','');
+    } else if(ek==='montrose'){
+      document.getElementById('highlight-montrose').setAttribute('display','');
     }
-  } else if(mode === 'radius') {
-    if(radiusControls) radiusControls.style.display = 'block';
-    if(radiusRing) radiusRing.style.display = '';
-    if(radiusLabelBg) radiusLabelBg.style.display = '';
-    if(radiusLabelTxt) radiusLabelTxt.style.display = '';
+  } else if(mode==='radius'){
+    document.getElementById('modeRadiusControls').style.display='block';
+    document.getElementById('radiusRing').style.display='';
+    document.getElementById('radiusLabelBg').style.display='';
+    document.getElementById('radiusLabelTxt').style.display='';
     updateRadius(document.getElementById('radiusSlider').value);
-  }updateGoogleMapMode(mode);
+  }
 }
 
 function updateRadius(v){
   var rM=parseInt(v);
   var d=rM>=5000?"Suburb wide":rM>=1000?(rM/1000).toFixed(1)+"km":rM+"m";
- var rv=document.getElementById("radiusVal");if(rv)rv.textContent=d; if(currentMapMode==="radius")updateGoogleMapMode("radius");
+  document.getElementById("radiusVal").textContent=d;
+  document.getElementById("radiusLabelTxt").textContent=d;
+  var r=(rM/1500)*100;
+  var ring=document.getElementById("radiusRing");
+  ring.setAttribute("r",r);ring.setAttribute("cx","130");ring.setAttribute("cy","150");
+  document.getElementById("radiusLabelBg").setAttribute("x",130-22);
+  document.getElementById("radiusLabelBg").setAttribute("y",150-r-14);
+  document.getElementById("radiusLabelTxt").setAttribute("x",130);
+  document.getElementById("radiusLabelTxt").setAttribute("y",150-r-5);
   var inRange=0;
   for(var id in INCIDENT_DISTS){
     var inside=INCIDENT_DISTS[id]<=rM;if(inside)inRange++;
-    var btn=document.getElementById("incBtn"+id);
-    if(btn)btn.className="inc-list-btn"+(inside?"":" dimmed");
-    var marker=document.getElementById("incMarker"+id);
-    if(marker)marker.style.opacity=inside?"1":"0.25";
+    var btn=document.getElementById("incBtn"+id);if(btn)btn.className="inc-list-btn"+(inside?"":" dimmed");
+    var marker=document.getElementById("incMarker"+id);if(marker)marker.style.opacity=inside?"1":"0.25";
   }
   document.getElementById("radiusInfo").textContent="&#128225; "+inRange+" of 6 incidents within "+d+" · "+(6-inRange)+" filtered";
 }
 function setRadius(v){document.getElementById("radiusSlider").value=v;updateRadius(v);}
-function toggleRadius(){var t=document.getElementById("radiusToggle");var on=t.textContent==="ON";t.textContent=on?"OFF":"ON";t.className=on?"radius-toggle off":"radius-toggle";["radiusRing","radiusLabelBg","radiusLabelTxt","radiusInfo"].forEach(function(id){document.getElementById(id).style.display=on?"none":"";});}
+function toggleRadius(){var t=document.getElementById("radiusToggle");var on=t.textContent==="ON";t.textContent=on?"OFF":"ON";t.className=on?"radius-toggle off":"radius-toggle";["radiusRing","radiusLabelBg","radiusLabelTxt","radiusInfo"].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display=on?"none":""});}
 
 function selectInc(id){
   var sel=window.selI===id?null:id;window.selI=sel;
@@ -1190,40 +1066,24 @@ function addListing(){
   showPush({icon:"&#127960;",title:"Listing Added!",body:title.trim()+" added.",color:"#313131"});
 }
 
-function toggleInterest(btn){btn.classList.toggle("selected");var interests=[];document.querySelectorAll(".interest-tag.selected").forEach(function(b){interests.push(b.textContent);});localStorage.setItem("sc_interests",JSON.stringify(interests));}
+function toggleInterest(btn,interest){btn.classList.toggle('selected');}
 
 function editDisplayName(){
   var newName=prompt("Enter your display name:",userDisplay);
   if(newName&&newName.trim()){
-    userDisplay=newName.trim();
-    localStorage.setItem("sc_display",userDisplay);
+    userDisplay=newName.trim();localStorage.setItem("sc_display",userDisplay);
     var mt=document.getElementById("myAddrText");if(mt)mt.textContent=userDisplay;
     var pn=document.getElementById("profileName");if(pn)pn.textContent=userDisplay;
-    var av=document.getElementById("profileAvatar");if(av)av.textContent=userDisplay.charAt(0).toUpperCase();
     showPush({icon:"&#128100;",title:"Display name updated",body:"You now appear as "+userDisplay,color:"#313131"});
   }
 }
 
-function toggleInterest(btn, interest){
-  btn.classList.toggle('selected');
-}
-
 function saveProfile(){
-  var newName = document.getElementById('editDisplayName').value.trim();
-  var newBio = document.getElementById('editBio').value.trim();
-  var interests = [];
-  document.querySelectorAll('.interest-tag.selected').forEach(function(t){interests.push(t.textContent.trim());});
-  
-  if(newName){
-    userDisplay = newName;
-    localStorage.setItem('sc_display', newName);
-  }
-  if(newBio) localStorage.setItem('sc_bio', newBio);
-  if(interests.length) localStorage.setItem('sc_interests', JSON.stringify(interests));
-  
-    var mt = document.getElementById('myAddrText');
-  if(mt) mt.textContent = userDisplay;
-  
+  var newName=document.getElementById('editDisplayName').value.trim();
+  var newBio=document.getElementById('editBio').value.trim();
+  if(newName){userDisplay=newName;localStorage.setItem('sc_display',newName);}
+  if(newBio)localStorage.setItem('sc_bio',newBio);
+  var mt=document.getElementById('myAddrText');if(mt)mt.textContent=userDisplay;
   showPush({icon:'&#10003;',title:'Profile updated!',body:'Your changes have been saved.',color:'var(--ec)'});
   closeProfile();
 }
@@ -1238,11 +1098,11 @@ function openProfile(){
   var pe=document.getElementById("profileEstate");if(pe)pe.textContent=(estate.name||"Unknown")+" · "+(userSuburb||"");
   var pc=document.getElementById("profileCouncil");if(pc)pc.textContent=council;
   var interests=JSON.parse(localStorage.getItem("sc_interests")||"[]");
-  document.querySelectorAll(".interest-tag").forEach(function(b){b.classList.toggle("selected",interests.indexOf(b.textContent)!==-1);});
+  document.querySelectorAll(".interest-tag").forEach(function(b){b.classList.toggle("selected",interests.indexOf(b.textContent.trim())!==-1);});
   document.getElementById("profileModal").style.display="flex";
 }
 function closeProfile(){document.getElementById("profileModal").style.display="none";}
-function logout(){if(!confirm("Logout?"))return;["sc_address","sc_phone","sc_suburb","sc_display","sc_welcomed","sc_interests"].forEach(function(k){localStorage.removeItem(k);});closeProfile();location.reload();}
+function logout(){if(!confirm("Logout?"))return;["sc_address","sc_phone","sc_suburb","sc_display","sc_welcomed","sc_interests","sc_photo"].forEach(function(k){localStorage.removeItem(k);});closeProfile();location.reload();}
 
 function openSettings(){document.getElementById("settingsModal").style.display="flex";}
 function closeSettings(){document.getElementById("settingsModal").style.display="none";}
@@ -1258,60 +1118,39 @@ function applyEstateBranding(){
   var logo=document.getElementById("estateLogo");
   var placeholder=document.getElementById("estatePlaceholder");
   if(logo&&estate.logo){
-    logo.src=estate.logo;
-    logo.style.display="block";
-    logo.style.maxWidth="220px";
-    logo.style.maxHeight="90px";
-    logo.style.objectFit="contain";
+    logo.src=estate.logo;logo.style.display="block";
     if(placeholder)placeholder.style.display="none";
-  }
-  else if(estate.seriesM){
+  } else if(estate.seriesM){
     if(logo)logo.style.display="none";
     if(placeholder){
       placeholder.style.display="flex";placeholder.style.flexDirection="column";placeholder.style.alignItems="center";
-      var mImg=document.createElement("img");mImg.src="/montrose-m.png";mImg.style.cssText="height:60px;object-fit:contain;margin-bottom:6px;";
       var nameDiv=document.createElement("div");nameDiv.style.cssText="font-size:20px;font-weight:300;color:#d4dde8;letter-spacing:7px;font-family:Georgia,serif;";nameDiv.textContent="MONTROSE";
       var subDiv=document.createElement("div");subDiv.style.cssText="font-size:9px;color:rgba(184,197,214,0.5);letter-spacing:4px;margin-top:3px;";subDiv.textContent="MORAYFIELD";
-      placeholder.innerHTML="";placeholder.appendChild(mImg);placeholder.appendChild(nameDiv);placeholder.appendChild(subDiv);
+      placeholder.innerHTML="";placeholder.appendChild(nameDiv);placeholder.appendChild(subDiv);
     }
-  } else {if(logo)logo.style.display="none";if(placeholder){placeholder.style.display="flex";placeholder.innerHTML="&#127960;";}}
-  var hStreet=document.getElementById("hStreet");var hSuburb=document.getElementById("hSuburb");var hEstate=document.getElementById("hEstate");var hCouncil=document.getElementById("hCouncil");var composeLocation=document.getElementById("composeLocation");
+  } else {
+    if(logo)logo.style.display="none";
+    if(placeholder){placeholder.style.display="flex";placeholder.innerHTML="&#127960;";}
+  }
+  var hStreet=document.getElementById("hStreet");
+  var hSuburb=document.getElementById("hSuburb");
+  var hEstate=document.getElementById("hEstate");
+  var hCouncil=document.getElementById("hCouncil");
+  var composeLocation=document.getElementById("composeLocation");
   if(hStreet)hStreet.textContent=userDisplay||"";
   if(hSuburb)hSuburb.textContent=userSuburb||"";
   if(hEstate)hEstate.textContent=(estate.name||council).toUpperCase();
   if(hCouncil)hCouncil.textContent=council.toUpperCase()+" · STREET CONNECT";
   if(composeLocation)composeLocation.textContent=estate.name||council;
-  var boundary=document.getElementById("estateBoundary");
-  if(boundary&&estate.boundary){boundary.setAttribute("points",estate.boundary);boundary.setAttribute("display","");}else if(boundary){boundary.setAttribute("display","none");}
-    var COUNCIL_COLORS={"Moreton Bay City":{"c":"#2a3a00","a":"#b5cc18"},"Ipswich City":{"c":"#1a3020","a":"#69f0ae"},"Logan City":{"c":"#1a5c1a","a":"#81c784"},"Brisbane City":{"c":"#4a1a5c","a":"#ce93d8"}};
-  if(ek==="default"&&COUNCIL_COLORS[council]){
-    var cc=COUNCIL_COLORS[council];
-    document.documentElement.style.setProperty("--ec",cc.c);
-    document.documentElement.style.setProperty("--ea",cc.a);
-    if(header)header.style.background=cc.c;
-    if(placeholder){
-      placeholder.style.display="flex";placeholder.style.flexDirection="column";placeholder.style.alignItems="center";
-      var councilIcons={
-        "Moreton Bay City":"<svg width='60' height='60' viewBox='0 0 60 60' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='30' cy='30' r='28' fill='rgba(181,204,24,0.15)' stroke='rgba(181,204,24,0.4)' stroke-width='1.5'/><path d='M15 42 L15 28 L22 22 L30 18 L38 22 L45 28 L45 42 Z' fill='none' stroke='rgba(79,195,247,0.8)' stroke-width='1.5' stroke-linejoin='round'/><path d='M25 42 L25 34 L35 34 L35 42' fill='none' stroke='rgba(79,195,247,0.8)' stroke-width='1.5'/><path d='M10 42 L50 42' stroke='rgba(79,195,247,0.6)' stroke-width='1.5'/><circle cx='30' cy='26' r='3' fill='rgba(79,195,247,0.6)'/><path d='M20 42 L20 30' stroke='rgba(79,195,247,0.4)' stroke-width='1'/><path d='M40 42 L40 30' stroke='rgba(79,195,247,0.4)' stroke-width='1'/></svg>",
-        "Ipswich City":"<svg width='60' height='60' viewBox='0 0 60 60' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='30' cy='30' r='28' fill='rgba(255,138,101,0.15)' stroke='rgba(255,138,101,0.4)' stroke-width='1.5'/><path d='M18 42 L18 24 L30 16 L42 24 L42 42 Z' fill='none' stroke='rgba(255,138,101,0.8)' stroke-width='1.5' stroke-linejoin='round'/><rect x='26' y='32' width='8' height='10' fill='none' stroke='rgba(255,138,101,0.8)' stroke-width='1.5'/><rect x='20' y='28' width='6' height='6' fill='none' stroke='rgba(255,138,101,0.5)' stroke-width='1'/><rect x='34' y='28' width='6' height='6' fill='none' stroke='rgba(255,138,101,0.5)' stroke-width='1'/><path d='M10 42 L50 42' stroke='rgba(255,138,101,0.6)' stroke-width='1.5'/><path d='M30 16 L30 10 M27 13 L33 13' stroke='rgba(255,138,101,0.5)' stroke-width='1.5' stroke-linecap='round'/></svg>",
-        "Logan City":"<svg width='60' height='60' viewBox='0 0 60 60' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='30' cy='30' r='28' fill='rgba(129,199,132,0.15)' stroke='rgba(129,199,132,0.4)' stroke-width='1.5'/><path d='M30 12 C18 18 12 26 12 34 C12 42 20 48 30 48 C40 48 48 42 48 34 C48 26 42 18 30 12Z' fill='none' stroke='rgba(129,199,132,0.5)' stroke-width='1'/><path d='M30 18 C22 22 18 28 18 34 C18 40 24 44 30 44 C36 44 42 40 42 34 C42 28 38 22 30 18Z' fill='none' stroke='rgba(129,199,132,0.7)' stroke-width='1.5'/><circle cx='30' cy='34' r='5' fill='rgba(129,199,132,0.4)' stroke='rgba(129,199,132,0.8)' stroke-width='1.5'/><path d='M30 18 L30 12 M22 20 L18 16 M38 20 L42 16' stroke='rgba(129,199,132,0.5)' stroke-width='1' stroke-linecap='round'/></svg>",
-        "Brisbane City":"<svg width='60' height='60' viewBox='0 0 60 60' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='30' cy='30' r='28' fill='rgba(206,147,216,0.15)' stroke='rgba(206,147,216,0.4)' stroke-width='1.5'/><rect x='16' y='30' width='8' height='12' fill='none' stroke='rgba(206,147,216,0.6)' stroke-width='1.5'/><rect x='26' y='22' width='8' height='20' fill='none' stroke='rgba(206,147,216,0.8)' stroke-width='1.5'/><rect x='36' y='26' width='8' height='16' fill='none' stroke='rgba(206,147,216,0.6)' stroke-width='1.5'/><path d='M10 42 L50 42' stroke='rgba(206,147,216,0.6)' stroke-width='1.5'/><path d='M20 30 L20 24 M30 22 L30 14 M40 26 L40 18' stroke='rgba(206,147,216,0.4)' stroke-width='1' stroke-dasharray='2,2'/></svg>",
-        "Greater Brisbane":"<svg width='60' height='60' viewBox='0 0 60 60' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='30' cy='30' r='28' fill='rgba(105,240,174,0.1)' stroke='rgba(105,240,174,0.3)' stroke-width='1.5'/><path d='M20 38 C20 32 24 26 30 24 C36 26 40 32 40 38' fill='none' stroke='rgba(105,240,174,0.6)' stroke-width='1.5'/><circle cx='30' cy='24' r='4' fill='none' stroke='rgba(105,240,174,0.8)' stroke-width='1.5'/><path d='M15 38 L45 38' stroke='rgba(105,240,174,0.5)' stroke-width='1.5'/><path d='M22 38 L22 42 M30 38 L30 44 M38 38 L38 42' stroke='rgba(105,240,174,0.4)' stroke-width='1' stroke-linecap='round'/></svg>"
-      };
-      var icon=councilIcons[council]||councilIcons["Greater Brisbane"];
-      placeholder.innerHTML=icon+"<div style='font-size:9px;color:rgba(255,255,255,0.55);letter-spacing:2px;font-weight:700;text-align:center;margin-top:6px;'>"+council.toUpperCase()+"</div>";
-    }
-  }
-
   var binKey=(userSuburb||"").toLowerCase();
   var binText=BIN_SCHEDULES[binKey]||estate.binDay||"Check your council website for bin day.";
   var pt=document.getElementById("pinnedBinTitle");var pb=document.getElementById("pinnedBinBody");
   if(pt)pt.innerHTML="&#128721; Bin Day &mdash; "+(userSuburb||"Your Area");
   if(pb)pb.innerHTML=binText;
-    var splash=document.getElementById("splashScreen");
-  var splashLogo=document.getElementById("splashLogo");
-  var splashText=document.getElementById("splashText");
+  var splash=document.getElementById("splashScreen");
   if(splash&&isLoggedIn&&!localStorage.getItem("sc_splashed")){
+    var splashLogo=document.getElementById("splashLogo");
+    var splashText=document.getElementById("splashText");
     if(estate.logo&&splashLogo){splashLogo.src=estate.logo;splashLogo.style.display="block";}
     if(splashText)splashText.textContent="Welcome to "+(estate.name||"Street Connect");
     splash.style.display="flex";
@@ -1336,166 +1175,46 @@ function messageAdmin(){
   if(msg&&msg.trim()){fetch("/api/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:userPhone,address:userAddress,suburb:"ADMIN_MSG",content:"[SUPPORT] "+msg.trim(),display_name:userDisplay})}).then(function(){alert("Message sent! We will get back to you soon.");});}
 }
 
-var settings={darkMode:localStorage.getItem("sc_darkmode")==="1",quietHours:localStorage.getItem("sc_quiet")==="1"};
-
-window.addEventListener("online",function(){var b=document.getElementById("offlineBanner");if(b)b.style.display="none";loadMessages();});
-window.addEventListener("offline",function(){var b=document.getElementById("offlineBanner");if(b)b.style.display="block";});
-
-function scrollToBottom(){document.getElementById("chatBottom").scrollIntoView({behavior:"smooth"});var banner=document.getElementById("newMsgBanner");if(banner)banner.style.display="none";}
-
-var currentDM = null;
-var dmMessages = {};
-
-// ── PROFILE PHOTO ────────────────────────────────────────────────────────────
-var userPhoto = localStorage.getItem("sc_photo") || "";
-
-function handlePhotoUpload(event){
-  var file = event.target.files[0];
-  if(!file) return;
-  var reader = new FileReader();
-  reader.onload = function(e){
-    var img = new Image();
-    img.onload = function(){
-      var canvas = document.createElement('canvas');
-      var maxSize = 150;
-      var w = img.width, h = img.height;
-      if(w > h){ h = Math.round(h*(maxSize/w)); w = maxSize; } else { w = Math.round(w*(maxSize/h)); h = maxSize; }
-      canvas.width = w; canvas.height = h;
-      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-      var compressed = canvas.toDataURL('image/jpeg', 0.8);
-      userPhoto = compressed;
-      localStorage.setItem("sc_photo", compressed);
-      updatePhotoDisplay();
-      showPush({icon:"&#128247;",title:"Photo updated!",body:"Your profile photo has been saved.",color:"var(--ec)"});
-    };
-    img.src = e.target.result;
-  };
-  reader.readAsDataURL(file);
-}
-
-function updatePhotoDisplay(){
-  var avatarImg = document.getElementById("profileAvatarImg");
-  var avatarText = document.getElementById("profileAvatarText");
-  if(userPhoto && avatarImg){
-    avatarImg.src = userPhoto;
-    avatarImg.style.display = "block";
-    if(avatarText) avatarText.style.display = "none";
-  } else if(avatarImg){
-    avatarImg.style.display = "none";
-    if(avatarText) avatarText.style.display = "block";
-  }
-  var headerImg = document.getElementById("headerAvatarImg");
-  var headerText = document.getElementById("headerAvatarText");
-  if(userPhoto && headerImg){
-    headerImg.src = userPhoto;
-    headerImg.style.display = "inline-block";
-    if(headerText) headerText.style.display = "none";
-  } else if(headerImg){
-    headerImg.style.display = "none";
-    if(headerText) headerText.style.display = "inline";
-  }
-}
-
+// ── DMs ──
 function openDM(neighbourName, neighbourPhone){
   if(!isLoggedIn){alert("Please sign up to send messages.");return;}
   if(!neighbourPhone||neighbourPhone==="demo"||neighbourPhone===userPhone)return;
-  
-  currentDM = {name:neighbourName, phone:neighbourPhone};
+  currentDM={name:neighbourName,phone:neighbourPhone};
   if(!dmMessages[neighbourPhone])dmMessages[neighbourPhone]=[];
-  
-    var list=document.getElementById("dmList");
+  var list=document.getElementById("dmList");
   if(list){
     var existing=document.getElementById("dm_"+neighbourPhone);
     if(!existing){
       var item=document.createElement("div");
-      item.className="dm-item";
-      item.id="dm_"+neighbourPhone;
+      item.className="dm-item";item.id="dm_"+neighbourPhone;
       item.onclick=function(){openDMConvo(neighbourName,neighbourPhone);};
-      item.innerHTML="<div class='dm-avatar'>"+neighbourName.charAt(0).toUpperCase()+"</div>"+
-        "<div style='flex:1'><div class='dm-name'>"+neighbourName+"</div>"+
-        "<div class='dm-preview'>Tap to open conversation</div></div>";
-      list.innerHTML="";
-      list.appendChild(item);
+      item.innerHTML="<div class='dm-avatar'>"+neighbourName.charAt(0).toUpperCase()+"</div><div style='flex:1'><div class='dm-name'>"+neighbourName+"</div><div class='dm-preview'>Tap to open conversation</div></div>";
+      list.innerHTML="";list.appendChild(item);
     }
   }
-  
   switchTab("dms",null);
-  openDMConvo(neighbourName, neighbourPhone);
+  openDMConvo(neighbourName,neighbourPhone);
 }
 
-// ── PROFILE PHOTO ────────────────────────────────────────────────────────────
-var userPhoto = localStorage.getItem("sc_photo") || "";
-
-function handlePhotoUpload(event){
-  var file = event.target.files[0];
-  if(!file) return;
-  var reader = new FileReader();
-  reader.onload = function(e){
-    var img = new Image();
-    img.onload = function(){
-      var canvas = document.createElement('canvas');
-      var maxSize = 150;
-      var w = img.width, h = img.height;
-      if(w > h){ h = Math.round(h*(maxSize/w)); w = maxSize; } else { w = Math.round(w*(maxSize/h)); h = maxSize; }
-      canvas.width = w; canvas.height = h;
-      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-      var compressed = canvas.toDataURL('image/jpeg', 0.8);
-      userPhoto = compressed;
-      localStorage.setItem("sc_photo", compressed);
-      updatePhotoDisplay();
-      showPush({icon:"&#128247;",title:"Photo updated!",body:"Your profile photo has been saved.",color:"var(--ec)"});
-    };
-    img.src = e.target.result;
-  };
-  reader.readAsDataURL(file);
-}
-
-function updatePhotoDisplay(){
-  var avatarImg = document.getElementById("profileAvatarImg");
-  var avatarText = document.getElementById("profileAvatarText");
-  if(userPhoto && avatarImg){
-    avatarImg.src = userPhoto;
-    avatarImg.style.display = "block";
-    if(avatarText) avatarText.style.display = "none";
-  } else if(avatarImg){
-    avatarImg.style.display = "none";
-    if(avatarText) avatarText.style.display = "block";
-  }
-  var headerImg = document.getElementById("headerAvatarImg");
-  var headerText = document.getElementById("headerAvatarText");
-  if(userPhoto && headerImg){
-    headerImg.src = userPhoto;
-    headerImg.style.display = "inline-block";
-    if(headerText) headerText.style.display = "none";
-  } else if(headerImg){
-    headerImg.style.display = "none";
-    if(headerText) headerText.style.display = "inline";
-  }
-}
-
-function openDMConvo(name, phone){
+function openDMConvo(name,phone){
   currentDM={name:name,phone:phone};
   document.getElementById("dmInbox").style.display="none";
   var convo=document.getElementById("dmConvo");
-  convo.style.display="flex";
-  convo.style.flexDirection="column";
+  convo.style.display="flex";convo.style.flexDirection="column";
   document.getElementById("dmConvoName").textContent=name;
   renderDMMessages(phone);
 }
 
 function closeDMConvo(){
   document.getElementById("dmConvo").style.display="none";
-  document.getElementById("dmInbox").style.display="flex";
-  document.getElementById("dmInbox").style.flexDirection="column";
+  var inbox=document.getElementById("dmInbox");
+  inbox.style.display="flex";inbox.style.flexDirection="column";
 }
 
 function renderDMMessages(phone){
   var msgs=dmMessages[phone]||[];
   var container=document.getElementById("dmMessages");
-  if(!msgs.length){
-    container.innerHTML="<div class='empty-state'>&#128172;<br/>Start the conversation!</div>";
-    return;
-  }
+  if(!msgs.length){container.innerHTML="<div class='empty-state'>&#128172;<br/>Start the conversation!</div>";return;}
   container.innerHTML=msgs.map(function(m){
     var isMe=m.from==="me";
     return "<div class='msg-row"+(isMe?" me":"")+"'>"+
@@ -1522,12 +1241,13 @@ function sendDM(){
   showPush({icon:"&#128172;",title:"Message sent",body:"Your private message was delivered.",color:"var(--ec)"});
 }
 
-var msgReactions={};
-function addReaction(msgId,emoji){
-  if(!msgReactions[msgId])msgReactions[msgId]={};
-  if(msgReactions[msgId][emoji])delete msgReactions[msgId][emoji];
-  else msgReactions[msgId][emoji]=true;
-  loadMessages();
+function sendDMModal(){
+  var input=document.getElementById("dmInputModal");
+  if(!input||!input.value.trim()||!dmRecipient)return;
+  var msg={from:userPhone,to:dmRecipient.phone,text:input.value.trim(),time:new Date()};
+  if(!dmConversations[dmRecipient.phone])dmConversations[dmRecipient.phone]=[];
+  dmConversations[dmRecipient.phone].push(msg);
+  input.value="";
 }
 
 function showWelcomeSplash(){
@@ -1541,12 +1261,12 @@ function showWelcomeSplash(){
   if(wName)wName.textContent=estate.name||"Street Connect";
   splash.style.display="flex";
   setTimeout(function(){
-    splash.style.opacity="0";
-    splash.style.transition="opacity 0.5s";
+    splash.style.opacity="0";splash.style.transition="opacity 0.5s";
     setTimeout(function(){splash.style.display="none";splash.style.opacity="1";},500);
   },2500);
 }
 
+// Init
 updateHeader();
 applyEstateBranding();
 updatePhotoDisplay();
@@ -1554,17 +1274,13 @@ updateNeighbourCount();
 renderLocalTab();
 updateRadius(500);
 updateNotifBadge();
-initGoogleMap(); document.querySelector('[onclick*="switchTab(\'map\'"]').addEventListener('click',function(){if(googleMap)google.maps.event.trigger(googleMap,'resize');});
-
 if(!navigator.onLine){var b=document.getElementById("offlineBanner");if(b)b.style.display="block";}
-
 if(isLoggedIn&&!localStorage.getItem("sc_welcomed")){
   showWelcomeSplash();
   var ek2=getEstateFromAddress(userAddress);
   var estate2=ESTATES[ek2]||ESTATES.default;
   setTimeout(function(){showPush({icon:"&#127881;",title:"Welcome to Street Connect!",body:"You are now connected with your neighbours. Say hello!",color:estate2.color});localStorage.setItem("sc_welcomed","1");},3000);
 }
-
 </script>
 </body>
 </html>
