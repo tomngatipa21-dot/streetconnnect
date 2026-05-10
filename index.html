@@ -633,7 +633,7 @@ function updateGoogleMapMode(mode){
     radiusCircle=new google.maps.Circle({map:googleMap,center:userMarker.getPosition(),radius:rM,fillColor:ac,fillOpacity:0.1,strokeColor:ac,strokeOpacity:0.8,strokeWeight:2});
     incidentMarkers.forEach(function(m){var dist=google.maps.geometry.spherical.computeDistanceBetween(userMarker.getPosition(),m.getPosition());m.setOpacity(dist<=rM?1:0.3);});
   } else if(mode==="estate"){
-    window.estatePolylines=[];var estBounds=ESTATES[ek]&&ESTATES[ek].boundary;if(estBounds&&Array.isArray(estBounds)){estatePolygon=new google.maps.Polygon({paths:estBounds,map:googleMap,strokeColor:ac,strokeOpacity:0.8,strokeWeight:2,fillColor:ac,fillOpacity:0.08});}
+    window.estatePolylines=[];
     var estateStreetNames={"summerstone":["Amber Street Morayfield","Summerstone Boulevard Morayfield","Breeze Street Morayfield","Festival Street Morayfield","Tropic Street Morayfield","Dune Street Morayfield","Sunrise Street Morayfield","Island Parade Morayfield","Sunset Street Morayfield","Golden Road Morayfield","Bloom Drive Morayfield","Harvest Street Morayfield","Freshwater Street Morayfield","Kingfisher Avenue Morayfield"],"montrose":["Grandtown Drive Morayfield","Hepworth Way Morayfield","Landings Boulevard Morayfield","Moray Street Morayfield","Randolph Boulevard Morayfield","Wellside Street Morayfield","Anderson Road Morayfield"]};
     var streets=estateStreetNames[ek]||[];
     var geocoder=new google.maps.Geocoder();
