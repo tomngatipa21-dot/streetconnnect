@@ -1,17 +1,14 @@
-export default async function handler(req, res) {
-  const query = req.query.data;
-  if (!query) return res.status(400).json({ error: 'No query provided' });
+export const config = { runtime: 'edge' };
 
+export default async function handler(req) {
+  const url = new URL(req.url);
+  const data = url.searchParams.get('data');
+  if (!data) return new Response(JSON.stringify({elements:[]}), {headers:{'Content-Type':'application/json','Access-Control-Allow-Origin':'*'}});
   try {
-    const response = await fetch('https://overpass-api.de/api/interpreter', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: 'data=' + encodeURIComponent(query)
-    });
-    const json = await response.json();
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.status(200).json(json);
-  } catch (e) {
-    res.status(500).json({ error: e.message });
+    const response = await fetch('https://overpass.kumi.systems/api/interpreter?data='+encodeURIComponent(data));
+    const text = await response.text();
+    return new Response(text, {headers:{'Content-Type':'application/json','Access-Control-Allow-Origin':'*'}});
+  } catch(e) {
+    return new Response(JSON.stringify({elements:[]}), {headers:{'Content-Type':'application/json','Access-Control-Allow-Origin':'*'}});
   }
 }
