@@ -643,7 +643,7 @@ function updateRadius(v){
   if(currentMapMode==="radius")updateGoogleMapMode("radius");
   var inRange=0;
   for(var id in INCIDENT_DISTS){var inside=INCIDENT_DISTS[id]<=rM;if(inside)inRange++;var btn=document.getElementById("incBtn"+id);if(btn)btn.className="inc-list-btn"+(inside?"":" dimmed");}
-  var ri=document.getElementById("radiusInfo");if(ri)ri.textContent="&#128225; "+inRange+" of 6 incidents within "+d+" · "+(6-inRange)+" filtered";
+  var ri=document.getElementById("radiusInfo");if(ri)ri.innerHTML="&#128225; "+inRange+" of 6 incidents within "+d+" &middot; "+(6-inRange)+" filtered";
 }
 function setRadius(v){document.getElementById("radiusSlider").value=v;updateRadius(v);}
 function toggleRadius(){var t=document.getElementById("radiusToggle");var on=t.textContent==="ON";t.textContent=on?"OFF":"ON";t.className=on?"radius-toggle off":"radius-toggle";}
