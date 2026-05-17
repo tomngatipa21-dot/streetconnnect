@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,155 +5,751 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Street Connect — Admin</title>
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
-body { background:#1a3020; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; min-height:100vh; padding:20px; }
-.login-wrap { display:flex; align-items:center; justify-content:center; min-height:100vh; }
-.login-card { background:#fffdf8; border-radius:20px; padding:32px 24px; width:100%; max-width:360px; box-shadow:0 20px 60px rgba(0,0,0,0.4); }
-.logo { display:flex; align-items:center; gap:8px; margin-bottom:20px; }
-.logo-name { font-size:20px; font-weight:900; color:#1a3020; }
-.logo-name span { color:#4a7a4a; }
-.admin-badge { background:#e53935; color:#fff; font-size:10px; padding:3px 8px; border-radius:10px; font-weight:700; margin-left:8px; }
-h2 { font-size:20px; font-weight:900; color:#1a3020; margin-bottom:6px; }
-p { font-size:13px; color:#888; margin-bottom:20px; }
-input { width:100%; border:2px solid #1a3020; border-radius:12px; padding:12px 14px; font-size:15px; font-family:inherit; color:#333; outline:none; margin-bottom:12px; }
-.btn { width:100%; background:#1a3020; color:#fff; border:none; border-radius:12px; padding:14px; font-size:15px; cursor:pointer; font-weight:700; font-family:inherit; }
-.dashboard { display:none; }
-.dash-header { background:#1a3020; padding:20px 24px; border-radius:0 0 20px 20px; margin-bottom:24px; display:flex; justify-content:space-between; align-items:center; }
-.dash-title { color:#fff; font-size:18px; font-weight:900; }
-.dash-sub { color:#81c784; font-size:11px; margin-top:3px; }
-.logout-btn { background:rgba(255,255,255,0.15); border:none; color:#fff; border-radius:20px; padding:6px 14px; font-size:12px; cursor:pointer; font-family:inherit; }
-.stats-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:24px; padding:0 4px; }
-.stat-card { background:#fffdf8; border-radius:14px; padding:16px; text-align:center; box-shadow:0 2px 8px rgba(0,0,0,0.1); }
-.stat-num { font-size:32px; font-weight:900; color:#1a3020; }
-.stat-label { font-size:11px; color:#888; margin-top:4px; }
-.stat-card.highlight .stat-num { color:#2e7d32; }
-.users-card { background:#fffdf8; border-radius:14px; padding:16px; box-shadow:0 2px 8px rgba(0,0,0,0.1); margin:0 4px; }
-.users-title { font-size:13px; font-weight:700; color:#1a3020; margin-bottom:12px; display:flex; justify-content:space-between; }
-.refresh-btn { background:#f5f0e8; border:none; border-radius:10px; padding:4px 10px; font-size:11px; cursor:pointer; color:#666; font-family:inherit; }
-.user-row { display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid #f0ece3; }
-.user-row:last-child { border-bottom:none; }
-.user-avatar { width:36px; height:36px; background:#1a3020; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#69f0ae; font-size:14px; font-weight:700; flex-shrink:0; }
-.user-info { flex:1; }
-.user-address { font-size:13px; font-weight:700; color:#1a3020; }
-.user-meta { font-size:10px; color:#aaa; margin-top:2px; }
-.user-lang { background:#f5f0e8; color:#666; font-size:9px; padding:2px 7px; border-radius:10px; }
-.empty-state { text-align:center; padding:32px; color:#aaa; font-size:13px; }
-.error-msg { color:#e53935; font-size:12px; margin-bottom:10px; display:none; }
-.loading { text-align:center; padding:20px; color:#aaa; font-size:13px; }
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#0f1f13;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;color:#333;}
+
+/* ── LOGIN ── */
+.login-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;background:#0f1f13;}
+.login-card{background:#fffdf8;border-radius:20px;padding:36px 28px;width:100%;max-width:380px;box-shadow:0 30px 80px rgba(0,0,0,0.5);}
+.logo{display:flex;align-items:center;gap:10px;margin-bottom:24px;}
+.logo-icon{font-size:28px;}
+.logo-name{font-size:22px;font-weight:900;color:#0f1f13;letter-spacing:-0.5px;}
+.logo-name span{color:#2e7d32;}
+.admin-badge{background:#e53935;color:#fff;font-size:9px;padding:3px 8px;border-radius:10px;font-weight:700;letter-spacing:1px;margin-left:6px;vertical-align:middle;}
+.login-card h2{font-size:22px;font-weight:900;color:#0f1f13;margin-bottom:6px;}
+.login-card p{font-size:13px;color:#888;margin-bottom:22px;line-height:1.5;}
+.login-card input{width:100%;border:2px solid #e0dbd0;border-radius:12px;padding:13px 15px;font-size:15px;font-family:inherit;color:#333;outline:none;margin-bottom:12px;background:#f9f6f0;transition:border-color 0.2s;}
+.login-card input:focus{border-color:#1a3020;}
+.login-btn{width:100%;background:#1a3020;color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;cursor:pointer;font-weight:700;font-family:inherit;transition:background 0.2s;}
+.login-btn:hover{background:#2e7d32;}
+.error-msg{color:#e53935;font-size:12px;margin-bottom:10px;display:none;background:#fff0f0;padding:8px 12px;border-radius:8px;border:1px solid #ffcdd2;}
+
+/* ── DASHBOARD SHELL ── */
+.dashboard{display:none;min-height:100vh;background:#0f1f13;}
+
+/* ── HEADER ── */
+.dash-header{background:#132418;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,0.06);position:sticky;top:0;z-index:50;}
+.dash-brand{display:flex;align-items:center;gap:10px;}
+.dash-title{color:#fff;font-size:16px;font-weight:900;letter-spacing:-0.3px;}
+.dash-sub{color:#4caf50;font-size:10px;margin-top:1px;letter-spacing:0.5px;}
+.header-right{display:flex;align-items:center;gap:10px;}
+.admin-user{font-size:11px;color:rgba(255,255,255,0.4);}
+.logout-btn{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);border-radius:20px;padding:6px 14px;font-size:11px;cursor:pointer;font-family:inherit;transition:all 0.2s;}
+.logout-btn:hover{background:rgba(255,255,255,0.15);}
+
+/* ── NAV ── */
+.admin-nav{background:#132418;padding:0 24px;display:flex;gap:2px;border-bottom:1px solid rgba(255,255,255,0.06);overflow-x:auto;scrollbar-width:none;}
+.admin-nav::-webkit-scrollbar{display:none;}
+.nav-btn{background:none;border:none;color:rgba(255,255,255,0.4);padding:12px 16px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;border-bottom:2px solid transparent;white-space:nowrap;transition:all 0.2s;letter-spacing:0.5px;}
+.nav-btn:hover{color:rgba(255,255,255,0.7);}
+.nav-btn.active{color:#69f0ae;border-bottom-color:#69f0ae;}
+
+/* ── CONTENT AREA ── */
+.admin-content{padding:20px 24px;max-width:1100px;margin:0 auto;}
+
+/* ── STATS GRID ── */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:20px;}
+.stat-card{background:#1a2a1d;border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:16px;text-align:center;}
+.stat-num{font-size:28px;font-weight:900;color:#fff;}
+.stat-label{font-size:9px;color:rgba(255,255,255,0.4);margin-top:4px;letter-spacing:1px;text-transform:uppercase;}
+.stat-card.green .stat-num{color:#69f0ae;}
+.stat-card.blue .stat-num{color:#4fc3f7;}
+.stat-card.orange .stat-num{color:#ffb74d;}
+.stat-card.red .stat-num{color:#ef9a9a;}
+.stat-card.purple .stat-num{color:#ce93d8;}
+
+/* ── CARDS ── */
+.admin-card{background:#fffdf8;border-radius:14px;padding:16px;margin-bottom:14px;border:1px solid #ede8e0;}
+.card-title{font-size:12px;font-weight:700;color:#1a3020;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;letter-spacing:0.5px;text-transform:uppercase;}
+.section-label{font-size:9px;font-weight:700;color:rgba(255,255,255,0.3);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;}
+
+/* ── SEARCH / FILTER ── */
+.search-bar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.search-input{flex:1;min-width:180px;border:1.5px solid #e0dbd0;border-radius:10px;padding:9px 12px;font-size:13px;font-family:inherit;outline:none;color:#333;background:#f9f6f0;}
+.search-input:focus{border-color:#1a3020;}
+.filter-select{border:1.5px solid #e0dbd0;border-radius:10px;padding:9px 12px;font-size:12px;font-family:inherit;outline:none;color:#333;background:#f9f6f0;cursor:pointer;}
+
+/* ── USER ROWS ── */
+.user-row{display:flex;align-items:flex-start;gap:10px;padding:11px 0;border-bottom:1px solid #f0ece3;}
+.user-row:last-child{border-bottom:none;}
+.user-row.banned{opacity:0.45;}
+.user-avatar{width:38px;height:38px;background:#1a3020;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#69f0ae;font-size:15px;font-weight:700;flex-shrink:0;}
+.user-info{flex:1;min-width:0;}
+.user-name{font-size:13px;font-weight:700;color:#1a3020;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.user-addr{font-size:11px;color:#666;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.user-meta-row{font-size:10px;color:#aaa;margin-top:2px;}
+.user-badges{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px;}
+.user-actions{display:flex;gap:5px;flex-shrink:0;flex-wrap:wrap;align-items:flex-start;margin-top:2px;}
+.action-btn{border:none;border-radius:8px;padding:5px 10px;font-size:10px;cursor:pointer;font-weight:700;font-family:inherit;white-space:nowrap;transition:all 0.15s;}
+.btn-verify{background:#e8f5e9;color:#2e7d32;}
+.btn-verify:hover{background:#c8e6c9;}
+.btn-ban{background:#fff8e1;color:#f57f17;}
+.btn-ban:hover{background:#ffecb3;}
+.btn-unban{background:#e3f2fd;color:#1565c0;}
+.btn-delete{background:#fff0f0;color:#e53935;}
+.btn-delete:hover{background:#ffcdd2;}
+.btn-sm{background:#f5f0e8;color:#555;}
+
+/* ── BADGE CHIPS ── */
+.badge-chip{display:inline-flex;align-items:center;gap:3px;color:#fff;font-size:9px;padding:2px 7px;border-radius:10px;font-weight:700;letter-spacing:0.3px;}
+.verified-tick{color:#4caf50;font-size:10px;}
+
+/* ── BADGE SELECT ── */
+.badge-select{border:1.5px solid #e0dbd0;border-radius:8px;padding:5px 8px;font-size:11px;font-family:inherit;outline:none;color:#333;background:#fff;cursor:pointer;}
+
+/* ── FORMS ── */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.form-group{display:flex;flex-direction:column;gap:5px;}
+.form-group.full{grid-column:1/-1;}
+.form-label{font-size:10px;font-weight:700;color:#555;letter-spacing:0.5px;text-transform:uppercase;}
+.form-input{border:1.5px solid #e0dbd0;border-radius:10px;padding:10px 12px;font-size:13px;font-family:inherit;color:#333;outline:none;background:#f9f6f0;transition:border-color 0.2s;}
+.form-input:focus{border-color:#1a3020;}
+.form-select{border:1.5px solid #e0dbd0;border-radius:10px;padding:10px 12px;font-size:13px;font-family:inherit;color:#333;outline:none;background:#f9f6f0;cursor:pointer;}
+.form-textarea{border:1.5px solid #e0dbd0;border-radius:10px;padding:10px 12px;font-size:13px;font-family:inherit;color:#333;outline:none;background:#f9f6f0;resize:vertical;min-height:80px;}
+.submit-btn{background:#1a3020;color:#fff;border:none;border-radius:10px;padding:12px 20px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:background 0.2s;}
+.submit-btn:hover{background:#2e7d32;}
+
+/* ── ORG CARDS ── */
+.org-card{border:1.5px solid #e0dbd0;border-radius:12px;padding:13px;margin-bottom:10px;display:flex;align-items:flex-start;gap:12px;background:#fff;}
+.org-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.org-name{font-size:14px;font-weight:700;color:#1a3020;}
+.org-type-label{font-size:10px;color:#888;margin-top:2px;}
+.org-detail{font-size:11px;color:#666;margin-top:4px;line-height:1.5;}
+.org-actions{margin-left:auto;display:flex;gap:6px;flex-shrink:0;}
+
+/* ── REP ROWS ── */
+.rep-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #f0ece3;}
+.rep-row:last-child{border-bottom:none;}
+
+/* ── INCIDENT ROWS ── */
+.inc-row{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #f0ece3;}
+.inc-row:last-child{border-bottom:none;}
+.inc-emoji{font-size:22px;flex-shrink:0;margin-top:1px;}
+
+/* ── ANNOUNCEMENT FORM ── */
+.pin-form{background:#f9f6f0;border-radius:12px;padding:14px;margin-bottom:14px;border:1px solid #e0dbd0;}
+
+/* ── SUCCESS / INFO ── */
+.success-msg{background:#e8f5e9;border:1px solid #a5d6a7;border-radius:10px;padding:10px 14px;font-size:12px;color:#2e7d32;margin-bottom:12px;display:none;}
+.info-box{background:#e3f2fd;border:1px solid #90caf9;border-radius:10px;padding:10px 14px;font-size:12px;color:#1565c0;margin-bottom:12px;}
+
+/* ── EMPTY ── */
+.empty{text-align:center;padding:28px;color:#aaa;font-size:13px;line-height:1.8;}
+.loading{text-align:center;padding:20px;color:#aaa;font-size:13px;}
+
+/* ── REFRESH BTN ── */
+.refresh-btn{background:#f5f0e8;border:none;border-radius:8px;padding:5px 11px;font-size:11px;cursor:pointer;color:#666;font-family:inherit;}
+.refresh-btn:hover{background:#e0dbd0;}
+
+/* ── DIVIDER ── */
+.divider{height:1px;background:#f0ece3;margin:12px 0;}
+
+@media(max-width:640px){
+  .form-grid{grid-template-columns:1fr;}
+  .admin-content{padding:14px 14px;}
+  .dash-header,.admin-nav{padding-left:14px;padding-right:14px;}
+  .stats-grid{grid-template-columns:repeat(3,1fr);}
+  .user-actions{flex-direction:column;}
+}
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
+<!-- ── LOGIN ── -->
 <div class="login-wrap" id="loginWrap">
   <div class="login-card">
     <div class="logo">
-      <span style="font-size:24px;">&#127960;</span>
-      <div class="logo-name">Street<span>Connect</span><span class="admin-badge">ADMIN</span></div>
+      <span class="logo-icon">🏘</span>
+      <div>
+        <div class="logo-name">Street<span>Connect</span><span class="admin-badge">ADMIN</span></div>
+      </div>
     </div>
     <h2>Admin Login</h2>
-    <p>Enter your admin password to access the dashboard.</p>
+    <p>Access the Street Connect admin dashboard. Authorised personnel only.</p>
     <div class="error-msg" id="loginError">Incorrect password. Try again.</div>
     <input type="password" id="passwordInput" placeholder="Admin password" onkeydown="if(event.key==='Enter')login()"/>
-    <button class="btn" onclick="login()">Login &#8594;</button>
+    <button class="login-btn" onclick="login()">Login →</button>
   </div>
 </div>
 
-<!-- DASHBOARD -->
+<!-- ── DASHBOARD ── -->
 <div class="dashboard" id="dashboard">
+
+  <!-- Header -->
   <div class="dash-header">
-    <div>
-      <div class="dash-title">&#127960; Street Connect Admin</div>
-      <div class="dash-sub">Moreton Bay Region · Live dashboard</div>
+    <div class="dash-brand">
+      <span style="font-size:20px;">🏘</span>
+      <div>
+        <div class="dash-title">Street Connect <span style="color:#69f0ae;">Admin</span></div>
+        <div class="dash-sub">MORETON BAY REGION · LIVE DASHBOARD</div>
+      </div>
     </div>
-    <button class="logout-btn" onclick="logout()">Logout</button>
-  </div>
-
-  <div class="stats-grid">
-    <div class="stat-card highlight">
-      <div class="stat-num" id="totalUsers">-</div>
-      <div class="stat-label">Total Users</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num" id="todayUsers">-</div>
-      <div class="stat-label">Joined Today</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num" id="totalStreets">-</div>
-      <div class="stat-label">Streets</div>
+    <div class="header-right">
+      <span class="admin-user">Admin</span>
+      <button class="logout-btn" onclick="logout()">Logout</button>
     </div>
   </div>
 
-  <div class="users-card">
-    <div class="users-title">
-      <span>Recent Signups</span>
-      <button class="refresh-btn" onclick="loadUsers()">&#8635; Refresh</button>
-    </div>
-    <div id="usersList"><div class="loading">Loading...</div></div>
+  <!-- Nav -->
+  <div class="admin-nav">
+    <button class="nav-btn active" onclick="showSection('overview',this)">📊 OVERVIEW</button>
+    <button class="nav-btn" onclick="showSection('users',this)">👥 USERS</button>
+    <button class="nav-btn" onclick="showSection('orgs',this)">🏛 ORGANISATIONS</button>
+    <button class="nav-btn" onclick="showSection('reps',this)">⭐ REPS</button>
+    <button class="nav-btn" onclick="showSection('content',this)">📋 CONTENT</button>
   </div>
-</div>
+
+  <div class="admin-content">
+
+    <!-- ── OVERVIEW ── -->
+    <div id="sec-overview">
+      <div class="section-label" style="margin-top:4px;">OVERVIEW</div>
+      <div class="stats-grid">
+        <div class="stat-card green"><div class="stat-num" id="totalUsers">-</div><div class="stat-label">Total Users</div></div>
+        <div class="stat-card"><div class="stat-num" id="todayUsers">-</div><div class="stat-label">Today</div></div>
+        <div class="stat-card"><div class="stat-num" id="totalStreets">-</div><div class="stat-label">Streets</div></div>
+        <div class="stat-card blue"><div class="stat-num" id="totalOrgs">-</div><div class="stat-label">Orgs</div></div>
+        <div class="stat-card purple"><div class="stat-num" id="totalReps">-</div><div class="stat-label">Reps</div></div>
+        <div class="stat-card red"><div class="stat-num" id="totalBanned">-</div><div class="stat-label">Banned</div></div>
+      </div>
+      <div class="admin-card">
+        <div class="card-title">
+          <span>Recent Signups</span>
+          <button class="refresh-btn" onclick="loadUsers()">↻ Refresh</button>
+        </div>
+        <div id="overviewUsersList"><div class="loading">Loading...</div></div>
+      </div>
+    </div>
+
+    <!-- ── USERS ── -->
+    <div id="sec-users" style="display:none;">
+      <div class="section-label" style="margin-top:4px;">USER MANAGEMENT</div>
+      <div class="admin-card">
+        <div class="card-title">All Accounts</div>
+        <div class="search-bar">
+          <input class="search-input" id="userSearch" placeholder="Search name, address, phone..." oninput="filterUsers()"/>
+          <select class="filter-select" id="userFilter" onchange="filterUsers()">
+            <option value="all">All accounts</option>
+            <option value="resident">🏠 Residents</option>
+            <option value="business">🏢 Business</option>
+            <option value="council">🏛 Council</option>
+            <option value="police">👮 Police</option>
+            <option value="ses">🟠 SES</option>
+            <option value="fire">🚒 Fire</option>
+            <option value="estate_manager">🏘 Estate Managers</option>
+            <option value="neighbourhood_rep">⭐ Neighbourhood Reps</option>
+            <option value="street_captain">🏠 Street Captains</option>
+            <option value="banned">🚫 Banned</option>
+          </select>
+        </div>
+        <div id="fullUsersList"><div class="loading">Loading...</div></div>
+      </div>
+    </div>
+
+    <!-- ── ORGANISATIONS ── -->
+    <div id="sec-orgs" style="display:none;">
+      <div class="section-label" style="margin-top:4px;">ORGANISATIONS</div>
+      <div class="info-box">ℹ️ Organisation profiles are stored locally. In production these will sync to your database and allow org accounts to post verified broadcasts.</div>
+      <div class="admin-card">
+        <div class="card-title">Create Organisation Profile</div>
+        <div class="success-msg" id="orgSuccess">✓ Organisation profile created!</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Organisation Name</label>
+            <input class="form-input" id="orgName" placeholder="e.g. Moreton Bay City Council"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Type</label>
+            <select class="form-select" id="orgType">
+              <option value="council">🏛 Council / Government</option>
+              <option value="police">👮 Police</option>
+              <option value="ses">🟠 SES</option>
+              <option value="fire">🚒 Fire & Rescue</option>
+              <option value="estate_manager">🏘 Estate Management</option>
+              <option value="neighbourhood_rep">⭐ Neighbourhood Group</option>
+              <option value="business">🏢 Local Business</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Contact Email</label>
+            <input class="form-input" id="orgContact" placeholder="contact@organisation.com.au"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Area / Jurisdiction</label>
+            <input class="form-input" id="orgArea" placeholder="e.g. Moreton Bay Region"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone</label>
+            <input class="form-input" id="orgPhone" placeholder="07 xxxx xxxx"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Website</label>
+            <input class="form-input" id="orgWebsite" placeholder="https://"/>
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Description</label>
+            <textarea class="form-textarea" id="orgDesc" placeholder="Brief description of this organisation and their role in the community..."></textarea>
+          </div>
+          <div class="form-group full">
+            <button class="submit-btn" onclick="createOrg()">+ Create Organisation Profile</button>
+          </div>
+        </div>
+      </div>
+      <div class="admin-card">
+        <div class="card-title">Registered Organisations</div>
+        <div id="orgsList"><div class="empty">No organisations created yet.</div></div>
+      </div>
+    </div>
+
+    <!-- ── REPS ── -->
+    <div id="sec-reps" style="display:none;">
+      <div class="section-label" style="margin-top:4px;">NEIGHBOURHOOD REPS & MANAGERS</div>
+      <div class="admin-card">
+        <div class="card-title">Assign Rep / Manager</div>
+        <div class="success-msg" id="repSuccess">✓ Rep assigned and badge applied!</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Select User</label>
+            <select class="form-select" id="repUserSelect">
+              <option value="">Select a user...</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Role</label>
+            <select class="form-select" id="repRole">
+              <option value="neighbourhood_rep">⭐ Neighbourhood Rep</option>
+              <option value="estate_manager">🏘 Estate Manager</option>
+              <option value="street_captain">🏠 Street Captain</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Estate / Area</label>
+            <select class="form-select" id="repEstate">
+              <option value="summerstone">Summerstone Estate</option>
+              <option value="montrose">Montrose</option>
+              <option value="morayfield">Morayfield (General)</option>
+              <option value="caboolture">Caboolture</option>
+              <option value="narangba">Narangba</option>
+              <option value="burpengary">Burpengary</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Display Name (optional)</label>
+            <input class="form-input" id="repDisplay" placeholder="e.g. Sarah · Summerstone Rep"/>
+          </div>
+          <div class="form-group full">
+            <button class="submit-btn" onclick="assignRep()">+ Assign Rep</button>
+          </div>
+        </div>
+      </div>
+      <div class="admin-card">
+        <div class="card-title">Current Reps & Managers</div>
+        <div id="repsList"><div class="empty">No reps assigned yet.</div></div>
+      </div>
+    </div>
+
+    <!-- ── CONTENT ── -->
+    <div id="sec-content" style="display:none;">
+      <div class="section-label" style="margin-top:4px;">CONTENT & MODERATION</div>
+
+      <div class="admin-card">
+        <div class="card-title">📌 Pin Announcement</div>
+        <div class="pin-form">
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">Title</label>
+              <input class="form-input" id="pinTitle" placeholder="e.g. Bin Day Change"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Target</label>
+              <select class="form-select" id="pinEstate">
+                <option value="all">All Estates</option>
+                <option value="summerstone">Summerstone</option>
+                <option value="montrose">Montrose</option>
+              </select>
+            </div>
+            <div class="form-group full">
+              <label class="form-label">Message</label>
+              <textarea class="form-textarea" id="pinMessage" placeholder="Announcement content visible to residents..."></textarea>
+            </div>
+            <div class="form-group full">
+              <button class="submit-btn" onclick="pinAnnouncement()">📌 Pin to App</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <div class="card-title">Pinned Announcements</div>
+        <div id="pinnedList"><div class="empty">No pinned announcements.</div></div>
+      </div>
+
+      <div class="admin-card">
+        <div class="card-title">Reported Incidents</div>
+        <div class="info-box">ℹ️ Live incident management will be available once the incidents API is connected.</div>
+        <div id="incidentsList"><div class="empty">No incidents reported yet.</div></div>
+      </div>
+    </div>
+
+  </div><!-- /admin-content -->
+</div><!-- /dashboard -->
 
 <script>
-var adminPassword = '';
+var adminPassword='';
+var allUsers=[];
+var orgProfiles=JSON.parse(localStorage.getItem('sc_admin_orgs')||'[]');
+var repAssignments=JSON.parse(localStorage.getItem('sc_admin_reps')||'[]');
+var bannedUsers=JSON.parse(localStorage.getItem('sc_admin_banned')||'[]');
+var userBadges=JSON.parse(localStorage.getItem('sc_admin_badges')||'{}');
+var pinnedAnnouncements=JSON.parse(localStorage.getItem('sc_admin_pins')||'[]');
 
-function login() {
-  var pw = document.getElementById('passwordInput').value;
-  if (!pw) return;
-  adminPassword = pw;
+var BADGE_TYPES={
+  resident:{label:'Resident',color:'#1a3020',icon:'🏠'},
+  business:{label:'Business',color:'#bf360c',icon:'🏢'},
+  council:{label:'Council',color:'#1a3a6b',icon:'🏛'},
+  police:{label:'Police',color:'#0d47a1',icon:'👮'},
+  ses:{label:'SES',color:'#e65100',icon:'🟠'},
+  fire:{label:'Fire & Rescue',color:'#c62828',icon:'🚒'},
+  estate_manager:{label:'Estate Manager',color:'#4a148c',icon:'🏘'},
+  neighbourhood_rep:{label:'Neighbourhood Rep',color:'#2e7d32',icon:'⭐'},
+  street_captain:{label:'Street Captain',color:'#006064',icon:'🏠'},
+};
+
+// ── LOGIN ──
+function login(){
+  var pw=document.getElementById('passwordInput').value;
+  if(!pw)return;
+  adminPassword=pw;
   loadUsers();
 }
 
-function logout() {
-  adminPassword = '';
-  document.getElementById('dashboard').style.display = 'none';
-  document.getElementById('loginWrap').style.display = 'flex';
-  document.getElementById('passwordInput').value = '';
+function logout(){
+  adminPassword='';
+  document.getElementById('dashboard').style.display='none';
+  document.getElementById('loginWrap').style.display='flex';
+  document.getElementById('passwordInput').value='';
 }
 
-async function loadUsers() {
-  try {
-    var res = await fetch('/api/get-users?password=' + encodeURIComponent(adminPassword));
-    if (res.status === 401) {
-      document.getElementById('loginError').style.display = 'block';
+async function loadUsers(){
+  try{
+    var res=await fetch('/api/get-users?password='+encodeURIComponent(adminPassword));
+    if(res.status===401){
+      var err=document.getElementById('loginError');
+      err.style.display='block';
+      err.textContent='Incorrect password. Try again.';
       return;
     }
-    var data = await res.json();
-    document.getElementById('loginError').style.display = 'none';
-    document.getElementById('loginWrap').style.display = 'none';
-    document.getElementById('dashboard').style.display = 'block';
-    renderDashboard(data.users || []);
-  } catch(e) {
-    document.getElementById('loginError').style.display = 'block';
-    document.getElementById('loginError').textContent = 'Connection error. Try again.';
+    var data=await res.json();
+    document.getElementById('loginError').style.display='none';
+    document.getElementById('loginWrap').style.display='none';
+    document.getElementById('dashboard').style.display='block';
+    allUsers=data.users||[];
+    renderAll();
+  }catch(e){
+    var err=document.getElementById('loginError');
+    err.style.display='block';
+    err.textContent='Connection error. Try again.';
   }
 }
 
-function renderDashboard(users) {
-  document.getElementById('totalUsers').textContent = users.length;
-  var today = new Date().toDateString();
-  var todayCount = users.filter(function(u){
-    return new Date(u.joined_at).toDateString() === today;
-  }).length;
-  document.getElementById('todayUsers').textContent = todayCount;
-  var streets = [...new Set(users.map(function(u){ return u.street; }).filter(Boolean))];
-  document.getElementById('totalStreets').textContent = streets.length;
-  var list = document.getElementById('usersList');
-  if (users.length === 0) {
-    list.innerHTML = '<div class="empty-state">&#127960; No signups yet. Share the app to get started!</div>';
-    return;
+// ── NAVIGATION ──
+function showSection(sec,btn){
+  ['overview','users','orgs','reps','content'].forEach(function(s){
+    document.getElementById('sec-'+s).style.display='none';
+  });
+  document.getElementById('sec-'+sec).style.display='block';
+  document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('active');});
+  if(btn)btn.classList.add('active');
+}
+
+// ── RENDER ALL ──
+function renderAll(){
+  updateStats();
+  renderOverviewUsers();
+  renderFullUsers();
+  renderOrgs();
+  renderReps();
+  renderPinned();
+  populateRepUserSelect();
+}
+
+// ── STATS ──
+function updateStats(){
+  document.getElementById('totalUsers').textContent=allUsers.length;
+  var today=new Date().toDateString();
+  var todayCount=allUsers.filter(function(u){return new Date(u.joined_at).toDateString()===today;}).length;
+  document.getElementById('todayUsers').textContent=todayCount;
+  var streets=[...new Set(allUsers.map(function(u){return u.street;}).filter(Boolean))];
+  document.getElementById('totalStreets').textContent=streets.length;
+  document.getElementById('totalOrgs').textContent=orgProfiles.length;
+  document.getElementById('totalReps').textContent=repAssignments.length;
+  document.getElementById('totalBanned').textContent=bannedUsers.length;
+}
+
+// ── OVERVIEW USERS (recent 10) ──
+function renderOverviewUsers(){
+  var list=document.getElementById('overviewUsersList');
+  if(!allUsers.length){list.innerHTML='<div class="empty">🏘 No signups yet. Share the app to get started!</div>';return;}
+  list.innerHTML=allUsers.slice(0,10).map(function(u){return userRowHTML(u,true);}).join('');
+}
+
+// ── FULL USERS ──
+function renderFullUsers(){
+  var list=document.getElementById('fullUsersList');
+  if(!allUsers.length){list.innerHTML='<div class="empty">No users yet.</div>';return;}
+  list.innerHTML=allUsers.map(function(u){return userRowHTML(u,false);}).join('');
+}
+
+function filterUsers(){
+  var q=(document.getElementById('userSearch').value||'').toLowerCase();
+  var f=document.getElementById('userFilter').value;
+  var filtered=allUsers.filter(function(u){
+    var matchQ=!q||
+      (u.address||'').toLowerCase().includes(q)||
+      (u.phone||'').includes(q)||
+      (u.display_name||'').toLowerCase().includes(q);
+    var badge=userBadges[u.phone]||'resident';
+    var isBanned=bannedUsers.includes(u.phone);
+    var matchF=f==='all'||
+      (f==='banned'&&isBanned)||
+      (f!=='banned'&&badge===f);
+    return matchQ&&matchF;
+  });
+  var list=document.getElementById('fullUsersList');
+  list.innerHTML=filtered.length
+    ?filtered.map(function(u){return userRowHTML(u,false);}).join('')
+    :'<div class="empty">No users match your search.</div>';
+}
+
+function userRowHTML(u,compact){
+  var initial=(u.display_name||u.address||'?').charAt(0).toUpperCase();
+  var date=new Date(u.joined_at).toLocaleDateString('en-AU',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
+  var badge=userBadges[u.phone]||'resident';
+  var bt=BADGE_TYPES[badge]||BADGE_TYPES.resident;
+  var isBanned=bannedUsers.includes(u.phone);
+  var phone=u.phone?(u.phone.replace(/(\+61)(\d{3})(\d{3})(\d{3})/,'$1 $2 $3 $4')):'';
+  var isRep=repAssignments.find(function(r){return r.phone===u.phone;});
+
+  var chips='<span class="badge-chip" style="background:'+bt.color+'">'+bt.icon+' '+bt.label+'</span>';
+  if(badge!=='resident')chips+=' <span class="verified-tick" title="Verified">✓</span>';
+  if(isBanned)chips+=' <span class="badge-chip" style="background:#e53935">🚫 Banned</span>';
+  if(isRep)chips+=' <span class="badge-chip" style="background:#2e7d32">⭐ '+isRep.estate+'</span>';
+
+  var actions='';
+  if(!compact){
+    actions='<div class="user-actions">'+
+      '<select class="badge-select" onchange="setBadge(\''+u.phone+'\',this.value)" title="Set badge type">'+
+        Object.keys(BADGE_TYPES).map(function(k){
+          return '<option value="'+k+'"'+(badge===k?' selected':'')+'>'+BADGE_TYPES[k].icon+' '+BADGE_TYPES[k].label+'</option>';
+        }).join('')+
+      '</select>'+
+      (isBanned
+        ?'<button class="action-btn btn-unban" onclick="unbanUser(\''+u.phone+'\')">Unban</button>'
+        :'<button class="action-btn btn-ban" onclick="banUser(\''+u.phone+'\')">Ban</button>'
+      )+
+      '<button class="action-btn btn-delete" onclick="deleteUser(\''+u.phone+'\')">Delete</button>'+
+    '</div>';
   }
-  var langs = { en:'&#127462;&#127482;', hi:'&#127470;&#127475;', vi:'&#127483;&#127475;', zh:'&#127464;&#127475;', ar:'&#127462;&#127466;', es:'&#127466;&#127480;' };
-  list.innerHTML = users.slice(0, 50).map(function(u, i) {
-    var initial = u.address ? u.address.charAt(0).toUpperCase() : '?';
-    var date = new Date(u.joined_at).toLocaleDateString('en-AU', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' });
-    var langFlag = langs[u.language] || '&#127760;';
-    return '<div class="user-row">' +
-      '<div class="user-avatar">' + initial + '</div>' +
-      '<div class="user-info">' +
-        '<div class="user-address">' + (u.address || 'Address not set') + '</div>' +
-        '<div class="user-meta">' + date + ' &nbsp;&#183;&nbsp; ' + (u.phone ? u.phone.replace(/(\+61)(\d{3})(\d{3})(\d{3})/, '$1 $2 $3 $4') : '') + '</div>' +
-      '</div>' +
-      '<span class="user-lang">' + langFlag + ' ' + (u.language || 'en').toUpperCase() + '</span>' +
+
+  return '<div class="user-row'+(isBanned?' banned':'')+'" id="urow_'+(u.phone||Math.random())+'">'+
+    '<div class="user-avatar" style="background:'+(badge==='resident'?'#1a3020':bt.color)+'">'+initial+'</div>'+
+    '<div class="user-info">'+
+      '<div class="user-name">'+(u.display_name||'Neighbour')+'</div>'+
+      '<div class="user-addr">'+(u.address||'Address not set')+'</div>'+
+      '<div class="user-meta-row">'+date+(phone?' · '+phone:'')+'</div>'+
+      '<div class="user-badges" style="margin-top:5px;">'+chips+'</div>'+
+    '</div>'+
+    actions+
+  '</div>';
+}
+
+// ── BADGE ──
+function setBadge(phone,badge){
+  userBadges[phone]=badge;
+  localStorage.setItem('sc_admin_badges',JSON.stringify(userBadges));
+  renderAll();
+}
+
+// ── BAN / UNBAN / DELETE ──
+function banUser(phone){
+  if(!confirm('Ban this user? They will not be able to post.'))return;
+  if(!bannedUsers.includes(phone))bannedUsers.push(phone);
+  localStorage.setItem('sc_admin_banned',JSON.stringify(bannedUsers));
+  renderAll();
+}
+
+function unbanUser(phone){
+  bannedUsers=bannedUsers.filter(function(p){return p!==phone;});
+  localStorage.setItem('sc_admin_banned',JSON.stringify(bannedUsers));
+  renderAll();
+}
+
+function deleteUser(phone){
+  if(!confirm('Permanently delete this user? This cannot be undone.'))return;
+  // Production: fetch('/api/delete-user',{method:'DELETE',body:JSON.stringify({phone,password:adminPassword})})
+  allUsers=allUsers.filter(function(u){return u.phone!==phone;});
+  bannedUsers=bannedUsers.filter(function(p){return p!==phone;});
+  delete userBadges[phone];
+  localStorage.setItem('sc_admin_badges',JSON.stringify(userBadges));
+  localStorage.setItem('sc_admin_banned',JSON.stringify(bannedUsers));
+  renderAll();
+}
+
+// ── ORGS ──
+function createOrg(){
+  var name=document.getElementById('orgName').value.trim();
+  var type=document.getElementById('orgType').value;
+  var contact=document.getElementById('orgContact').value.trim();
+  var area=document.getElementById('orgArea').value.trim();
+  var phone=document.getElementById('orgPhone').value.trim();
+  var website=document.getElementById('orgWebsite').value.trim();
+  var desc=document.getElementById('orgDesc').value.trim();
+  if(!name){alert('Organisation name is required.');return;}
+  var org={id:Date.now(),name,type,contact,area,phone,website,desc,created:new Date().toISOString()};
+  orgProfiles.push(org);
+  localStorage.setItem('sc_admin_orgs',JSON.stringify(orgProfiles));
+  ['orgName','orgContact','orgArea','orgPhone','orgWebsite','orgDesc'].forEach(function(id){document.getElementById(id).value='';});
+  var s=document.getElementById('orgSuccess');s.style.display='block';setTimeout(function(){s.style.display='none';},3000);
+  renderAll();
+}
+
+function deleteOrg(id){
+  if(!confirm('Delete this organisation profile?'))return;
+  orgProfiles=orgProfiles.filter(function(o){return o.id!==id;});
+  localStorage.setItem('sc_admin_orgs',JSON.stringify(orgProfiles));
+  renderAll();
+}
+
+function renderOrgs(){
+  var list=document.getElementById('orgsList');
+  document.getElementById('totalOrgs').textContent=orgProfiles.length;
+  if(!orgProfiles.length){list.innerHTML='<div class="empty">No organisations created yet.</div>';return;}
+  list.innerHTML=orgProfiles.map(function(org){
+    var bt=BADGE_TYPES[org.type]||BADGE_TYPES.council;
+    var date=new Date(org.created).toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'});
+    return '<div class="org-card">'+
+      '<div class="org-icon" style="background:'+bt.color+'22;color:'+bt.color+'">'+bt.icon+'</div>'+
+      '<div style="flex:1;min-width:0;">'+
+        '<div class="org-name">'+org.name+' <span class="badge-chip" style="background:'+bt.color+'">'+bt.icon+' '+bt.label+'</span> <span style="color:#4caf50;font-size:11px;" title="Verified">✓ Verified</span></div>'+
+        (org.area?'<div class="org-type-label">📍 '+org.area+'</div>':'')+
+        '<div class="org-detail">'+
+          (org.contact?'✉️ '+org.contact+'<br>':'')+
+          (org.phone?'📞 '+org.phone+'<br>':'')+
+          (org.website?'🌐 <a href="'+org.website+'" target="_blank" style="color:#1565c0;">'+org.website+'</a><br>':'')+
+          (org.desc?org.desc:'')+
+        '</div>'+
+        '<div style="font-size:10px;color:#aaa;margin-top:4px;">Created '+date+'</div>'+
+      '</div>'+
+      '<div class="org-actions">'+
+        '<button class="action-btn btn-delete" onclick="deleteOrg('+org.id+')">Delete</button>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+
+// ── REPS ──
+function populateRepUserSelect(){
+  var sel=document.getElementById('repUserSelect');
+  if(!sel)return;
+  sel.innerHTML='<option value="">Select a user...</option>'+
+    allUsers.map(function(u){
+      return '<option value="'+u.phone+'">'+(u.display_name||u.address||u.phone)+'</option>';
+    }).join('');
+}
+
+function assignRep(){
+  var phone=document.getElementById('repUserSelect').value;
+  var estate=document.getElementById('repEstate').value;
+  var role=document.getElementById('repRole').value;
+  var display=document.getElementById('repDisplay').value.trim();
+  if(!phone){alert('Please select a user.');return;}
+  var user=allUsers.find(function(u){return u.phone===phone;});
+  var rep={
+    id:Date.now(),
+    phone,estate,role,
+    display:display||(user&&user.display_name)||phone,
+    address:user&&user.address,
+    assigned:new Date().toISOString()
+  };
+  repAssignments=repAssignments.filter(function(r){return r.phone!==phone;});
+  repAssignments.push(rep);
+  localStorage.setItem('sc_admin_reps',JSON.stringify(repAssignments));
+  setBadge(phone,role);
+  document.getElementById('repDisplay').value='';
+  var s=document.getElementById('repSuccess');s.style.display='block';setTimeout(function(){s.style.display='none';},3000);
+  renderAll();
+}
+
+function removeRep(phone){
+  if(!confirm('Remove this rep assignment?'))return;
+  repAssignments=repAssignments.filter(function(r){return r.phone!==phone;});
+  localStorage.setItem('sc_admin_reps',JSON.stringify(repAssignments));
+  if(userBadges[phone]==='neighbourhood_rep'||userBadges[phone]==='estate_manager'||userBadges[phone]==='street_captain'){
+    setBadge(phone,'resident');
+  }
+  renderAll();
+}
+
+function renderReps(){
+  var list=document.getElementById('repsList');
+  document.getElementById('totalReps').textContent=repAssignments.length;
+  if(!repAssignments.length){list.innerHTML='<div class="empty">No reps assigned yet.</div>';return;}
+  var ESTATE_NAMES={summerstone:'Summerstone Estate',montrose:'Montrose',morayfield:'Morayfield',caboolture:'Caboolture',narangba:'Narangba',burpengary:'Burpengary'};
+  list.innerHTML=repAssignments.map(function(rep){
+    var bt=BADGE_TYPES[rep.role]||BADGE_TYPES.neighbourhood_rep;
+    var date=new Date(rep.assigned).toLocaleDateString('en-AU',{day:'numeric',month:'short'});
+    return '<div class="rep-row">'+
+      '<div class="user-avatar" style="background:'+bt.color+'">'+bt.icon+'</div>'+
+      '<div class="user-info">'+
+        '<div class="user-name">'+rep.display+'</div>'+
+        '<div class="user-addr">'+(rep.address||rep.phone)+'</div>'+
+        '<div class="user-badges" style="margin-top:4px;">'+
+          '<span class="badge-chip" style="background:'+bt.color+'">'+bt.icon+' '+bt.label+'</span>'+
+          ' <span class="badge-chip" style="background:#37474f">📍 '+(ESTATE_NAMES[rep.estate]||rep.estate)+'</span>'+
+          ' <span style="color:#4caf50;font-size:10px;">✓ Verified</span>'+
+        '</div>'+
+        '<div style="font-size:10px;color:#aaa;margin-top:3px;">Assigned '+date+'</div>'+
+      '</div>'+
+      '<button class="action-btn btn-delete" onclick="removeRep(\''+rep.phone+'\')">Remove</button>'+
+    '</div>';
+  }).join('');
+}
+
+// ── CONTENT ──
+function pinAnnouncement(){
+  var title=document.getElementById('pinTitle').value.trim();
+  var msg=document.getElementById('pinMessage').value.trim();
+  var estate=document.getElementById('pinEstate').value;
+  if(!title||!msg){alert('Title and message are required.');return;}
+  var pin={id:Date.now(),title,message:msg,estate,created:new Date().toISOString()};
+  pinnedAnnouncements.unshift(pin);
+  localStorage.setItem('sc_admin_pins',JSON.stringify(pinnedAnnouncements));
+  document.getElementById('pinTitle').value='';
+  document.getElementById('pinMessage').value='';
+  renderPinned();
+}
+
+function deletePin(id){
+  if(!confirm('Remove this announcement?'))return;
+  pinnedAnnouncements=pinnedAnnouncements.filter(function(p){return p.id!==id;});
+  localStorage.setItem('sc_admin_pins',JSON.stringify(pinnedAnnouncements));
+  renderPinned();
+}
+
+function renderPinned(){
+  var list=document.getElementById('pinnedList');
+  if(!pinnedAnnouncements.length){list.innerHTML='<div class="empty">No pinned announcements.</div>';return;}
+  var ESTATE_NAMES={all:'All Estates',summerstone:'Summerstone Estate',montrose:'Montrose'};
+  list.innerHTML=pinnedAnnouncements.map(function(pin){
+    var date=new Date(pin.created).toLocaleDateString('en-AU',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
+    return '<div class="inc-row">'+
+      '<div class="inc-emoji">📌</div>'+
+      '<div style="flex:1;min-width:0;">'+
+        '<div style="font-size:13px;font-weight:700;color:#1a3020;">'+pin.title+'</div>'+
+        '<div style="font-size:12px;color:#555;margin-top:3px;line-height:1.5;">'+pin.message+'</div>'+
+        '<div style="font-size:10px;color:#aaa;margin-top:4px;">'+date+' · '+(ESTATE_NAMES[pin.estate]||pin.estate)+'</div>'+
+      '</div>'+
+      '<button class="action-btn btn-delete" onclick="deletePin('+pin.id+')">Remove</button>'+
     '</div>';
   }).join('');
 }
