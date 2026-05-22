@@ -1,4 +1,4 @@
-<!-- dev branch test 2 --><!DOCTYPE html>
+<!-- dev branch test --><!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -239,13 +239,7 @@
       <div id="googleMapWrap" style="border-radius:12px;overflow:hidden;height:280px;background:#1a2e1a;min-height:280px;"></div>
       <div class="inc-detail" id="incDetail"></div>
       <div class="sec-title">ALL INCIDENTS &middot; LAST 7 DAYS</div>
-      <button class="inc-list-btn" id="incBtn1" onclick="selectInc(1)"><span class="inc-list-em">&#128663;</span><div style="flex:1;text-align:left;"><div class="inc-list-name">Suspicious Vehicle</div><div class="inc-list-sub">Summerstone Blvd &middot; Today &middot; <span style="color:#fb8c00;">Unverified</span></div></div><div class="sev-dot" style="background:#e53935;"></div></button>
-      <button class="inc-list-btn" id="incBtn2" onclick="selectInc(2)"><span class="inc-list-em">&#128230;</span><div style="flex:1;text-align:left;"><div class="inc-list-name">Package Theft</div><div class="inc-list-sub">Summerstone Blvd &middot; Yesterday &middot; <span style="color:#2e7d32;">Verified x3</span></div></div><div class="sev-dot" style="background:#fb8c00;"></div></button>
-      <button class="inc-list-btn" id="incBtn3" onclick="selectInc(3)"><span class="inc-list-em">&#9998;</span><div style="flex:1;text-align:left;"><div class="inc-list-name">Graffiti</div><div class="inc-list-sub">Freshwater St &middot; 2 days ago &middot; <span style="color:#1565c0;">Resolved</span></div></div><div class="sev-dot" style="background:#43a047;"></div></button>
-      <button class="inc-list-btn" id="incBtn4" onclick="selectInc(4)"><span class="inc-list-em">&#128690;</span><div style="flex:1;text-align:left;"><div class="inc-list-name">Bike Stolen</div><div class="inc-list-sub">Local street &middot; 3 days ago &middot; <span style="color:#fb8c00;">Reported x2</span></div></div><div class="sev-dot" style="background:#fb8c00;"></div></button>
-      <button class="inc-list-btn" id="incBtn5" onclick="selectInc(5)"><span class="inc-list-em">&#128021;</span><div style="flex:1;text-align:left;"><div class="inc-list-name">Loose Dog</div><div class="inc-list-sub">Local street &middot; Today &middot; <span style="color:#e53935;">High Priority</span></div></div><div class="sev-dot" style="background:#e53935;"></div></button>
-      <button class="inc-list-btn" id="incBtn6" onclick="selectInc(6)"><span class="inc-list-em">&#9888;</span><div style="flex:1;text-align:left;"><div class="inc-list-name">Door-to-Door Scam</div><div class="inc-list-sub">Local area &middot; Yesterday &middot; <span style="color:#2e7d32;">Verified x5</span></div></div><div class="sev-dot" style="background:#fb8c00;"></div></button>
-    </div>
+      <div id="incList"><div class="empty-state" style="padding:24px 12px;">&#8987;<br/>Loading incidents...</div></div>
   </div>
   <!-- OFFICIAL TAB -->
   <div class="content" id="tab-official" style="display:none;">
