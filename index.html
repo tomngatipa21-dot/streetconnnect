@@ -167,15 +167,22 @@
   </div>
   <!-- CHAT TAB -->
   <div class="content" id="tab-chat">
-    <div class="filter-row">
-      <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
-      <button class="filter-btn" onclick="setFilter('official',this)">&#127963; Official</button>
-      <button class="filter-btn" onclick="setFilter('neighbours',this)">&#127960; Neighbours</button>
+    <!-- GOLD SCOPE STRIP -->
+    <div class="scope-strip" id="scopeStrip">
+      <div class="scope-strip-left">
+        <div class="scope-link-icon">&#128279;</div>
+        <span class="scope-strip-text">Showing <strong id="scopeStripValue">My Street</strong> <span class="scope-strip-linked">&middot; Linked to map</span></span>
+      </div>
+      <button class="scope-change-btn" id="scopeChangeBtn" onclick="toggleScopePicker()">Change &#8250;</button>
     </div>
-    <div class="chat-level-tabs">
-      <button class="clt-btn active" onclick="setChatLevel('street',this)">&#127968; My Street</button>
-      <button class="clt-btn" onclick="setChatLevel('estate',this)">&#127960; My Estate</button>
-      <button class="clt-btn" onclick="setChatLevel('council',this)">&#127963; Council Area</button>
+    <!-- COLLAPSIBLE SCOPE PICKER -->
+    <div class="scope-picker" id="scopePicker" style="display:none;">
+      <div class="scope-picker-label">Scope &mdash; applies to Chat &amp; Map</div>
+      <div class="scope-seg">
+        <button class="scope-seg-btn active" id="scopeSegStreet" onclick="setChatLevel('street',this)">&#127968; My Street</button>
+        <button class="scope-seg-btn" id="scopeSegEstate" onclick="setChatLevel('estate',this)">&#127960; My Estate</button>
+        <button class="scope-seg-btn" id="scopeSegRadius" onclick="setChatLevel('radius',this)">&#128225; Radius</button>
+      </div>
     </div>
     <div class="new-msgs-banner" id="newMsgsBanner" onclick="scrollToBottom()">&#8595; New messages</div>
     <div class="messages" id="chatMessages">
@@ -183,16 +190,6 @@
       <div class="pinned-notice">
         <div class="pinned-top"><span style="font-size:16px;">&#128721;</span><span class="pinned-title" id="pinnedBinTitle">Bin Day</span><span class="pinned-badge">PINNED</span></div>
         <div class="pinned-body" id="pinnedBinBody">Loading bin schedule...</div>
-      </div>
-      <div class="auth-card" style="border-left-color:#1a3a6b;background:#f5f8ff;" data-type="official">
-        <div class="auth-top"><span class="auth-av">&#127963;</span><div><div class="auth-name">Local Council Notice</div><div class="auth-time">Example only</div></div><span class="auth-badge" style="background:#1a3a6b;">EXAMPLE</span></div>
-        <p class="auth-body">&#128203; Bin collection Thursday due to the public holiday. Green waste remains Monday.</p>
-        <div class="auth-foot"><button class="like-btn" onclick="toggleLike(this,12)">&#128077; 12</button><span class="verified">&#10003; Example notice only</span></div>
-      </div>
-      <div class="auth-card" style="border-left-color:#c62828;background:#fff8f8;" data-type="official">
-        <div class="auth-top"><span class="auth-av">&#128110;</span><div><div class="auth-name">Local Police Notice</div><div class="auth-time">Example only</div></div><span class="auth-badge" style="background:#c62828;">EXAMPLE</span></div>
-        <p class="auth-body">&#9888; TARGETED ALERT: Suspicious white sedan reported in your area. Call 000 or Policelink 131 444.</p>
-        <div class="auth-foot"><button class="like-btn" onclick="toggleLike(this,28)">&#128077; 28</button><span class="verified">&#10003; Example notice only</span></div>
       </div>
       <div class="typing-indicator" id="typingIndicator">Someone is typing...</div>
       <div id="myMessages"></div>
@@ -261,12 +258,12 @@
       </div>
       <div class="auth-card" style="border-left-color:#1a3a6b;background:#f5f8ff;">
         <div class="auth-top"><span class="auth-av">&#127963;</span><div><div class="auth-name">Local Council</div><div class="auth-time">Example only</div></div><span class="auth-badge" style="background:#1a3a6b;">EXAMPLE</span></div>
-        <p class="auth-body" style="color:#888;font-style:italic;">Bin collection, road works and community events.</p>
+        <p class="auth-body">&#128203; Bin collection Thursday due to the public holiday. Green waste remains Monday.</p>
         <span class="verified">&#10003; Example only &mdash; not an official broadcast</span>
       </div>
       <div class="auth-card" style="border-left-color:#0d47a1;background:#f5f8ff;">
         <div class="auth-top"><span class="auth-av">&#128110;</span><div><div class="auth-name">Local Police</div><div class="auth-time">Example only</div></div><span class="auth-badge" style="background:#0d47a1;">EXAMPLE</span></div>
-        <p class="auth-body" style="color:#888;font-style:italic;">Safety alerts and community policing notices.</p>
+        <p class="auth-body">&#9888; Suspicious white sedan reported in your area. Call 000 or Policelink 131 444.</p>
         <span class="verified">&#10003; Example only &mdash; not an official broadcast</span>
       </div>
     </div>
