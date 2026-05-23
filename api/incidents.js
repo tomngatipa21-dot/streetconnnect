@@ -63,9 +63,19 @@ export default async function handler(req, res) {
     if (req.method === 'DELETE') {
       const { id, phone } = req.body;
       if (!id) return res.status(400).json({ error: 'Missing id' });
-      // Scope delete to the reporter's own phone for safety.
-      let url = `${supabaseUrl}/rest/v1/${TABLE}?id=eq.${encodeURIComponent(id)}`;
-      if (phone) url += `&phone=eq.${encodeURIComponent(phone)}`;
+      // Verify ownership by reading the row first (avoids fragile phone matching in the URL).
+      const checkUrl = `${supabaseUrl}/rest/v1/${TABLE}?select=phone&id=eq.${encodeURIComponent(id)}`;
+      const checkRes = await fetch(checkUrl, { headers });
+      const checkRows = await checkRes.json();
+      if (!checkRows || !checkRows.length) return res.status(404).json({ error: 'Incident not found' });
+      // Only the original reporter can delete (compare digits only, so +61... vs 61... still matches).
+      const stored = (checkRows[0].phone || '').replace(/\D/g, '');
+      const asked = (phone || '').replace(/\D/g, '');
+      if (stored && asked && stored !== asked) {
+        return res.status(403).json({ error: 'Not your report' });
+      }
+      // Delete by id alone — id is a unique uuid, so this reliably removes exactly one row.
+      const url = `${supabaseUrl}/rest/v1/${TABLE}?id=eq.${encodeURIComponent(id)}`;
       const response = await fetch(url, { method: 'DELETE', headers: { ...headers, 'Prefer': 'return=minimal' } });
       if (response.ok) return res.status(200).json({ success: true });
       const errText = await response.text();
