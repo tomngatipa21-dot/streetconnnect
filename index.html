@@ -1,4 +1,4 @@
-<!-- dev branch test 5 -->
+<!-- dev branch test --><!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -315,6 +315,24 @@
         </div>
         <div style="font-size:10px;color:#bbb;text-align:center;margin-top:4px;">&#128274; Private &middot; Only you two can see this</div>
       </div>
+    </div>
+  </div>
+  <div class="discussion-overlay" id="discussionOverlay" style="display:none;">
+    <div class="discussion-header">
+      <button class="discussion-back" onclick="closeDiscussion()">&#8592;</button>
+      <div style="flex:1;">
+        <div class="discussion-title">Discussion</div>
+        <div class="discussion-sub" id="discussionSub">Loading...</div>
+      </div>
+      <span class="discussion-emoji" id="discussionEmoji">&#9888;</span>
+    </div>
+    <div class="discussion-body" id="discussionBody">
+      <div class="discussion-banner" id="discussionBanner"></div>
+      <div id="discussionComments"></div>
+    </div>
+    <div class="discussion-composer">
+      <input class="discussion-input" id="discussionInput" placeholder="Add to the discussion..." onkeydown="if(event.key==='Enter')postComment()"/>
+      <button class="discussion-send" onclick="postComment()">&#8593;</button>
     </div>
   </div>
   <div class="disclaimer">Street Connect is an independent community platform. Authority notices are examples only. Not affiliated with any government body.</div>

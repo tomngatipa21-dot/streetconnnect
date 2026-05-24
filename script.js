@@ -275,7 +275,7 @@ function selectInc(id){
   var isMine=inc.phone&&userPhone&&(""+inc.phone).replace(/\D/g,"")===(""+userPhone).replace(/\D/g,"");
   var clearPct=Math.min(100,((inc.resolved_count||0)/3)*100);
   detail.style.borderLeftColor=inc.color;detail.style.display="block";
-  detail.innerHTML="<div class='inc-detail-top'><span class='inc-emoji-lg'>"+inc.emoji+"</span><div style='flex:1'><div style='display:flex;align-items:center;margin-bottom:3px'><div class='inc-title'>"+inc.title+"</div><span class='sev-badge' style='background:"+inc.sc+"'>"+inc.sev.toUpperCase()+"</span></div><div class='inc-addr-text'>&#128205; "+inc.addr+" &middot; "+inc.time+"</div></div><button class='close-btn' onclick='selectInc(\""+id+"\")'>&#10005;</button></div><p class='inc-desc-text'>"+inc.desc+"</p><div style='display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:10px;color:#888;'><div class='trust-bar'><div class='trust-fill' style='width:"+clearPct+"%'></div></div>"+(inc.resolved_count||0)+"/3 marked cleared</div><div class='inc-verify'><button class='verify-btn vb-confirm' onclick='verifyInc(\""+id+"\",\"confirm\")'>&#10003; Confirm</button><button class='verify-btn vb-resolved' onclick='verifyInc(\""+id+"\",\"resolve\")'>&#9989; Resolved</button><button class='verify-btn vb-notthere' onclick='verifyInc(\""+id+"\",\"notthere\")'>&#10007; Not there</button></div>"+(isMine?"<button onclick='deleteIncident(\""+id+"\")' style='margin-top:10px;width:100%;background:#fff;border:1.5px solid #e53935;color:#e53935;border-radius:10px;padding:10px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;'>&#128465; Delete my report</button>":"")+"";
+  detail.innerHTML="<div class='inc-detail-top'><span class='inc-emoji-lg'>"+inc.emoji+"</span><div style='flex:1'><div style='display:flex;align-items:center;margin-bottom:3px'><div class='inc-title'>"+inc.title+"</div><span class='sev-badge' style='background:"+inc.sc+"'>"+inc.sev.toUpperCase()+"</span></div><div class='inc-addr-text'>&#128205; "+inc.addr+" &middot; "+inc.time+"</div></div><button class='close-btn' onclick='selectInc(\""+id+"\")'>&#10005;</button></div><p class='inc-desc-text'>"+inc.desc+"</p><div style='display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:10px;color:#888;'><div class='trust-bar'><div class='trust-fill' style='width:"+clearPct+"%'></div></div>"+(inc.resolved_count||0)+"/3 marked cleared</div><div class='inc-verify'><button class='verify-btn vb-confirm' onclick='verifyInc(\""+id+"\",\"confirm\")'>&#10003; Confirm</button><button class='verify-btn vb-resolved' onclick='verifyInc(\""+id+"\",\"resolve\")'>&#9989; Resolved</button><button class='verify-btn vb-notthere' onclick='verifyInc(\""+id+"\",\"notthere\")'>&#10007; Not there</button></div><button class='view-discussion-btn' onclick='openDiscussion(\""+id+"\")'>&#128172; View discussion</button>"+(isMine?"<button onclick='deleteIncident(\""+id+"\")' style='margin-top:10px;width:100%;background:#fff;border:1.5px solid #e53935;color:#e53935;border-radius:10px;padding:10px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;'>&#128465; Delete my report</button>":"")+"";
   try{setTimeout(function(){detail.scrollIntoView({behavior:"smooth",block:"center"});},100);}catch(e){}
 }
 async function deleteIncident(id){
@@ -306,6 +306,73 @@ async function verifyInc(id,action){
     }
     loadIncidents();
   }catch(e){showPush({icon:"&#9888;",title:"Couldn't update",body:"Please try again.",color:"#c62828"});}
+}
+// === INCIDENT DISCUSSION (comments) ===
+var currentDiscussionId=null;
+function openDiscussion(id){
+  var inc=INCS[id];if(!inc)return;
+  currentDiscussionId=id;
+  // Banner: the original report, pinned at top.
+  var banner=document.getElementById("discussionBanner");
+  if(banner){
+    banner.innerHTML="<div class='discussion-banner-tag'>&#9888; ORIGINAL REPORT &middot; "+inc.sev.toUpperCase()+"</div><div class='discussion-banner-title'>"+inc.emoji+" "+inc.title+"</div><div class='discussion-banner-desc'>"+inc.desc+"</div><div class='discussion-banner-meta'>&#128205; "+inc.addr+" &middot; "+inc.time+"</div>";
+  }
+  var em=document.getElementById("discussionEmoji");if(em)em.innerHTML=inc.emoji;
+  document.getElementById("discussionOverlay").style.display="flex";
+  loadComments(id);
+}
+function closeDiscussion(){
+  document.getElementById("discussionOverlay").style.display="none";
+  currentDiscussionId=null;
+}
+async function loadComments(id){
+  var box=document.getElementById("discussionComments");
+  var sub=document.getElementById("discussionSub");
+  if(box)box.innerHTML="<div class='discussion-empty'>Loading...</div>";
+  try{
+    var res=await fetch("/api/comments?incident_id="+encodeURIComponent(id));
+    var data=await res.json();
+    var comments=data.comments||[];
+    if(sub)sub.textContent=comments.length+" "+(comments.length===1?"reply":"replies");
+    renderComments(comments);
+  }catch(e){if(box)box.innerHTML="<div class='discussion-empty'>Couldn't load discussion.</div>";}
+}
+function renderComments(comments){
+  var box=document.getElementById("discussionComments");if(!box)return;
+  if(!comments.length){
+    box.innerHTML="<div class='discussion-empty'>&#128172;<br/>No replies yet.<br/>Be the first to add to this discussion.</div>";
+    return;
+  }
+  box.innerHTML=comments.map(function(c){
+    var mine=c.phone&&userPhone&&(""+c.phone).replace(/\D/g,"")===(""+userPhone).replace(/\D/g,"");
+    var name=c.display_name||"Neighbour";
+    var when=relativeTime(c.created_at);
+    var initial=name.charAt(0).toUpperCase();
+    if(mine){
+      return "<div class='dc-row me'><div class='dc-bubble-wrap'><div class='dc-meta'>You &middot; "+when+"</div><div class='dc-bubble me'>"+c.content+"</div><button class='dc-del' onclick='deleteComment(\""+c.id+"\")'>&#128465; delete</button></div></div>";
+    }
+    return "<div class='dc-row'><div class='dc-av'>"+initial+"</div><div class='dc-bubble-wrap'><div class='dc-meta'>"+name+" &middot; "+when+"</div><div class='dc-bubble them'>"+c.content+"</div></div></div>";
+  }).join("");
+  box.scrollTop=box.scrollHeight;
+}
+async function postComment(){
+  var input=document.getElementById("discussionInput");
+  var text=input.value.trim();
+  if(!text)return;
+  if(!isLoggedIn){alert("Please sign up to join the discussion.");window.location.href="/signup.html";return;}
+  if(!currentDiscussionId)return;
+  input.value="";
+  try{
+    await fetch("/api/comments",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({incident_id:currentDiscussionId,phone:userPhone,display_name:userDisplay,content:text})});
+    loadComments(currentDiscussionId);
+  }catch(e){showPush({icon:"&#9888;",title:"Couldn't post",body:"Please try again.",color:"#c62828"});input.value=text;}
+}
+async function deleteComment(commentId){
+  if(!confirm("Delete your comment?"))return;
+  try{
+    await fetch("/api/comments",{method:"DELETE",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:commentId,phone:userPhone})});
+    loadComments(currentDiscussionId);
+  }catch(e){alert("Could not delete. Try again.");}
 }
 function openReport(){document.getElementById("reportModal").style.display="flex";setTimeout(function(){initReportMap();},200);} function initReportMap(){if(!window.google||!window.google.maps)return;var center=userMarker?userMarker.getPosition():{lat:-27.1307,lng:152.9518};if(!reportMap){reportMap=new google.maps.Map(document.getElementById("reportMapDiv"),{center:center,zoom:16,mapTypeId:"roadmap",disableDefaultUI:true,zoomControl:true,gestureHandling:"cooperative"});reportMarker=new google.maps.Marker({position:center,map:reportMap,draggable:true,icon:{path:google.maps.SymbolPath.CIRCLE,scale:10,fillColor:"#e53935",fillOpacity:1,strokeColor:"#fff",strokeWeight:2},title:"Drag to incident location"});reportMarker.addListener("dragend",function(){reportLatLng={lat:reportMarker.getPosition().lat(),lng:reportMarker.getPosition().lng()};reverseGeocodeReport(reportLatLng);});reportMap.addListener("click",function(e){var pos=e.latLng;if(userMarker){var dist=google.maps.geometry.spherical.computeDistanceBetween(userMarker.getPosition(),pos);if(dist>2000){document.getElementById("reportLocationLabel").textContent="Too far — please report near your area";return;}}reportMarker.setPosition(pos);reportLatLng={lat:pos.lat(),lng:pos.lng()};reverseGeocodeReport(reportLatLng);});}else{reportMap.setCenter(center);reportMarker.setPosition(center);google.maps.event.trigger(reportMap,"resize");}reportLatLng={lat:center.lat(),lng:center.lng()};reverseGeocodeReport(reportLatLng);} function reverseGeocodeReport(latlng){var label=document.getElementById("reportLocationLabel");if(!label||!window.google)return;label.textContent="&#128205; Locating...";var geocoder=new google.maps.Geocoder();geocoder.geocode({location:latlng},function(results,status){if(status==="OK"&&results[0]){var name=results[0].formatted_address.replace(", QLD, Australia","").replace(", Australia","");label.textContent="&#128205; "+name;}else{label.textContent="&#128205; Location selected";}});}
 function closeReport(){document.getElementById("reportModal").style.display="none";document.getElementById("reportForm").style.display="block";document.getElementById("reportSuccess").style.display="none";document.getElementById("reportDesc").value="";document.querySelectorAll(".type-btn").forEach(function(b,i){b.className=i===0?"type-btn active":"type-btn";});reportMap=null;reportMarker=null;reportLatLng=null;document.getElementById("reportMapDiv").innerHTML="";}
