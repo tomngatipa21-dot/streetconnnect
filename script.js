@@ -118,7 +118,18 @@ function drawBlockSquare(){
   googleMap.fitBounds(bounds);
   return rect;
 }
-function updateGoogleMapMode(mode){if(!googleMap)return;var ek=getEstateFromAddress(userAddress);var estate=ESTATES[ek]||ESTATES.default;var ac=estate.accent||'#c9a84c';if(radiusCircle){radiusCircle.setMap(null);radiusCircle=null;}if(estatePolygon){estatePolygon.setMap(null);estatePolygon=null;}if(streetPolyline){streetPolyline.setMap(null);streetPolyline=null;}if(window.estatePolylines){window.estatePolylines.forEach(function(p){p.setMap(null);});window.estatePolylines=[];}if(window.streetPolylines){window.streetPolylines.forEach(function(p){p.setMap(null);});window.streetPolylines=[];}if(window.blockRect){window.blockRect.setMap(null);window.blockRect=null;}if(mode==="radius"){var rM=parseInt(document.getElementById("radiusSlider").value)||500;radiusCircle=new google.maps.Circle({map:googleMap,center:userMarker.getPosition(),radius:rM,fillColor:ac,fillOpacity:0.1,strokeColor:ac,strokeOpacity:0.8,strokeWeight:2});incidentMarkers.forEach(function(m){var dist=google.maps.geometry.spherical.computeDistanceBetween(userMarker.getPosition(),m.getPosition());m.setOpacity(dist<=rM?1:0.2);});}else if(mode==="estate"){var isUnitComplex=userAddress&&/^\d+\/\d+/.test(userAddress.split(',')[0].trim());if(isUnitComplex){updateGoogleMapMode('street');return;}if(ek==='default'){window.blockRect=drawBlockSquare();incidentMarkers.forEach(function(m){m.setOpacity(1);});return;}window.estatePolylines=[];var suburb=estate.suburb||userSuburb||'Morayfield';var overpassData=streetDataCache[suburb]||{};if(!Object.keys(overpassData).length&&userMarker){getStreetData(userMarker.getPosition().lat(),userMarker.getPosition().lng(),suburb,function(){updateGoogleMapMode('estate');});return;}var estateNames=Object.keys(SUMMERSTONE_STREETS).concat(['Shine Street','Palm Street','Cove Street','Creek Parade','Freshwater Street','Sunrise Street','Dune Street','Sunset Street','Breeze Street','Festival Street','Tropic Street','Island Parade','Golden Road','Moreton Parade','Bay Street','Tide Street','Bloom Drive','Fig Street','Summer Street','Summerstone Boulevard']);var streetData={};if(ek==='summerstone'){estateNames.forEach(function(n){var d=overpassData[n]||SUMMERSTONE_STREETS[n];if(d&&d.length)streetData[n]=d;});if(!Object.keys(streetData).length)streetData=SUMMERSTONE_STREETS;}else if(ek==='montrose'){Object.keys(MONTROSE_STREETS).forEach(function(n){var d=overpassData[n]||MONTROSE_STREETS[n];if(d&&d.length)streetData[n]=d;});if(!Object.keys(streetData).length)streetData=MONTROSE_STREETS;}else{streetData=overpassData;}var mapBounds=new google.maps.LatLngBounds();Object.keys(streetData).forEach(function(sn){var segs=streetData[sn];if(segs&&segs.length){(Array.isArray(segs[0])?segs:[segs]).forEach(function(path){var pl=new google.maps.Polyline({path:path,map:googleMap,strokeColor:ac,strokeOpacity:0.9,strokeWeight:5,geodesic:false});window.estatePolylines.push(pl);path.forEach(function(p){mapBounds.extend(p);});});}});if(window.estatePolylines.length>0)googleMap.fitBounds(mapBounds);incidentMarkers.forEach(function(m){m.setOpacity(1);});}else if(mode==="street"){window.streetPolylines=[];var rawStreet=userAddress?userAddress.split(',')[0].trim().replace(/^\d+\/\d+\s+/,'').replace(/^\d+\/\d+\s+/,'').replace(/^\d+[a-zA-Z]?\s+/,''):'';if(rawStreet){var abbr={'St':'Street','Ave':'Avenue','Av':'Avenue','Rd':'Road','Blvd':'Boulevard','Dr':'Drive','Ct':'Court','Crt':'Court','Pl':'Place','Cr':'Crescent','Cres':'Crescent','Pde':'Parade','Hwy':'Highway','Ln':'Lane','Tce':'Terrace','Cl':'Close'};var rawFull=rawStreet.replace(/\b(St|Ave|Av|Rd|Blvd|Dr|Ct|Crt|Pl|Cr|Cres|Pde|Hwy|Ln|Tce|Cl)$/,function(m){return abbr[m]||m;});var suburb=estate.suburb||userSuburb||'Morayfield';var op=streetDataCache[suburb]||{};var streetPath=op[rawStreet]||op[rawFull]||SUMMERSTONE_STREETS[rawStreet]||SUMMERSTONE_STREETS[rawFull]||null;var myStrLC=rawFull.toLowerCase().split(' ')[0];function drawStreet(data){var segs=data&&data.length?(Array.isArray(data[0])?data:[data]):[];if(!segs.length)return;if(window.streetPolylines){window.streetPolylines.forEach(function(p){p.setMap(null);});window.streetPolylines=[];}var b=new google.maps.LatLngBounds();segs.forEach(function(path){var pl=new google.maps.Polyline({path:path,map:googleMap,strokeColor:ac,strokeOpacity:1,strokeWeight:8,geodesic:false});window.streetPolylines.push(pl);path.forEach(function(p){b.extend(p);});});var _cLat=(b.getSouthWest().lat()+b.getNorthEast().lat())/2;var _cLng=(b.getSouthWest().lng()+b.getNorthEast().lng())/2;setTimeout(function(){googleMap.setCenter({lat:_cLat,lng:_cLng});googleMap.setZoom(16);},800);}getStreetData(userMarker.getPosition().lat(),userMarker.getPosition().lng(),suburb,function(streets){drawStreet(SUMMERSTONE_STREETS[rawFull]||SUMMERSTONE_STREETS[rawStreet]||MONTROSE_STREETS[rawFull]||MONTROSE_STREETS[rawStreet]||streets[rawFull]||streets[rawStreet]||null);});incidentMarkers.forEach(function(m,i){var inc=INCIDENT_LOCATIONS[i];var addr=inc&&INCS[inc.id]?INCS[inc.id].addr.toLowerCase():'';m.setOpacity(!myStrLC||addr.indexOf(myStrLC)!==-1?1:0.15);});[1,2,3,4,5,6].forEach(function(id){var el=document.getElementById('incBtn'+id);if(el){var addr=INCS[id]?INCS[id].addr.toLowerCase():'';el.className='inc-list-btn'+(addr.indexOf(myStrLC)!==-1?'':' dimmed');}});}}}
+function updateGoogleMapMode(mode){if(!googleMap)return;var ek=getEstateFromAddress(userAddress);var estate=ESTATES[ek]||ESTATES.default;var ac=estate.accent||'#c9a84c';if(radiusCircle){radiusCircle.setMap(null);radiusCircle=null;}if(estatePolygon){estatePolygon.setMap(null);estatePolygon=null;}if(streetPolyline){streetPolyline.setMap(null);streetPolyline=null;}if(window.estatePolylines){window.estatePolylines.forEach(function(p){p.setMap(null);});window.estatePolylines=[];}if(window.streetPolylines){window.streetPolylines.forEach(function(p){p.setMap(null);});window.streetPolylines=[];}if(window.blockRect){window.blockRect.setMap(null);window.blockRect=null;}if(mode==="radius"){var rM=parseInt(document.getElementById("radiusSlider").value)||500;radiusCircle=new google.maps.Circle({map:googleMap,center:userMarker.getPosition(),radius:rM,fillColor:ac,fillOpacity:0.1,strokeColor:ac,strokeOpacity:0.8,strokeWeight:2});incidentMarkers.forEach(function(m){var dist=google.maps.geometry.spherical.computeDistanceBetween(userMarker.getPosition(),m.getPosition());m.setOpacity(dist<=rM?1:0.2);});}else if(mode==="estate"){var isUnitComplex=userAddress&&/^\d+\/\d+/.test(userAddress.split(',')[0].trim());if(isUnitComplex){updateGoogleMapMode('street');return;}if(ek==='default'){window.blockRect=drawBlockSquare();applyIncidentScope();return;}window.estatePolylines=[];var suburb=estate.suburb||userSuburb||'Morayfield';var overpassData=streetDataCache[suburb]||{};if(!Object.keys(overpassData).length&&userMarker){getStreetData(userMarker.getPosition().lat(),userMarker.getPosition().lng(),suburb,function(){updateGoogleMapMode('estate');});return;}var estateNames=Object.keys(SUMMERSTONE_STREETS).concat(['Shine Street','Palm Street','Cove Street','Creek Parade','Freshwater Street','Sunrise Street','Dune Street','Sunset Street','Breeze Street','Festival Street','Tropic Street','Island Parade','Golden Road','Moreton Parade','Bay Street','Tide Street','Bloom Drive','Fig Street','Summer Street','Summerstone Boulevard']);var streetData={};if(ek==='summerstone'){estateNames.forEach(function(n){var d=overpassData[n]||SUMMERSTONE_STREETS[n];if(d&&d.length)streetData[n]=d;});if(!Object.keys(streetData).length)streetData=SUMMERSTONE_STREETS;}else if(ek==='montrose'){Object.keys(MONTROSE_STREETS).forEach(function(n){var d=overpassData[n]||MONTROSE_STREETS[n];if(d&&d.length)streetData[n]=d;});if(!Object.keys(streetData).length)streetData=MONTROSE_STREETS;}else{streetData=overpassData;}var mapBounds=new google.maps.LatLngBounds();Object.keys(streetData).forEach(function(sn){var segs=streetData[sn];if(segs&&segs.length){(Array.isArray(segs[0])?segs:[segs]).forEach(function(path){var pl=new google.maps.Polyline({path:path,map:googleMap,strokeColor:ac,strokeOpacity:0.9,strokeWeight:5,geodesic:false});window.estatePolylines.push(pl);path.forEach(function(p){mapBounds.extend(p);});});}});if(window.estatePolylines.length>0)googleMap.fitBounds(mapBounds);incidentMarkers.forEach(function(m){m.setOpacity(1);});}else if(mode==="street"){window.streetPolylines=[];var rawStreet=userAddress?userAddress.split(',')[0].trim().replace(/^\d+\/\d+\s+/,'').replace(/^\d+\/\d+\s+/,'').replace(/^\d+[a-zA-Z]?\s+/,''):'';if(rawStreet){var abbr={'St':'Street','Ave':'Avenue','Av':'Avenue','Rd':'Road','Blvd':'Boulevard','Dr':'Drive','Ct':'Court','Crt':'Court','Pl':'Place','Cr':'Crescent','Cres':'Crescent','Pde':'Parade','Hwy':'Highway','Ln':'Lane','Tce':'Terrace','Cl':'Close'};var rawFull=rawStreet.replace(/\b(St|Ave|Av|Rd|Blvd|Dr|Ct|Crt|Pl|Cr|Cres|Pde|Hwy|Ln|Tce|Cl)$/,function(m){return abbr[m]||m;});var suburb=estate.suburb||userSuburb||'Morayfield';var op=streetDataCache[suburb]||{};var streetPath=op[rawStreet]||op[rawFull]||SUMMERSTONE_STREETS[rawStreet]||SUMMERSTONE_STREETS[rawFull]||null;var myStrLC=rawFull.toLowerCase().split(' ')[0];function drawStreet(data){var segs=data&&data.length?(Array.isArray(data[0])?data:[data]):[];if(!segs.length)return;if(window.streetPolylines){window.streetPolylines.forEach(function(p){p.setMap(null);});window.streetPolylines=[];}var b=new google.maps.LatLngBounds();segs.forEach(function(path){var pl=new google.maps.Polyline({path:path,map:googleMap,strokeColor:ac,strokeOpacity:1,strokeWeight:8,geodesic:false});window.streetPolylines.push(pl);path.forEach(function(p){b.extend(p);});});var _cLat=(b.getSouthWest().lat()+b.getNorthEast().lat())/2;var _cLng=(b.getSouthWest().lng()+b.getNorthEast().lng())/2;setTimeout(function(){googleMap.setCenter({lat:_cLat,lng:_cLng});googleMap.setZoom(16);},800);}getStreetData(userMarker.getPosition().lat(),userMarker.getPosition().lng(),suburb,function(streets){drawStreet(SUMMERSTONE_STREETS[rawFull]||SUMMERSTONE_STREETS[rawStreet]||MONTROSE_STREETS[rawFull]||MONTROSE_STREETS[rawStreet]||streets[rawFull]||streets[rawStreet]||null);});incidentMarkers.forEach(function(m,i){var inc=INCIDENT_LOCATIONS[i];var addr=inc&&INCS[inc.id]?INCS[inc.id].addr.toLowerCase():'';m.setOpacity(!myStrLC||addr.indexOf(myStrLC)!==-1?1:0.15);});[1,2,3,4,5,6].forEach(function(id){var el=document.getElementById('incBtn'+id);if(el){var addr=INCS[id]?INCS[id].addr.toLowerCase():'';el.className='inc-list-btn'+(addr.indexOf(myStrLC)!==-1?'':' dimmed');}});}}applyIncidentScope();}
+// Fade out-of-scope pins and refresh the (scope-filtered) list. Runs after any mode draws.
+function applyIncidentScope(){
+  try{
+    incidentMarkers.forEach(function(m,i){
+      var loc=INCIDENT_LOCATIONS[i];
+      var inc=loc?INCS[loc.id]:null;
+      m.setOpacity(incidentInScope(inc)?1:0.2);
+    });
+    renderIncidentList();
+  }catch(e){console.log("scope filter error:",e);}
+}
 var currentMapMode='street'; function setMapMode(mode,btn){
   currentMapMode=mode;
   document.querySelectorAll('.map-mode-btn').forEach(function(b){b.classList.remove('active');});
@@ -194,12 +205,59 @@ async function loadIncidents(){
   }catch(e){console.log("incident load error:",e);}
 }
 // === RENDER THE INCIDENT LIST (replaces the 6 hardcoded buttons) ===
+// === SCOPE FILTERING ===
+// Decide whether an incident falls within the user's currently-active scope.
+// Used to fade out-of-scope pins and hide out-of-scope list items.
+function incidentInScope(inc){
+  if(!inc)return true;
+  var mode=currentMapMode||"street";
+  // Street: match the incident's street name to the user's street.
+  if(mode==="street"){
+    if(!userAddress)return true;
+    var myStreet=userAddress.split(",")[0].trim().replace(/^\d+\/\d+\s+/,"").replace(/^\d+[a-zA-Z]?\s+/,"").toLowerCase();
+    if(!myStreet)return true;
+    var incStreet=(inc.addr||"").split(",")[0].trim().replace(/^\d+\/\d+\s+/,"").replace(/^\d+[a-zA-Z]?\s+/,"").toLowerCase();
+    if(!incStreet)return false;
+    return incStreet.indexOf(myStreet)!==-1||myStreet.indexOf(incStreet)!==-1;
+  }
+  // Radius: within the slider distance (needs coords).
+  if(mode==="radius"){
+    if(inc.lat==null||inc.lng==null||!userMarker||!window.google||!google.maps.geometry)return true;
+    var rM=parseInt(document.getElementById("radiusSlider").value)||500;
+    var dist=google.maps.geometry.spherical.computeDistanceBetween(userMarker.getPosition(),new google.maps.LatLng(inc.lat,inc.lng));
+    return dist<=rM;
+  }
+  // "estate" mode covers three real cases: unit complex, mapped estate, or default block.
+  if(mode==="estate"){
+    var ek=getEstateFromAddress(userAddress);
+    var isUnit=userAddress&&/^\d+\/\d+/.test(userAddress.split(",")[0].trim());
+    if(isUnit){
+      if(inc.lat!=null&&inc.lng!=null&&userMarker&&window.google&&google.maps.geometry){
+        var du=google.maps.geometry.spherical.computeDistanceBetween(userMarker.getPosition(),new google.maps.LatLng(inc.lat,inc.lng));
+        return du<=250;
+      }
+      return true;
+    }
+    if(ek!=="default"){
+      return getEstateFromAddress(inc.addr||"")===ek;
+    }
+    if(inc.lat==null||inc.lng==null||!userMarker||!window.google||!google.maps.geometry)return true;
+    var db=google.maps.geometry.spherical.computeDistanceBetween(userMarker.getPosition(),new google.maps.LatLng(inc.lat,inc.lng));
+    return db<=320;
+  }
+  return true;
+}
 function renderIncidentList(){
   var container=document.getElementById("incList");
   if(!container)return;
-  var ids=Object.keys(INCS);
-  if(!ids.length){
+  var allIds=Object.keys(INCS);
+  var ids=allIds.filter(function(id){return incidentInScope(INCS[id]);});
+  if(!allIds.length){
     container.innerHTML="<div class='empty-state' style='padding:24px 12px;'>&#9989;<br/>No incidents reported recently.<br/><span style='font-size:11px;'>Your area is all clear. Tap <strong>+ Report</strong> if you see something.</span></div>";
+    return;
+  }
+  if(!ids.length){
+    container.innerHTML="<div class='empty-state' style='padding:24px 12px;'>&#9989;<br/>No incidents in this view.<br/><span style='font-size:11px;'>Nothing reported in your current scope. Try a wider scope to see more.</span></div>";
     return;
   }
   container.innerHTML=ids.map(function(id){
