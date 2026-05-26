@@ -261,3 +261,6 @@ body{background:var(--ec);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI
 .discussion-send{width:38px;height:38px;border-radius:50%;border:none;background:var(--ec);color:#fff;font-size:18px;cursor:pointer;flex-shrink:0;}
 .discussion-empty{text-align:center;color:#aaa;font-size:12px;padding:20px;}
 .view-discussion-btn{width:100%;margin-top:10px;background:#fff;border:1.5px solid var(--ec);color:var(--ec);border-radius:10px;padding:10px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;}
+.add-photo-btn{width:100%;margin-top:8px;background:#f5f0e8;border:1.5px dashed #c9a84c;color:#8a6d1f;border-radius:10px;padding:11px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;}
+.add-photo-btn:active{background:#efe7d6;}
+.inc-photo{width:100%;border-radius:10px;margin:8px 0;max-height:220px;object-fit:cover;}

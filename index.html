@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Street Connect</title>
-<link rel="stylesheet" href="style.css?v=5">
+<link rel="stylesheet" href="style.css?v=6">
 </head>
 <body>
 <div class="phone" id="app">
@@ -41,6 +41,13 @@
         </div><br/>
         <label class="form-label">What happened?</label>
         <textarea class="form-textarea" id="reportDesc" rows="4" placeholder="Describe what you saw — time, description, vehicle details..."></textarea>
+        <input type="file" id="incidentPhotoInput" accept="image/*" style="display:none;" onchange="handleIncidentPhoto(event)"/>
+        <button type="button" class="add-photo-btn" id="addPhotoBtn" onclick="document.getElementById('incidentPhotoInput').click()">&#128247; Add photo (optional)</button>
+        <div id="incidentPhotoPreview" style="display:none;margin-top:8px;position:relative;">
+          <img id="incidentPhotoImg" src="" style="width:100%;border-radius:10px;max-height:180px;object-fit:cover;"/>
+          <button type="button" onclick="removeIncidentPhoto()" style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.6);color:#fff;border:none;border-radius:50%;width:26px;height:26px;font-size:14px;cursor:pointer;">&#10005;</button>
+          <div id="incidentPhotoStatus" style="font-size:11px;color:#888;margin-top:4px;"></div>
+        </div>
         <div class="warn-box">&#9888; For emergencies always call 000 first. This is for community awareness only.</div>
         <button class="submit-btn" onclick="submitReport()">Submit &amp; Notify Neighbours</button>
       </div>
@@ -338,6 +345,6 @@
   <div class="disclaimer">Street Connect is an independent community platform. Authority notices are examples only. Not affiliated with any government body.</div>
   <div class="home-bar"><div class="home-ind"></div></div>
 </div>
-<script src="script.js?v=5"></script>
+<script src="script.js?v=6"></script>
 </body>
 </html>
