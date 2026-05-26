@@ -26,10 +26,11 @@ export default async function handler(req, res) {
   try {
     // ── CREATE ────────────────────────────────────────────────
     if (req.method === 'POST') {
-      const { phone, address, type, description, lat, lng } = req.body;
+      const { phone, address, type, description, lat, lng, photo_url } = req.body;
       const row = { phone, address, type, description };
       if (lat !== undefined && lat !== null) row.lat = lat;
       if (lng !== undefined && lng !== null) row.lng = lng;
+      if (photo_url) row.photo_url = photo_url;
       row.status = 'active';
       row.resolved_count = 0;
       const response = await fetch(`${supabaseUrl}/rest/v1/${TABLE}`, {
