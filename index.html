@@ -1,1 +1,343 @@
-
+<!-- dev branch test --><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Street Connect</title>
+<link rel="stylesheet" href="style.css?v=5">
+</head>
+<body>
+<div class="phone" id="app">
+  <div class="notch"></div>
+  <input type="file" id="photoUpload" accept="image/*" style="display:none;" onchange="handlePhotoUpload(event)"/>
+  <div class="welcome-splash" id="welcomeSplash" style="display:none;">
+    <img class="welcome-logo" id="welcomeLogo" src="" alt=""/>
+    <div class="welcome-estate" id="welcomeEstateName"></div>
+    <div class="welcome-text">STREET CONNECT</div>
+  </div>
+  <div class="offline-banner" id="offlineBanner">&#128683; You're offline — showing cached content</div>
+  <div class="splash-screen" id="splashScreen">
+    <img class="splash-logo" id="splashLogo" src="" alt=""/>
+    <div class="splash-text" id="splashText">STREET CONNECT</div>
+  </div>
+  <div class="push-banner" id="pushBanner">
+    <span class="push-icon" id="pushIcon">&#128680;</span>
+    <div class="push-text"><div class="push-title" id="pushTitle"></div><div class="push-body-text" id="pushBodyText"></div></div>
+    <button class="push-close" onclick="dismissPush()">&#10005;</button>
+  </div>
+  <!-- REPORT MODAL -->
+  <div class="modal-overlay" id="reportModal">
+    <div class="modal-sheet">
+      <div class="modal-hdr"><div class="modal-title">&#128680; Report Incident</div><button class="modal-close" onclick="closeReport()">&#10005;</button></div>
+      <div id="reportForm">
+        <label class="form-label">&#128205; Where did this happen?</label>         <div class="report-map-wrap">           <div id="reportMapDiv" style="width:100%;height:100%;"></div>           <div class="report-map-hint">&#128205; Drag pin to exact location</div>           <div class="report-location-label" id="reportLocationLabel">Locating...</div>         </div>         <label class="form-label">Incident type</label>
+        <div class="type-btns">
+          <button class="type-btn active" onclick="setType(this)">&#128230; Theft</button>
+          <button class="type-btn" onclick="setType(this)">&#128663; Suspicious</button>
+          <button class="type-btn" onclick="setType(this)">&#9998; Vandalism</button>
+          <button class="type-btn" onclick="setType(this)">&#9888; Safety</button>
+          <button class="type-btn" onclick="setType(this)">&#128021; Animal</button>
+          <button class="type-btn" onclick="setType(this)">&#128290; Scam</button>
+        </div><br/>
+        <label class="form-label">What happened?</label>
+        <textarea class="form-textarea" id="reportDesc" rows="4" placeholder="Describe what you saw — time, description, vehicle details..."></textarea>
+        <div class="warn-box">&#9888; For emergencies always call 000 first. This is for community awareness only.</div>
+        <button class="submit-btn" onclick="submitReport()">Submit &amp; Notify Neighbours</button>
+      </div>
+      <div id="reportSuccess" style="display:none;text-align:center;padding:24px 0;">
+        <div style="font-size:44px;margin-bottom:10px;">&#9989;</div>
+        <div style="font-size:15px;font-weight:700;color:#2e7d32;">Submitted!</div>
+        <div style="font-size:12px;color:#888;margin-top:4px;">Neighbours are being notified</div>
+      </div>
+    </div>
+  </div>
+  <!-- PROFILE MODAL -->
+  <div class="modal-overlay" id="profileModal">
+    <div class="modal-sheet">
+      <div class="modal-hdr"><div class="modal-title">My Profile</div><button class="modal-close" onclick="closeProfile()">&#10005;</button></div>
+      <div class="profile-hero">
+        <div class="profile-avatar" id="profileAvatar" onclick="document.getElementById('photoUpload').click()" style="cursor:pointer;position:relative;overflow:hidden;">
+          <span id="profileAvatarText">&#127968;</span>
+          <img id="profileAvatarImg" src="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:50%;"/>
+          <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.5);color:#fff;font-size:8px;text-align:center;padding:2px;">📷 Change</div>
+        </div>
+        <div class="profile-name" id="profileName">Neighbour</div>
+        <span class="profile-badge">&#10003; Verified Resident</span><br/>
+        <button class="edit-btn" onclick="editDisplayName()">&#9998; Edit display name</button>
+      </div>
+      <div class="profile-detail-row"><span class="profile-detail-icon">&#128205;</span><div><div class="profile-detail-label">Address</div><div class="profile-detail-value" id="profileAddress">Not set</div></div></div>
+      <div class="profile-detail-row"><span class="profile-detail-icon">&#127960;</span><div><div class="profile-detail-label">Estate &amp; Suburb</div><div class="profile-detail-value" id="profileEstate">Not set</div></div></div>
+      <div class="profile-detail-row"><span class="profile-detail-icon">&#127963;</span><div><div class="profile-detail-label">Council Area</div><div class="profile-detail-value" id="profileCouncil">Not set</div></div></div>
+      <div class="profile-detail-row"><span class="profile-detail-icon">&#128222;</span><div><div class="profile-detail-label">Verified via</div><div class="profile-detail-value">SMS &middot; Australian mobile &#10003;</div></div></div>
+      <div>
+        <label class="form-label">My interests</label>
+        <div class="profile-interests" id="profileInterests">
+          <button class="interest-tag" onclick="toggleInterest(this)">&#127793; Gardens</button>
+          <button class="interest-tag" onclick="toggleInterest(this)">&#128104;&#8205;&#128105;&#8205;&#128103; Kids</button>
+          <button class="interest-tag" onclick="toggleInterest(this)">&#127936; Sport</button>
+          <button class="interest-tag" onclick="toggleInterest(this)">&#128021; Pets</button>
+          <button class="interest-tag" onclick="toggleInterest(this)">&#128187; Tech</button>
+          <button class="interest-tag" onclick="toggleInterest(this)">&#127969; DIY</button>
+          <button class="interest-tag" onclick="toggleInterest(this)">&#127859; Food</button>
+          <button class="interest-tag" onclick="toggleInterest(this)">&#127926; Music</button>
+        </div>
+      </div>
+      <div style="background:#f9f6f0;border-radius:12px;padding:14px;">
+        <div style="font-size:12px;font-weight:700;color:#555;margin-bottom:10px;">Edit Profile</div>
+        <div style="margin-bottom:8px;">
+          <label style="font-size:10px;color:#aaa;display:block;margin-bottom:4px;">Display Name</label>
+          <input id="editDisplayName" style="width:100%;border:1.5px solid #e0dbd0;border-radius:8px;padding:8px 10px;font-size:13px;font-family:inherit;outline:none;background:#fff;" placeholder="How neighbours see you"/>
+        </div>
+        <div style="margin-bottom:8px;">
+          <label style="font-size:10px;color:#aaa;display:block;margin-bottom:4px;">Bio (optional)</label>
+          <input id="editBio" style="width:100%;border:1.5px solid #e0dbd0;border-radius:8px;padding:8px 10px;font-size:13px;font-family:inherit;outline:none;background:#fff;" placeholder="e.g. Dad of 2, been here 3 years"/>
+        </div>
+        <div style="margin-bottom:10px;">
+          <label style="font-size:10px;color:#aaa;display:block;margin-bottom:6px;">Interests</label>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;" id="interestTags">
+            <button class="interest-tag" onclick="toggleInterest(this,'Gardens')">&#127807; Gardens</button>
+            <button class="interest-tag" onclick="toggleInterest(this,'Kids')">&#128106; Kids</button>
+            <button class="interest-tag" onclick="toggleInterest(this,'Sport')">&#9917; Sport</button>
+            <button class="interest-tag" onclick="toggleInterest(this,'Pets')">&#128054; Pets</button>
+            <button class="interest-tag" onclick="toggleInterest(this,'Business')">&#128188; Business</button>
+            <button class="interest-tag" onclick="toggleInterest(this,'Music')">&#127925; Music</button>
+            <button class="interest-tag" onclick="toggleInterest(this,'Food')">&#127859; Food</button>
+          </div>
+        </div>
+        <button onclick="saveProfile()" style="width:100%;background:var(--ec);color:#fff;border:none;border-radius:10px;padding:11px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">Save Changes</button>
+      </div>
+      <button class="logout-btn" onclick="logout()">&#128682; Logout</button>
+    </div>
+  </div>
+  <!-- SETTINGS MODAL -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal-sheet">
+      <div class="modal-hdr"><div class="modal-title">&#9881; Settings</div><button class="modal-close" onclick="closeSettings()">&#10005;</button></div>
+      <div class="settings-section">
+        <div class="settings-title">NOTIFICATIONS</div>
+        <div class="settings-row"><div><div class="settings-label">Safety Alerts</div><div class="settings-sub">Incidents near you</div></div><div class="toggle on" onclick="toggleSetting(this)"><div class="toggle-thumb"></div></div></div>
+        <div class="settings-row"><div><div class="settings-label">Chat Messages</div><div class="settings-sub">New messages on your street</div></div><div class="toggle on" onclick="toggleSetting(this)"><div class="toggle-thumb"></div></div></div>
+        <div class="settings-row"><div><div class="settings-label">Quiet Hours</div><div class="settings-sub">No notifications 10pm &ndash; 7am</div></div><div class="toggle" onclick="toggleSetting(this)"><div class="toggle-thumb"></div></div></div>
+      </div>
+      <div class="settings-section">
+        <div class="settings-title">APPEARANCE</div>
+        <div class="settings-row"><div><div class="settings-label">Dark Mode</div><div class="settings-sub">Coming soon</div></div><div class="toggle" onclick="toggleSetting(this)"><div class="toggle-thumb"></div></div></div>
+      </div>
+      <div class="settings-section">
+        <div class="settings-title">ABOUT</div>
+        <div class="settings-row" style="cursor:pointer;" onclick="messageAdmin()"><div><div class="settings-label">Contact Support</div><div class="settings-sub">Send a message to our team</div></div><span style="color:#aaa;">&#8250;</span></div>
+        <div class="settings-row"><div><div class="settings-label">Street Connect</div><div class="settings-sub">Community infrastructure for Greater Brisbane</div></div></div>
+      </div>
+    </div>
+  </div>
+  <!-- HEADER -->
+  <div class="header" id="mainHeader">
+    <div class="estate-hero">
+      <img class="estate-logo" id="estateLogo" src="" alt=""/>
+      <div class="estate-placeholder" id="estatePlaceholder">&#127960;</div>
+      <div class="hierarchy">
+        <div class="h-street" id="hStreet"></div>
+        <div class="h-suburb" id="hSuburb"></div>
+        <div class="h-estate" id="hEstate">Greater Brisbane</div>
+        <div class="h-council" id="hCouncil">Street Connect</div>
+        <div class="h-count"><span id="neighbourCount">loading...</span></div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <div id="joinBtnWrap"><a href="/signup.html" class="join-btn">+ Join Your Street</a></div>
+      <button class="my-addr-btn" id="myAddrBtn" onclick="openProfile()">
+        <img id="headerAvatarImg" src="" style="display:none;width:22px;height:22px;border-radius:50%;object-fit:cover;border:1.5px solid var(--ea);vertical-align:middle;margin-right:4px;"/>
+        <span id="headerAvatarText">&#128100;</span> <span id="myAddrText"></span>
+      </button>
+      <div class="header-btns">
+        <button class="help-btn" onclick="openSettings()">&#9881;</button>
+        <button class="help-btn" onclick="messageAdmin()">&#9993; Help</button>
+        <button class="notif-btn" onclick="switchTab('notifs',this);markNotifsRead()">&#128276;<span class="notif-badge" id="notifBadge" style="display:none;"></span></button>
+      </div>
+    </div>
+    <div class="alert-banner"><span class="alert-dot"></span><span class="alert-text" id="alertText">&#127881; Street Connect is live &mdash; invite your neighbours!</span></div>
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('chat',this)" style="position:relative;">&#128172; Chat<span class="unread-chat-badge" id="unreadChatBadge"></span></button>
+      <button class="tab" onclick="switchTab('map',this);setTimeout(function(){if(googleMap)google.maps.event.trigger(googleMap,'resize');},100)">&#128506; Map</button>
+      <button class="tab" onclick="switchTab('official',this)">&#127963; Official</button>
+      <button class="tab" onclick="switchTab('local',this);renderLocalTab()">&#127960; Local</button>
+      <button class="tab" onclick="switchTab('notifs',this);markNotifsRead()">&#128276; Alerts<span class="tab-badge" id="tabNotifBadge" style="display:none;"></span></button>
+      <button class="tab" onclick="switchTab('dms',this)">&#128172; DMs</button>
+    </div>
+  </div>
+  <!-- CHAT TAB -->
+  <div class="content" id="tab-chat">
+    <!-- GOLD SCOPE STRIP -->
+    <div class="scope-strip" id="scopeStrip">
+      <div class="scope-strip-left">
+        <div class="scope-link-icon">&#128279;</div>
+        <span class="scope-strip-text">Showing <strong id="scopeStripValue">My Street</strong> <span class="scope-strip-linked">&middot; Linked to map</span></span>
+      </div>
+      <button class="scope-change-btn" id="scopeChangeBtn" onclick="toggleScopePicker()">Change &#8250;</button>
+    </div>
+    <!-- COLLAPSIBLE SCOPE PICKER -->
+    <div class="scope-picker" id="scopePicker" style="display:none;">
+      <div class="scope-picker-label">Scope &mdash; applies to Chat &amp; Map</div>
+      <div class="scope-seg">
+        <button class="scope-seg-btn active" id="scopeSegStreet" onclick="setChatLevel('street',this)">&#127968; My Street</button>
+        <button class="scope-seg-btn" id="scopeSegEstate" onclick="setChatLevel('estate',this)">&#127960; My Estate</button>
+        <button class="scope-seg-btn" id="scopeSegRadius" onclick="setChatLevel('radius',this)">&#128225; Radius</button>
+      </div>
+    </div>
+    <div class="new-msgs-banner" id="newMsgsBanner" onclick="scrollToBottom()">&#8595; New messages</div>
+    <div class="messages" id="chatMessages">
+      <div class="date-div">Today</div>
+      <div class="pinned-notice">
+        <div class="pinned-top"><span style="font-size:16px;">&#128721;</span><span class="pinned-title" id="pinnedBinTitle">Bin Day</span><span class="pinned-badge">PINNED</span></div>
+        <div class="pinned-body" id="pinnedBinBody">Loading bin schedule...</div>
+      </div>
+      <div class="typing-indicator" id="typingIndicator">Someone is typing...</div>
+      <div id="myMessages"></div>
+      <div id="chatBottom"></div>
+    </div>
+    <div class="ai-note" id="aiNote">&#129302; Post received. AI moderation active.</div>
+    <div class="compose">
+      <div class="compose-row">
+        <span style="font-size:20px;">&#127968;</span>
+        <input class="compose-input" id="chatInput" placeholder="Say something to your street..." onkeydown="if(event.key==='Enter')sendMsg()" oninput="document.getElementById('sendBtn').style.background=this.value.trim()?'var(--ec)':'#ccc'"/>
+        <button class="send-btn" id="sendBtn" onclick="sendMsg()">&#8593;</button>
+      </div>
+      <div class="compose-foot">&#129302; AI moderated &middot; <span id="composeLocation">Greater Brisbane</span></div>
+    </div>
+  </div>
+  <!-- MAP TAB -->
+  <div class="content" id="tab-map" style="display:none;">
+    <div class="map-wrap">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div><div style="font-size:13px;font-weight:700;color:#333;">Incident Map</div><div style="font-size:11px;color:#888;">Tap marker &middot; Community verified</div></div>
+        <button class="report-btn" onclick="openReport()">+ Report</button>
+      </div>
+      <div class="map-controls">
+        <div style="display:flex;gap:6px;margin-bottom:10px;">
+          <button class="map-mode-btn active" id="modeStreet" onclick="setMapMode('street',this)">&#127968; My Street</button>
+          <button class="map-mode-btn" id="modeEstate" onclick="setMapMode('estate',this)" style="display:none;">&#127960; My Estate</button>
+          <button class="map-mode-btn" id="modeRadius" onclick="setMapMode('radius',this)">&#128225; Radius</button>
+        </div>
+        <div id="modeStreetInfo" class="mode-info">Showing incidents on your street only. Notifications limited to your street.</div>
+        <div id="modeEstateInfo" class="mode-info" style="display:none;">Showing all incidents within your estate boundary. Your estate is highlighted on the map.</div>
+        <div id="modeRadiusControls" style="display:none;">
+          <div class="map-ctrl-top">
+            <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:14px;">&#128225;</span><div><div class="map-ctrl-title">Custom Radius</div><div class="map-ctrl-sub">Drag to expand your alert zone</div></div></div>
+            <div style="display:flex;align-items:center;gap:8px;"><span class="radius-val" id="radiusVal">500m</span><button class="radius-toggle" id="radiusToggle" onclick="toggleRadius()">ON</button></div>
+          </div>
+          <input type="range" class="radius-slider" id="radiusSlider" min="100" max="5000" step="100" value="500" oninput="updateRadius(this.value)"/>
+          <div class="radius-presets">
+            <button class="radius-preset" onclick="setRadius(100)">100m</button>
+            <button class="radius-preset" onclick="setRadius(500)">500m</button>
+            <button class="radius-preset" onclick="setRadius(1500)">1.5km</button>
+            <button class="radius-preset" onclick="setRadius(3000)">3km</button>
+            <button class="radius-preset" onclick="setRadius(5000)">Suburb</button>
+          </div>
+        </div>
+        <div class="radius-info" id="radiusInfo">&#127968; Notifications from your street only</div>
+      </div>
+      <div id="googleMapWrap" style="border-radius:12px;overflow:hidden;height:280px;background:#1a2e1a;min-height:280px;"></div>
+      <div class="inc-detail" id="incDetail"></div>
+      <div class="sec-title">ALL INCIDENTS &middot; LAST 7 DAYS</div>
+      <div id="incList"><div class="empty-state" style="padding:24px 12px;">&#8987;<br/>Loading incidents...</div></div>
+  </div>
+  <!-- OFFICIAL TAB -->
+  <div class="content" id="tab-official" style="display:none;">
+    <div class="messages">
+      <div class="date-div">Authority Broadcasts</div>
+      <div style="background:#f5f0e8;border-radius:12px;padding:16px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">&#128588;</div>
+        <div style="font-size:13px;font-weight:700;color:#1a3020;margin-bottom:6px;">Official Partnerships Coming Soon</div>
+        <div style="font-size:12px;color:#888;line-height:1.6;">Working with Moreton Bay Council, QPS and SES to establish official broadcast partnerships.</div>
+      </div>
+      <div class="auth-card" style="border-left-color:#1a3a6b;background:#f5f8ff;">
+        <div class="auth-top"><span class="auth-av">&#127963;</span><div><div class="auth-name">Local Council</div><div class="auth-time">Example only</div></div><span class="auth-badge" style="background:#1a3a6b;">EXAMPLE</span></div>
+        <p class="auth-body">&#128203; Bin collection Thursday due to the public holiday. Green waste remains Monday.</p>
+        <span class="verified">&#10003; Example only &mdash; not an official broadcast</span>
+      </div>
+      <div class="auth-card" style="border-left-color:#0d47a1;background:#f5f8ff;">
+        <div class="auth-top"><span class="auth-av">&#128110;</span><div><div class="auth-name">Local Police</div><div class="auth-time">Example only</div></div><span class="auth-badge" style="background:#0d47a1;">EXAMPLE</span></div>
+        <p class="auth-body">&#9888; Suspicious white sedan reported in your area. Call 000 or Policelink 131 444.</p>
+        <span class="verified">&#10003; Example only &mdash; not an official broadcast</span>
+      </div>
+    </div>
+  </div>
+  <!-- LOCAL TAB -->
+  <div class="content" id="tab-local" style="display:none;">
+    <div class="messages">
+      <div class="date-div" id="localTitle">&#127960; LOCAL &mdash; YOUR AREA</div>
+      <div id="localListings"></div>
+      <div style="text-align:center;padding:8px 0 4px;">
+        <button class="add-btn" onclick="addListing()">+ Add your listing</button>
+        <div style="font-size:10px;color:#aaa;margin-top:6px;">Free for verified residents &middot; AI moderated</div>
+      </div>
+    </div>
+  </div>
+  <!-- ALERTS TAB -->
+  <div class="content" id="tab-notifs" style="display:none;">
+    <div class="messages">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div class="date-div" style="margin:0;">NOTIFICATIONS</div>
+        <button class="mark-all-btn" onclick="markNotifsRead()">Mark all read</button>
+      </div>
+      <div class="notif-card" id="notif1" style="border-color:#c9a84c;background:#fffbf0;" onclick="markNotifRead(this)">
+        <div class="notif-top"><span class="notif-icon">&#127881;</span><div style="flex:1;"><div class="notif-title">Welcome to Street Connect!</div><div class="notif-body">You are now connected with your neighbours. Say hello to your street!</div><div class="notif-time">Just now</div></div><div class="unread-dot"></div></div>
+      </div>
+      <div class="notif-card" id="notif2" style="border-color:#ffcdd2;background:#fff8f8;" onclick="markNotifRead(this)">
+        <div class="notif-top"><span class="notif-icon">&#128680;</span><div style="flex:1;"><div class="notif-title">New Incident Nearby</div><div class="notif-body">Package theft reported. 5 neighbours confirmed. Check the map.</div><div class="notif-time">Earlier today</div></div><div class="unread-dot"></div></div>
+      </div>
+      <div class="notif-card read" style="border-color:#e8e2d8;background:#fff;" onclick="markNotifRead(this)">
+        <div class="notif-top"><span class="notif-icon">&#128721;</span><div style="flex:1;"><div class="notif-title">Bin Day Reminder</div><div class="notif-body">General waste collection tomorrow. Put bins out tonight!</div><div class="notif-time">Yesterday</div></div></div>
+      </div>
+    </div>
+  </div>
+  <!-- DMS TAB -->
+  <div class="content" id="tab-dms" style="display:none;">
+    <div id="dmInbox" style="flex:1;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:8px;">
+      <div class="date-div">DIRECT MESSAGES</div>
+      <div id="dmList">
+        <div class="empty-state">&#128172;<br/>No direct messages yet.<br/><span style="font-size:11px;">Tap a neighbour's name in chat<br/>to start a private conversation.</span></div>
+      </div>
+    </div>
+    <div id="dmConvo" style="display:none;flex:1;flex-direction:column;">
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid #ede8e0;background:#fff;flex-shrink:0;">
+        <button onclick="closeDMConvo()" style="background:none;border:none;font-size:18px;cursor:pointer;color:#666;">&#8592;</button>
+        <div id="dmConvoName" style="font-size:14px;font-weight:700;color:#222;"></div>
+        <div style="font-size:10px;color:#4caf50;margin-left:auto;">&#9679; Verified resident</div>
+      </div>
+      <div id="dmMessages" style="flex:1;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:8px;">
+        <div class="empty-state">&#128172;<br/>Start the conversation!</div>
+      </div>
+      <div style="border-top:1px solid #ede8e0;padding:10px 12px;flex-shrink:0;">
+        <div style="display:flex;gap:8px;align-items:center;">
+          <input id="dmInput" style="flex:1;border:1.5px solid #e0dbd0;border-radius:22px;padding:10px 13px;font-size:13px;background:#f9f6f0;outline:none;font-family:inherit;" placeholder="Private message..." onkeydown="if(event.key==='Enter')sendDM()"/>
+          <button onclick="sendDM()" style="width:38px;height:38px;border-radius:50%;border:none;background:var(--ec);color:#fff;font-size:18px;cursor:pointer;">&#8593;</button>
+        </div>
+        <div style="font-size:10px;color:#bbb;text-align:center;margin-top:4px;">&#128274; Private &middot; Only you two can see this</div>
+      </div>
+    </div>
+  </div>
+  <div class="discussion-overlay" id="discussionOverlay" style="display:none;">
+    <div class="discussion-header">
+      <button class="discussion-back" onclick="closeDiscussion()">&#8592;</button>
+      <div style="flex:1;">
+        <div class="discussion-title">Discussion</div>
+        <div class="discussion-sub" id="discussionSub">Loading...</div>
+      </div>
+      <span class="discussion-emoji" id="discussionEmoji">&#9888;</span>
+    </div>
+    <div class="discussion-body" id="discussionBody">
+      <div class="discussion-banner" id="discussionBanner"></div>
+      <div id="discussionComments"></div>
+    </div>
+    <div class="discussion-composer">
+      <input class="discussion-input" id="discussionInput" placeholder="Add to the discussion..." onkeydown="if(event.key==='Enter')postComment()"/>
+      <button class="discussion-send" onclick="postComment()">&#8593;</button>
+    </div>
+  </div>
+  <div class="disclaimer">Street Connect is an independent community platform. Authority notices are examples only. Not affiliated with any government body.</div>
+  <div class="home-bar"><div class="home-ind"></div></div>
+</div>
+<script src="script.js?v=5"></script>
+</body>
+</html>
