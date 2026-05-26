@@ -187,6 +187,7 @@ async function loadIncidents(){
         desc:row.description||"",
         resolved_count:row.resolved_count||0,
         phone:row.phone||"",
+        photo_url:row.photo_url||null,
         lat:row.lat, lng:row.lng
       };
       // Map pin (only if we have coordinates)
@@ -275,7 +276,7 @@ function selectInc(id){
   var isMine=inc.phone&&userPhone&&(""+inc.phone).replace(/\D/g,"")===(""+userPhone).replace(/\D/g,"");
   var clearPct=Math.min(100,((inc.resolved_count||0)/3)*100);
   detail.style.borderLeftColor=inc.color;detail.style.display="block";
-  detail.innerHTML="<div class='inc-detail-top'><span class='inc-emoji-lg'>"+inc.emoji+"</span><div style='flex:1'><div style='display:flex;align-items:center;margin-bottom:3px'><div class='inc-title'>"+inc.title+"</div><span class='sev-badge' style='background:"+inc.sc+"'>"+inc.sev.toUpperCase()+"</span></div><div class='inc-addr-text'>&#128205; "+inc.addr+" &middot; "+inc.time+"</div></div><button class='close-btn' onclick='selectInc(\""+id+"\")'>&#10005;</button></div><p class='inc-desc-text'>"+inc.desc+"</p><div style='display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:10px;color:#888;'><div class='trust-bar'><div class='trust-fill' style='width:"+clearPct+"%'></div></div>"+(inc.resolved_count||0)+"/3 marked cleared</div><div class='inc-verify'><button class='verify-btn vb-confirm' onclick='verifyInc(\""+id+"\",\"confirm\")'>&#10003; Confirm</button><button class='verify-btn vb-resolved' onclick='verifyInc(\""+id+"\",\"resolve\")'>&#9989; Resolved</button><button class='verify-btn vb-notthere' onclick='verifyInc(\""+id+"\",\"notthere\")'>&#10007; Not there</button></div><button class='view-discussion-btn' onclick='openDiscussion(\""+id+"\")'>&#128172; View discussion</button>"+(isMine?"<button onclick='deleteIncident(\""+id+"\")' style='margin-top:10px;width:100%;background:#fff;border:1.5px solid #e53935;color:#e53935;border-radius:10px;padding:10px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;'>&#128465; Delete my report</button>":"")+"";
+  detail.innerHTML="<div class='inc-detail-top'><span class='inc-emoji-lg'>"+inc.emoji+"</span><div style='flex:1'><div style='display:flex;align-items:center;margin-bottom:3px'><div class='inc-title'>"+inc.title+"</div><span class='sev-badge' style='background:"+inc.sc+"'>"+inc.sev.toUpperCase()+"</span></div><div class='inc-addr-text'>&#128205; "+inc.addr+" &middot; "+inc.time+"</div></div><button class='close-btn' onclick='selectInc(\""+id+"\")'>&#10005;</button></div><p class='inc-desc-text'>"+inc.desc+"</p>"+(inc.photo_url?"<img class='inc-photo' src='"+inc.photo_url+"' alt='Incident photo'/>":"")+"<div style='display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:10px;color:#888;'><div class='trust-bar'><div class='trust-fill' style='width:"+clearPct+"%'></div></div>"+(inc.resolved_count||0)+"/3 marked cleared</div><div class='inc-verify'><button class='verify-btn vb-confirm' onclick='verifyInc(\""+id+"\",\"confirm\")'>&#10003; Confirm</button><button class='verify-btn vb-resolved' onclick='verifyInc(\""+id+"\",\"resolve\")'>&#9989; Resolved</button><button class='verify-btn vb-notthere' onclick='verifyInc(\""+id+"\",\"notthere\")'>&#10007; Not there</button></div><button class='view-discussion-btn' onclick='openDiscussion(\""+id+"\")'>&#128172; View discussion</button>"+(isMine?"<button onclick='deleteIncident(\""+id+"\")' style='margin-top:10px;width:100%;background:#fff;border:1.5px solid #e53935;color:#e53935;border-radius:10px;padding:10px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;'>&#128465; Delete my report</button>":"")+"";
   try{setTimeout(function(){detail.scrollIntoView({behavior:"smooth",block:"center"});},100);}catch(e){}
 }
 async function deleteIncident(id){
@@ -315,7 +316,7 @@ function openDiscussion(id){
   // Banner: the original report, pinned at top.
   var banner=document.getElementById("discussionBanner");
   if(banner){
-    banner.innerHTML="<div class='discussion-banner-tag'>&#9888; ORIGINAL REPORT &middot; "+inc.sev.toUpperCase()+"</div><div class='discussion-banner-title'>"+inc.emoji+" "+inc.title+"</div><div class='discussion-banner-desc'>"+inc.desc+"</div><div class='discussion-banner-meta'>&#128205; "+inc.addr+" &middot; "+inc.time+"</div>";
+    banner.innerHTML="<div class='discussion-banner-tag'>&#9888; ORIGINAL REPORT &middot; "+inc.sev.toUpperCase()+"</div><div class='discussion-banner-title'>"+inc.emoji+" "+inc.title+"</div><div class='discussion-banner-desc'>"+inc.desc+"</div>"+(inc.photo_url?"<img class='inc-photo' src='"+inc.photo_url+"' alt='Incident photo' style='margin:6px 0;'/>":"")+"<div class='discussion-banner-meta'>&#128205; "+inc.addr+" &middot; "+inc.time+"</div>";
   }
   var em=document.getElementById("discussionEmoji");if(em)em.innerHTML=inc.emoji;
   document.getElementById("discussionOverlay").style.display="flex";
@@ -375,9 +376,49 @@ async function deleteComment(commentId){
   }catch(e){alert("Could not delete. Try again.");}
 }
 function openReport(){document.getElementById("reportModal").style.display="flex";setTimeout(function(){initReportMap();},200);} function initReportMap(){if(!window.google||!window.google.maps)return;var center=userMarker?userMarker.getPosition():{lat:-27.1307,lng:152.9518};if(!reportMap){reportMap=new google.maps.Map(document.getElementById("reportMapDiv"),{center:center,zoom:16,mapTypeId:"roadmap",disableDefaultUI:true,zoomControl:true,gestureHandling:"cooperative"});reportMarker=new google.maps.Marker({position:center,map:reportMap,draggable:true,icon:{path:google.maps.SymbolPath.CIRCLE,scale:10,fillColor:"#e53935",fillOpacity:1,strokeColor:"#fff",strokeWeight:2},title:"Drag to incident location"});reportMarker.addListener("dragend",function(){reportLatLng={lat:reportMarker.getPosition().lat(),lng:reportMarker.getPosition().lng()};reverseGeocodeReport(reportLatLng);});reportMap.addListener("click",function(e){var pos=e.latLng;if(userMarker){var dist=google.maps.geometry.spherical.computeDistanceBetween(userMarker.getPosition(),pos);if(dist>2000){document.getElementById("reportLocationLabel").textContent="Too far — please report near your area";return;}}reportMarker.setPosition(pos);reportLatLng={lat:pos.lat(),lng:pos.lng()};reverseGeocodeReport(reportLatLng);});}else{reportMap.setCenter(center);reportMarker.setPosition(center);google.maps.event.trigger(reportMap,"resize");}reportLatLng={lat:center.lat(),lng:center.lng()};reverseGeocodeReport(reportLatLng);} function reverseGeocodeReport(latlng){var label=document.getElementById("reportLocationLabel");if(!label||!window.google)return;label.textContent="&#128205; Locating...";var geocoder=new google.maps.Geocoder();geocoder.geocode({location:latlng},function(results,status){if(status==="OK"&&results[0]){var name=results[0].formatted_address.replace(", QLD, Australia","").replace(", Australia","");label.textContent="&#128205; "+name;}else{label.textContent="&#128205; Location selected";}});}
-function closeReport(){document.getElementById("reportModal").style.display="none";document.getElementById("reportForm").style.display="block";document.getElementById("reportSuccess").style.display="none";document.getElementById("reportDesc").value="";document.querySelectorAll(".type-btn").forEach(function(b,i){b.className=i===0?"type-btn active":"type-btn";});reportMap=null;reportMarker=null;reportLatLng=null;document.getElementById("reportMapDiv").innerHTML="";}
+// === INCIDENT PHOTO (upload to Supabase Storage via /api/upload-photo) ===
+var incidentPhotoUrl=null;
+function handleIncidentPhoto(event){
+  var file=event.target.files[0];if(!file)return;
+  var statusEl=document.getElementById("incidentPhotoStatus");
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var img=new Image();
+    img.onload=function(){
+      // Compress: cap longest side at 1000px, JPEG quality 0.8.
+      var canvas=document.createElement('canvas');var maxSize=1000;var w=img.width,h=img.height;
+      if(w>h){if(w>maxSize){h=Math.round(h*(maxSize/w));w=maxSize;}}else{if(h>maxSize){w=Math.round(w*(maxSize/h));h=maxSize;}}
+      canvas.width=w;canvas.height=h;canvas.getContext('2d').drawImage(img,0,0,w,h);
+      var dataUrl=canvas.toDataURL('image/jpeg',0.8);
+      // Show preview immediately.
+      var prev=document.getElementById("incidentPhotoPreview");var pimg=document.getElementById("incidentPhotoImg");
+      if(pimg)pimg.src=dataUrl;if(prev)prev.style.display="block";
+      var addBtn=document.getElementById("addPhotoBtn");if(addBtn)addBtn.style.display="none";
+      if(statusEl)statusEl.textContent="Uploading...";
+      // Strip the data: prefix for the API.
+      var base64=dataUrl.split(",")[1];
+      fetch("/api/upload-photo",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({image:base64,ext:"jpg"})})
+        .then(function(r){return r.json();})
+        .then(function(d){
+          if(d&&d.url){incidentPhotoUrl=d.url;if(statusEl)statusEl.textContent="\u2713 Photo ready";}
+          else{if(statusEl)statusEl.textContent="Upload failed — try again";incidentPhotoUrl=null;}
+        })
+        .catch(function(){if(statusEl)statusEl.textContent="Upload failed — try again";incidentPhotoUrl=null;});
+    };
+    img.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+function removeIncidentPhoto(){
+  incidentPhotoUrl=null;
+  var prev=document.getElementById("incidentPhotoPreview");if(prev)prev.style.display="none";
+  var addBtn=document.getElementById("addPhotoBtn");if(addBtn)addBtn.style.display="block";
+  var input=document.getElementById("incidentPhotoInput");if(input)input.value="";
+  var statusEl=document.getElementById("incidentPhotoStatus");if(statusEl)statusEl.textContent="";
+}
+function closeReport(){document.getElementById("reportModal").style.display="none";document.getElementById("reportForm").style.display="block";document.getElementById("reportSuccess").style.display="none";document.getElementById("reportDesc").value="";document.querySelectorAll(".type-btn").forEach(function(b,i){b.className=i===0?"type-btn active":"type-btn";});reportMap=null;reportMarker=null;reportLatLng=null;document.getElementById("reportMapDiv").innerHTML="";removeIncidentPhoto();}
 function setType(b){document.querySelectorAll(".type-btn").forEach(function(x){x.className="type-btn";});b.className="type-btn active";}
-async function submitReport(){var desc=document.getElementById("reportDesc").value.trim();if(!desc)return;var activeType=document.querySelector(".type-btn.active");var type=activeType?activeType.textContent.trim():"General";try{var res=await fetch("/api/incidents",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:userPhone,address:userAddress,type:type,description:desc,lat:reportLatLng?reportLatLng.lat:null,lng:reportLatLng?reportLatLng.lng:null,location_label:document.getElementById("reportLocationLabel")?document.getElementById("reportLocationLabel").textContent.replace("&#128205; ",""):null})});if(res.ok){document.getElementById("reportForm").style.display="none";document.getElementById("reportSuccess").style.display="block";setTimeout(function(){closeReport();showPush({icon:"&#128680;",title:"Incident Reported",body:"Submitted. Neighbours being notified.",color:"#e65100"});loadIncidents();},2000);}}catch(e){}}
+async function submitReport(){var desc=document.getElementById("reportDesc").value.trim();if(!desc)return;var activeType=document.querySelector(".type-btn.active");var type=activeType?activeType.textContent.trim():"General";try{var res=await fetch("/api/incidents",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:userPhone,address:userAddress,type:type,description:desc,lat:reportLatLng?reportLatLng.lat:null,lng:reportLatLng?reportLatLng.lng:null,photo_url:incidentPhotoUrl||null,location_label:document.getElementById("reportLocationLabel")?document.getElementById("reportLocationLabel").textContent.replace("&#128205; ",""):null})});if(res.ok){document.getElementById("reportForm").style.display="none";document.getElementById("reportSuccess").style.display="block";setTimeout(function(){closeReport();showPush({icon:"&#128680;",title:"Incident Reported",body:"Submitted. Neighbours being notified.",color:"#e65100"});loadIncidents();},2000);}}catch(e){}}
 var pT;
 function showPush(n){var b=document.getElementById("pushBanner");document.getElementById("pushIcon").innerHTML=n.icon;document.getElementById("pushTitle").textContent=n.title;document.getElementById("pushBodyText").textContent=n.body;b.style.background=n.color||"#2d4a2d";b.style.display="flex";clearTimeout(pT);pT=setTimeout(dismissPush,5000);}
 function dismissPush(){document.getElementById("pushBanner").style.display="none";}
