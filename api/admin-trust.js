@@ -1,5 +1,6 @@
-// Street Connect — Admin Trust API (v2 — verbose errors)
-// Returns the actual Supabase error if the PATCH fails, instead of swallowing it.
+// Street Connect — Admin Trust API (v5 — digits-only matching, bypasses + URL encoding bug)
+// We can't use phone=eq.+61... because PostgREST decodes + as space.
+// Workaround: fetch all users, find by digits-only match, then PATCH by id.
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -11,9 +12,8 @@ export default async function handler(req, res) {
   const adminPassword = process.env.ADMIN_PASSWORD;
   const TABLE = process.env.USERS_TABLE || 'users';
 
-  // Surface env-var problems clearly instead of silently failing.
   if (!supabaseUrl || !supabaseKey) {
-    return res.status(500).json({ error: 'Missing Supabase env vars', supabaseUrl: !!supabaseUrl, supabaseKey: !!supabaseKey });
+    return res.status(500).json({ error: 'Missing Supabase env vars' });
   }
   if (!adminPassword) {
     return res.status(500).json({ error: 'Missing ADMIN_PASSWORD env var' });
@@ -23,16 +23,16 @@ export default async function handler(req, res) {
     'apikey': supabaseKey,
     'Authorization': `Bearer ${supabaseKey}`,
     'Content-Type': 'application/json',
-    'Prefer': 'return=representation'   // ← Supabase returns the changed rows so we can SEE if any matched
+    'Prefer': 'return=representation'
   };
+
+  const digitsOnly = s => (s || '').replace(/\D/g, '');
 
   try {
     const { action, password, phone, value, voucher_phone } = req.body || {};
 
-    if (password !== adminPassword) {
-      return res.status(401).json({ error: 'Unauthorised' });
-    }
-    if (!phone) return res.status(400).json({ error: 'Missing phone (target user)' });
+    if (password !== adminPassword) return res.status(401).json({ error: 'Unauthorised' });
+    if (!phone) return res.status(400).json({ error: 'Missing phone' });
 
     let patch = null;
     if (action === 'set-trust') {
@@ -52,29 +52,38 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Unknown action' });
     }
 
-    const url = `${supabaseUrl}/rest/v1/${TABLE}?phone=eq.${encodeURIComponent(phone)}`;
-    const response = await fetch(url, {
+    // STEP 1: Find the user by digits-only phone match (bypasses + URL encoding bug)
+    const fetchAllRes = await fetch(`${supabaseUrl}/rest/v1/${TABLE}?select=id,phone`, { headers });
+    if (!fetchAllRes.ok) {
+      const errBody = await fetchAllRes.text();
+      return res.status(500).json({ error: 'Failed to fetch users for matching', detail: errBody });
+    }
+    const users = await fetchAllRes.json();
+    const targetDigits = digitsOnly(phone);
+    const match = users.find(u => digitsOnly(u.phone) === targetDigits);
+
+    if (!match) {
+      return res.status(404).json({ error: 'No user matched (digits-only)', searched: targetDigits, table: TABLE, totalUsers: users.length });
+    }
+
+    // STEP 2: PATCH by id (uuid — no + character issues)
+    const patchUrl = `${supabaseUrl}/rest/v1/${TABLE}?id=eq.${encodeURIComponent(match.id)}`;
+    const patchRes = await fetch(patchUrl, {
       method: 'PATCH',
       headers: headers,
       body: JSON.stringify(patch)
     });
 
-    const responseText = await response.text();
-    let responseData = null;
-    try { responseData = JSON.parse(responseText); } catch (e) { responseData = responseText; }
+    const patchText = await patchRes.text();
+    let patchData = null;
+    try { patchData = JSON.parse(patchText); } catch (e) { patchData = patchText; }
 
-    // CRITICAL: check if Supabase actually changed any rows. With return=representation, success means an array of changed rows.
-    if (!response.ok) {
-      return res.status(500).json({ error: 'Supabase rejected the write', supabaseStatus: response.status, supabaseBody: responseData, table: TABLE });
+    if (!patchRes.ok) {
+      return res.status(500).json({ error: 'Supabase rejected the PATCH', supabaseStatus: patchRes.status, supabaseBody: patchData });
     }
 
-    // If we got an array back, count rows actually changed
-    const rowsChanged = Array.isArray(responseData) ? responseData.length : 0;
-    if (rowsChanged === 0) {
-      return res.status(404).json({ error: 'No rows matched — phone not found in this table', table: TABLE, phone: phone });
-    }
-
-    return res.status(200).json({ success: true, action, applied: patch, rowsChanged, table: TABLE });
+    const rowsChanged = Array.isArray(patchData) ? patchData.length : 0;
+    return res.status(200).json({ success: true, action, applied: patch, rowsChanged, matched: { id: match.id, phone: match.phone } });
   } catch (e) {
     return res.status(500).json({ error: 'Server error', detail: String(e) });
   }
