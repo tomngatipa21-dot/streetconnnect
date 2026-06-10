@@ -230,15 +230,15 @@ body{background:#0f1f13;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
           <input class="search-input" id="userSearch" placeholder="Search name, address, phone..." oninput="filterUsers()"/>
           <select class="filter-select" id="userFilter" onchange="filterUsers()">
             <option value="all">All accounts</option>
+            <option value="unverified">• Unverified (Tier 0)</option>
+            <option value="verified">✓ Verified (Tier 1)</option>
+            <option value="trusted_lead">★ Trusted Lead (Tier 2)</option>
             <option value="resident">🏠 Residents</option>
             <option value="business">🏢 Business</option>
             <option value="council">🏛 Council</option>
             <option value="police">👮 Police</option>
             <option value="ses">🟠 SES</option>
             <option value="fire">🚒 Fire</option>
-            <option value="estate_manager">🏘 Estate Managers</option>
-            <option value="neighbourhood_rep">⭐ Neighbourhood Reps</option>
-            <option value="street_captain">🏠 Street Captains</option>
             <option value="banned">🚫 Banned</option>
           </select>
         </div>
@@ -397,23 +397,50 @@ body{background:#0f1f13;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 <script>
 var adminPassword='';
 var allUsers=[];
+
+// Single helper for all admin trust writes. Returns true on success, false on fail.
+async function callAdminTrust(payload){
+  try{
+    var res=await fetch('/api/admin-trust',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(Object.assign({password:adminPassword},payload))
+    });
+    if(!res.ok){
+      var err=await res.json().catch(function(){return {};});
+      alert('Failed: '+(err.error||res.status));
+      return false;
+    }
+    return true;
+  }catch(e){
+    alert('Network error. Try again.');
+    return false;
+  }
+}
 var orgProfiles=JSON.parse(localStorage.getItem('sc_admin_orgs')||'[]');
 var repAssignments=JSON.parse(localStorage.getItem('sc_admin_reps')||'[]');
-var bannedUsers=JSON.parse(localStorage.getItem('sc_admin_banned')||'[]');
-var userBadges=JSON.parse(localStorage.getItem('sc_admin_badges')||'{}');
 var pinnedAnnouncements=JSON.parse(localStorage.getItem('sc_admin_pins')||'[]');
 
-var BADGE_TYPES={
+// Trust + identity now live in the database (users table). No more localStorage for badges/bans.
+var TRUST_TIERS={
+  0:{label:'Unverified',color:'#9e9e9e',icon:'•'},
+  1:{label:'Verified',color:'#2e7d32',icon:'✓'},
+  2:{label:'Trusted Lead',color:'#0d47a1',icon:'★'}
+};
+var IDENTITY_TYPES={
   resident:{label:'Resident',color:'#1a3020',icon:'🏠'},
   business:{label:'Business',color:'#bf360c',icon:'🏢'},
   council:{label:'Council',color:'#1a3a6b',icon:'🏛'},
   police:{label:'Police',color:'#0d47a1',icon:'👮'},
   ses:{label:'SES',color:'#e65100',icon:'🟠'},
-  fire:{label:'Fire & Rescue',color:'#c62828',icon:'🚒'},
+  fire:{label:'Fire & Rescue',color:'#c62828',icon:'🚒'}
+};
+// Convenience lookup for legacy code paths that referenced BADGE_TYPES (rep rows still use it).
+var BADGE_TYPES=Object.assign({}, IDENTITY_TYPES, {
   estate_manager:{label:'Estate Manager',color:'#4a148c',icon:'🏘'},
   neighbourhood_rep:{label:'Neighbourhood Rep',color:'#2e7d32',icon:'⭐'},
-  street_captain:{label:'Street Captain',color:'#006064',icon:'🏠'},
-};
+  street_captain:{label:'Street Captain',color:'#006064',icon:'🏠'}
+});
 
 // ── LOGIN ──
 function login(){
@@ -483,7 +510,7 @@ function updateStats(){
   document.getElementById('totalStreets').textContent=streets.length;
   document.getElementById('totalOrgs').textContent=orgProfiles.length;
   document.getElementById('totalReps').textContent=repAssignments.length;
-  document.getElementById('totalBanned').textContent=bannedUsers.length;
+  document.getElementById('totalBanned').textContent=allUsers.filter(function(u){return u.is_banned;}).length;
 }
 
 // ── OVERVIEW USERS (recent 10) ──
@@ -508,11 +535,14 @@ function filterUsers(){
       (u.address||'').toLowerCase().includes(q)||
       (u.phone||'').includes(q)||
       (u.display_name||'').toLowerCase().includes(q);
-    var badge=userBadges[u.phone]||'resident';
-    var isBanned=bannedUsers.includes(u.phone);
+    var identity=u.identity_type||'resident';
+    var isBanned=!!u.is_banned;
     var matchF=f==='all'||
       (f==='banned'&&isBanned)||
-      (f!=='banned'&&badge===f);
+      (f==='unverified'&&Number(u.trust_tier||0)===0)||
+      (f==='verified'&&Number(u.trust_tier||0)===1)||
+      (f==='trusted_lead'&&Number(u.trust_tier||0)===2)||
+      (f!=='banned'&&f!=='unverified'&&f!=='verified'&&f!=='trusted_lead'&&identity===f);
     return matchQ&&matchF;
   });
   var list=document.getElementById('fullUsersList');
@@ -524,35 +554,49 @@ function filterUsers(){
 function userRowHTML(u,compact){
   var initial=(u.display_name||u.address||'?').charAt(0).toUpperCase();
   var date=new Date(u.joined_at).toLocaleDateString('en-AU',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
-  var badge=userBadges[u.phone]||'resident';
-  var bt=BADGE_TYPES[badge]||BADGE_TYPES.resident;
-  var isBanned=bannedUsers.includes(u.phone);
+  var tier=Number(u.trust_tier||0);
+  var tt=TRUST_TIERS[tier]||TRUST_TIERS[0];
+  var identity=u.identity_type||'resident';
+  var it=IDENTITY_TYPES[identity]||IDENTITY_TYPES.resident;
+  var isBanned=!!u.is_banned;
   var phone=u.phone?(u.phone.replace(/(\+61)(\d{3})(\d{3})(\d{3})/,'$1 $2 $3 $4')):'';
   var isRep=repAssignments.find(function(r){return r.phone===u.phone;});
 
-  var chips='<span class="badge-chip" style="background:'+bt.color+'">'+bt.icon+' '+bt.label+'</span>';
-  if(badge!=='resident')chips+=' <span class="verified-tick" title="Verified">✓</span>';
+  var chips='<span class="badge-chip" style="background:'+tt.color+'">'+tt.icon+' '+tt.label+'</span>'+
+            ' <span class="badge-chip" style="background:'+it.color+'">'+it.icon+' '+it.label+'</span>';
+  if(u.vouched_by){
+    var voucher=allUsers.find(function(x){return x.phone===u.vouched_by;});
+    var voucherName=voucher?(voucher.display_name||voucher.phone):u.vouched_by;
+    chips+=' <span class="badge-chip" style="background:#37474f">🤝 Vouched by '+voucherName+'</span>';
+  }
   if(isBanned)chips+=' <span class="badge-chip" style="background:#e53935">🚫 Banned</span>';
   if(isRep)chips+=' <span class="badge-chip" style="background:#2e7d32">⭐ '+isRep.estate+'</span>';
 
   var actions='';
   if(!compact){
+    var phoneEsc=(u.phone||'').replace(/'/g,"\\'");
     actions='<div class="user-actions">'+
-      '<select class="badge-select" onchange="setBadge(\''+u.phone+'\',this.value)" title="Set badge type">'+
-        Object.keys(BADGE_TYPES).map(function(k){
-          return '<option value="'+k+'"'+(badge===k?' selected':'')+'>'+BADGE_TYPES[k].icon+' '+BADGE_TYPES[k].label+'</option>';
+      '<select class="badge-select" onchange="setTrustTier(\''+phoneEsc+'\',this.value)" title="Trust tier">'+
+        [0,1,2].map(function(t){
+          return '<option value="'+t+'"'+(tier===t?' selected':'')+'>'+TRUST_TIERS[t].icon+' '+TRUST_TIERS[t].label+'</option>';
         }).join('')+
       '</select>'+
+      '<select class="badge-select" onchange="setIdentity(\''+phoneEsc+'\',this.value)" title="Identity type">'+
+        Object.keys(IDENTITY_TYPES).map(function(k){
+          return '<option value="'+k+'"'+(identity===k?' selected':'')+'>'+IDENTITY_TYPES[k].icon+' '+IDENTITY_TYPES[k].label+'</option>';
+        }).join('')+
+      '</select>'+
+      '<button class="action-btn btn-verify" onclick="vouchUser(\''+phoneEsc+'\')" title="Vouch as verified">🤝 Vouch</button>'+
       (isBanned
-        ?'<button class="action-btn btn-unban" onclick="unbanUser(\''+u.phone+'\')">Unban</button>'
-        :'<button class="action-btn btn-ban" onclick="banUser(\''+u.phone+'\')">Ban</button>'
+        ?'<button class="action-btn btn-unban" onclick="setBanned(\''+phoneEsc+'\',false)">Unban</button>'
+        :'<button class="action-btn btn-ban" onclick="setBanned(\''+phoneEsc+'\',true)">Ban</button>'
       )+
-      '<button class="action-btn btn-delete" onclick="deleteUser(\''+u.phone+'\')">Delete</button>'+
+      '<button class="action-btn btn-delete" onclick="deleteUser(\''+phoneEsc+'\')">Delete</button>'+
     '</div>';
   }
 
   return '<div class="user-row'+(isBanned?' banned':'')+'" id="urow_'+(u.phone||Math.random())+'">'+
-    '<div class="user-avatar" style="background:'+(badge==='resident'?'#1a3020':bt.color)+'">'+initial+'</div>'+
+    '<div class="user-avatar" style="background:'+it.color+'">'+initial+'</div>'+
     '<div class="user-info">'+
       '<div class="user-name">'+(u.display_name||'Neighbour')+'</div>'+
       '<div class="user-addr">'+(u.address||'Address not set')+'</div>'+
@@ -563,35 +607,35 @@ function userRowHTML(u,compact){
   '</div>';
 }
 
-// ── BADGE ──
-function setBadge(phone,badge){
-  userBadges[phone]=badge;
-  localStorage.setItem('sc_admin_badges',JSON.stringify(userBadges));
-  renderAll();
+// ── TRUST / IDENTITY (database via /api/admin-trust) ──
+async function setTrustTier(phone,tier){
+  var ok=await callAdminTrust({action:'set-trust',phone:phone,value:Number(tier)});
+  if(ok){var u=allUsers.find(function(x){return x.phone===phone;});if(u)u.trust_tier=Number(tier);renderAll();}
 }
-
-// ── BAN / UNBAN / DELETE ──
-function banUser(phone){
-  if(!confirm('Ban this user? They will not be able to post.'))return;
-  if(!bannedUsers.includes(phone))bannedUsers.push(phone);
-  localStorage.setItem('sc_admin_banned',JSON.stringify(bannedUsers));
-  renderAll();
+async function setIdentity(phone,type){
+  var ok=await callAdminTrust({action:'set-identity',phone:phone,value:type});
+  if(ok){var u=allUsers.find(function(x){return x.phone===phone;});if(u)u.identity_type=type;renderAll();}
 }
-
-function unbanUser(phone){
-  bannedUsers=bannedUsers.filter(function(p){return p!==phone;});
-  localStorage.setItem('sc_admin_banned',JSON.stringify(bannedUsers));
-  renderAll();
+async function setBanned(phone,isBanned){
+  if(isBanned&&!confirm('Ban this user? They will not be able to post.'))return;
+  var ok=await callAdminTrust({action:'set-banned',phone:phone,value:!!isBanned});
+  if(ok){var u=allUsers.find(function(x){return x.phone===phone;});if(u)u.is_banned=!!isBanned;renderAll();}
+}
+async function vouchUser(phone){
+  // Voucher: prompt the admin to pick a verified user (or themselves) as the voucher.
+  // For simplicity, default voucher = "ADMIN" stored as a synthetic phone string for now.
+  // (When admins have their own user record, this can pick from a dropdown.)
+  var voucherPhone=prompt('Vouch this user as VERIFIED. Enter voucher phone (with +61), or leave blank to record as ADMIN:','');
+  if(voucherPhone===null)return; // cancelled
+  voucherPhone=voucherPhone.trim()||'ADMIN';
+  var ok=await callAdminTrust({action:'vouch',phone:phone,voucher_phone:voucherPhone});
+  if(ok){var u=allUsers.find(function(x){return x.phone===phone;});if(u){u.vouched_by=voucherPhone;u.trust_tier=1;}renderAll();}
 }
 
 function deleteUser(phone){
   if(!confirm('Permanently delete this user? This cannot be undone.'))return;
   // Production: fetch('/api/delete-user',{method:'DELETE',body:JSON.stringify({phone,password:adminPassword})})
   allUsers=allUsers.filter(function(u){return u.phone!==phone;});
-  bannedUsers=bannedUsers.filter(function(p){return p!==phone;});
-  delete userBadges[phone];
-  localStorage.setItem('sc_admin_badges',JSON.stringify(userBadges));
-  localStorage.setItem('sc_admin_banned',JSON.stringify(bannedUsers));
   renderAll();
 }
 
@@ -674,7 +718,6 @@ function assignRep(){
   repAssignments=repAssignments.filter(function(r){return r.phone!==phone;});
   repAssignments.push(rep);
   localStorage.setItem('sc_admin_reps',JSON.stringify(repAssignments));
-  setBadge(phone,role);
   document.getElementById('repDisplay').value='';
   var s=document.getElementById('repSuccess');s.style.display='block';setTimeout(function(){s.style.display='none';},3000);
   renderAll();
@@ -684,9 +727,6 @@ function removeRep(phone){
   if(!confirm('Remove this rep assignment?'))return;
   repAssignments=repAssignments.filter(function(r){return r.phone!==phone;});
   localStorage.setItem('sc_admin_reps',JSON.stringify(repAssignments));
-  if(userBadges[phone]==='neighbourhood_rep'||userBadges[phone]==='estate_manager'||userBadges[phone]==='street_captain'){
-    setBadge(phone,'resident');
-  }
   renderAll();
 }
 
